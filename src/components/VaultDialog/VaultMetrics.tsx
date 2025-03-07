@@ -2,12 +2,13 @@ import { LuZap, LuCheck } from 'react-icons/lu';
 import AirDrop from '../svg/AirDrop';
 import HourGlass from '../svg/HourGlass';
 import Scale from '../svg/Scale';
+import { ethers } from 'ethers';
+import { VaultData } from '@/lib/data';
 
-interface VaultMetricsProps {
-  vaultData: typeof import('@/lib/data').vaultData;
-}
 
-export function VaultMetrics({ vaultData }: VaultMetricsProps) {
+
+export function VaultMetrics({ vaultData }: {vaultData:VaultData}) {
+  console.log(vaultData.yieldGenerated)
   return (
     <div className="mt-9 flex flex-1 flex-col justify-end">
       {vaultData.isAirdropIncentivised && (
@@ -27,7 +28,7 @@ export function VaultMetrics({ vaultData }: VaultMetricsProps) {
               <Scale />
             </div>
             <p className="font-Teko font-semibold">
-              <span className="text-2xl">$ {vaultData.yieldGenerated} </span>
+              <span className="text-2xl">$ { ethers.formatUnits(vaultData.yieldGenerated,18) } </span>
               {vaultData.yieldUnit}
             </p>
             <p className="text-center text-sm font-semibold">Yield Generated</p>
@@ -37,7 +38,7 @@ export function VaultMetrics({ vaultData }: VaultMetricsProps) {
               <HourGlass />
               <div>
                 <p className="font-Teko text-3xl font-semibold">
-                  {vaultData.timeLock}D
+                  {vaultData.stats.lockedInPeriod}D
                 </p>
                 <p>Time-Lock</p>
               </div>

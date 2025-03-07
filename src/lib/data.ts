@@ -1,3 +1,5 @@
+
+
 const cardData: {
   title: string;
   image: string;
@@ -47,10 +49,18 @@ const cardData: {
 export interface VaultData {
   title: string;
   type: string;
+  image: string;
   vaultName: string;
   points: number;
   isAirdropIncentivised: boolean;
   yieldGenerated: number;
+  proxyaddress:string;
+  tokenAddress:string;
+  stats: {
+    earnings: string;
+    newAPR: string;
+    lockedInPeriod: string;
+  };
   yieldUnit: string;
   timeLock: number; // in days
   backingRatio: number;
@@ -60,6 +70,7 @@ export interface VaultData {
     amount: number;
     pricePerUnit: number;
     currency: string;
+    nftLimitPerAddress:number
   };
   vaultSupply: {
     current: number;
@@ -68,32 +79,35 @@ export interface VaultData {
   balance: number;
   depositAmount: number;
   claimOpensIn: string;
+  nftAddress:string
 }
 
-const vaultData: VaultData = {
-  title: 'Burger Math',
-  type: 'Flexible',
-  vaultName: 'TomatoLend',
-  points: 5,
-  isAirdropIncentivised: true,
-  yieldGenerated: 1.4,
-  yieldUnit: 'ETH',
-  timeLock: 60,
-  backingRatio: 1.36,
-  backingPercentage: 36,
-  vaultClosesIn: '2d:15h:16m:30s',
-  vaultInfo: {
-    amount: 1400,
-    pricePerUnit: 100,
-    currency: 'ETH',
-  },
-  vaultSupply: {
-    current: 1000,
-    total: 1400,
-  },
-  balance: 0.10303,
-  depositAmount: 2,
-  claimOpensIn: '59d:15h:16m:30s',
-};
 
-export { cardData, vaultData };
+
+// const vaultData: VaultData = {
+//   title: 'Burger Math',
+//   type: 'Flexible',
+//   vaultName: 'TomatoLend',
+//   points: 5,
+//   isAirdropIncentivised: true,
+//   yieldGenerated: 1.4,
+//   yieldUnit: 'ETH',
+//   timeLock: 60,
+//   backingRatio: 1.36,
+//   backingPercentage: 36,
+//   vaultClosesIn: '2d:15h:16m:30s',
+//   vaultInfo: {
+//     amount: 1400,
+//     pricePerUnit: 100,
+//     currency: 'ETH',
+//   },
+//   vaultSupply: {
+//     current: 1000,
+//     total: 1400,
+//   },
+//   balance: 0.10303,
+//   depositAmount: 2,
+//   claimOpensIn: '59d:15h:16m:30s',
+// };
+
+export { cardData };
