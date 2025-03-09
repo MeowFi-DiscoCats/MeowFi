@@ -1,27 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-
-export interface IVault {
-  title: string;
-  img: string;
-  lockedInPeriod: number;
-  APR: number;
-  type: "fixed" | "flexible";
-  earnings: number;
-  proxyAddress: string;
-  tokenAddress: string;
-  AirdropIncentivised: number;
-  totalSupply: number;
-  availableSupply: number;
-  joinInPeriod: string;
-  claimInPeriod: string;
-  price: number;
-  yieldValue: number;
-  backingRatio: number;
-  backingPercentage: number;
-  tokenSymbol: string;
-  NFTAddress: string;
-  NFTLimit: number;
-}
+import { IVault } from "./IVault";
 
 const vaultSchema = new Schema<IVault>({
   title: { type: String, required: true },
