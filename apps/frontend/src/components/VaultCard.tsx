@@ -5,7 +5,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
-import { IVault } from '../../../backend/src/models/vault';
+import { IVault } from '../../../backend/src/models/IVault';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 

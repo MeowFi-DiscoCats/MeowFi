@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BrowserProvider, Contract, Eip1193Provider } from 'ethers';
 import { useQueryClient } from '@tanstack/react-query';
-import { IVault } from '../../../../backend/src/models/vault';
+import { IVault } from '../../../../backend/src/models/IVault';
 import {
   useAppKitAccount,
   useAppKitNetworkCore,

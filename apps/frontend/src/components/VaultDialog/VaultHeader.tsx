@@ -6,7 +6,7 @@ import {
 } from '@/components/ui/dialog';
 import { LucideChevronLeft } from 'lucide-react';
 import { useState } from 'react';
-import { IVault } from '../../../../backend/src/models/vault';
+import { IVault } from '../../../../backend/src/models/IVault';
 import { useQueryClient } from '@tanstack/react-query';
 
 export function VaultHeader({ index }: { index: number }) {

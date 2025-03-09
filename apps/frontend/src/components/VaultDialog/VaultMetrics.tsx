@@ -3,7 +3,7 @@ import AirDrop from '../svg/AirDrop';
 import HourGlass from '../svg/HourGlass';
 import Scale from '../svg/Scale';
 import { useQueryClient } from '@tanstack/react-query';
-import { IVault } from '../../../../backend/src/models/vault';
+import { IVault } from '../../../../backend/src/models/IVault';
 
 export function VaultMetrics({ index }: { index: number }) {
   const queryClient = useQueryClient();

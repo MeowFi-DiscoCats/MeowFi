@@ -2,7 +2,7 @@ import CatEar from '@/components/svg/CatEar';
 import VaultHeader from './VaultHeader';
 import VaultCard from './VaultCard';
 import { useQuery } from '@tanstack/react-query';
-import { IVault } from '../../../backend/src/models/vault';
+import { IVault } from '../../../backend/src/models/IVault';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
