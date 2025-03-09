@@ -1,55 +1,20 @@
 {
-  "name": "discocats",
+  "name": "MeowFi",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "version": "1.0.0",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,css,scss,yaml,yml}\"",
-    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,css,scss,yaml,yml}\"",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@radix-ui/react-accordion": "^1.2.3",
-    "@radix-ui/react-dialog": "^1.1.6",
-    "@radix-ui/react-dropdown-menu": "^2.1.6",
-    "@radix-ui/react-hover-card": "^1.1.6",
-    "@radix-ui/react-select": "^2.1.6",
-    "@radix-ui/react-slot": "^1.1.2",
-    "@radix-ui/react-tooltip": "^1.1.8",
-    "@tailwindcss/vite": "^4.0.3",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "embla-carousel-autoplay": "^8.5.2",
-    "embla-carousel-react": "^8.5.2",
-    "lucide-react": "^0.475.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-icons": "^5.4.0",
-    "react-router-dom": "^7.1.5",
-    "recharts": "^2.15.1",
-    "tailwind-merge": "^3.0.1",
-    "tailwindcss": "^4.0.3",
-    "tailwindcss-animate": "^1.0.7"
+    "dev:frontend": "npm run dev --workspace=apps/frontend",
+    "dev:backend": "npm run dev --workspace=apps/backend",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "check:frontend": "npm run prettier:check --workspace=apps/frontend && npm run lint --workspace=apps/frontend",
+    "check:backend": "npm run prettier:check --workspace=apps/backend && npm run lint --workspace=apps/backend",
+    "check": "npm run check:frontend && npm run check:backend"
   },
   "devDependencies": {
-    "@eslint/js": "^9.17.0",
-    "@types/node": "^22.13.2",
-    "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.3.5",
-    "@vitejs/plugin-react-swc": "^3.5.0",
-    "eslint": "^9.19.0",
-    "eslint-plugin-react": "^7.37.4",
-    "eslint-plugin-react-hooks": "^5.0.0",
-    "eslint-plugin-react-refresh": "^0.4.16",
-    "globals": "^15.14.0",
-    "prettier": "^3.4.2",
-    "prettier-plugin-tailwindcss": "^0.6.11",
-    "typescript": "~5.6.2",
-    "typescript-eslint": "^8.18.2",
-    "vite": "^6.0.5"
+    "concurrently": "^9.1.2"
   },
-  "packageManager": "pnpm@9.15.5+sha512.845196026aab1cc3f098a0474b64dfbab2afe7a1b4e91dd86895d8e4aa32a7a6d03049e2d0ad770bbe4de023a7122fb68c1a1d6e0d033c7076085f9d5d4800d4"
+  "workspaces": [
+    "apps/frontend",
+    "apps/backend"
+  ]
 }

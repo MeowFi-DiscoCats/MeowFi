@@ -2,31 +2,36 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
-  build:
+  lint-and-format:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
           node-version: '20'
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
       - name: Install dependencies
-        run: pnpm install
+        run: npm install
 
-      - name: Run lint
-        run: pnpm run lint
+      - name: Frontend - Prettier Check
+        run: npm run prettier:check --workspace=apps/frontend
 
-      - name: Build project
-        run: pnpm run build
+      - name: Frontend - ESLint
+        run: npm run lint --workspace=apps/frontend
+
+      - name: Backend - Prettier Check
+        run: npm run prettier:check --workspace=apps/backend
+
+      - name: Backend - ESLint
+        run: npm run lint --workspace=apps/backend

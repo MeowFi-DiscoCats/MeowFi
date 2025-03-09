@@ -1,47 +1,32 @@
-# DiscoCats
+MeowFi
 
-_Discover the groove with DiscoCats!_
+## Project Structure
 
-## Todo
+- **apps/frontend**: Contains the frontend application.
+- **apps/backend**: Contains the backend application.
 
-- [x] Time Vault Page
-- [x] Image Optimization
-- [x] Better file structure
-- [x] CI pipeline
-- [ ] Deployment
+### Running the Applications
 
-## Installation
-
-To get started, clone the repository and install the dependencies using pnpm:
-
-1. **Clone the repository**
-
-   ```bash
-   git clone https://github.com/HaroonSaifi17/DiscoCats.git
-   cd DiscoCats
-   ```
-
-2. **Install dependencies**
-
-   ```bash
-   pnpm install
-   ```
-
-## Running the Project
-
-To start the project in development mode, run:
+You can start the development servers for both the frontend and backend concurrently with:
 
 ```bash
-pnpm run dev
+npm run dev
 ```
 
-Then open your browser and navigate to [http://localhost:5273](http://localhost:5173) (or the port specified by your project) to see DiscoCats in action.
+Alternatively, you can run them separately:
 
-## Build
+- **Frontend:**
+  ```bash
+  npm run dev:frontend
+  ```
+- **Backend:**
+  ```bash
+  npm run dev:backend
+  ```
 
-For production builds, use:
+## Scripts
 
-```bash
-pnpm run build
+- **dev:frontend**: Starts the frontend development server.
+- **dev:backend**: Starts the backend development server.
+- **dev**: Uses `concurrently` to run both frontend and backend servers at the same time.
 
-```
