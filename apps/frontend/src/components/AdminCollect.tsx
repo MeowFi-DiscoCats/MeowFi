@@ -48,7 +48,7 @@ export default function AdminCollect() {
       const tx = await proxyContract.withdrawAllFunds(receiverAddress);
       await tx.wait();
       setNotification(`Funds withdrawn to ${receiverAddress}`);
-    } catch (e:unknown) {
+    } catch (e: unknown) {
       setError('Transaction failed. Please check your input and try again.');
       console.error(e);
     }

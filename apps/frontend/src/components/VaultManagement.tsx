@@ -53,7 +53,6 @@ interface FormData {
   backingRatio: string;
   backingPercentage: string;
   tokenSymbol: string;
-  NFTAddress: string;
   NFTLimit: string;
   img: File | null;
 }
@@ -89,7 +88,6 @@ const VaultManagement: React.FC = () => {
     backingRatio: '',
     backingPercentage: '',
     tokenSymbol: '',
-    NFTAddress: '',
     NFTLimit: '',
     img: null,
   });
@@ -332,7 +330,6 @@ const VaultManagement: React.FC = () => {
         backingRatio: '',
         backingPercentage: '',
         tokenSymbol: '',
-        NFTAddress: '',
         NFTLimit: '',
         img: null,
       });
@@ -665,25 +662,6 @@ const VaultManagement: React.FC = () => {
                   {errors.tokenSymbol && (
                     <p className="mt-1 text-sm text-red-500">
                       {errors.tokenSymbol}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <Label htmlFor="NFTAddress" className="mb-2">
-                    NFT Address
-                  </Label>
-                  <Input
-                    id="NFTAddress"
-                    name="NFTAddress"
-                    placeholder="Enter NFT address (0x...)"
-                    value={formData.NFTAddress}
-                    onChange={handleChange}
-                    className={errors.NFTAddress ? 'border-red-500' : ''}
-                  />
-                  {errors.NFTAddress && (
-                    <p className="mt-1 text-sm text-red-500">
-                      {errors.NFTAddress}
                     </p>
                   )}
                 </div>

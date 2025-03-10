@@ -17,6 +17,5 @@ export interface IVault {
   backingRatio: number;
   backingPercentage: number;
   tokenSymbol: string;
-  NFTAddress: string;
   NFTLimit: number;
 }

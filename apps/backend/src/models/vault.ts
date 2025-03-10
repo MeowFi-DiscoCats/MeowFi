@@ -20,7 +20,6 @@ const vaultSchema = new Schema<IVault>({
   backingRatio: { type: Number, required: true },
   backingPercentage: { type: Number, required: true },
   tokenSymbol: { type: String, required: true },
-  NFTAddress: { type: String, required: true },
   NFTLimit: { type: Number, required: true },
 });
 

@@ -22,7 +22,7 @@ export default function VaultGrid() {
 
   return (
     <section className="px-[3vw] py-10 pt-20 max-[550px]:pt-10">
-      <div className="bg-cream border-saffron relative mx-auto min-h-[600px] max-w-[1100px] rounded-2xl border-4 p-6 max-md:px-4 max-sm:rounded-none">
+      <div className="bg-cream border-saffron relative mx-auto min-h-[600px] max-w-6xl rounded-2xl border-4 p-6 max-md:px-4 max-sm:rounded-none">
         <img
           width="100"
           className="absolute -top-7 left-1/2 -z-10 -translate-x-1/2 -translate-y-1/2 transform"

@@ -164,8 +164,13 @@ export function VaultActions({ index }: { index: number }) {
         timeVaultV1Abi,
         signer
       );
+      const NFTAddress = await proxyContract.NFTAddress();
+      if (!NFTAddress) {
+        alert('NFT Address not found.');
+        return;
+      }
 
-      const nftContract = new Contract(vault.NFTAddress, NFTabi, signer);
+      const nftContract = new Contract(NFTAddress, NFTabi, signer);
 
       const tx2 = await nftContract.setApprovalForAll(vault.proxyAddress, true);
       const conf2 = await tx2.wait();

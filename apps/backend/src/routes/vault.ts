@@ -6,13 +6,19 @@ import { uploadImg } from "../setup/multer";
 import { CustomError } from "../utils/errorMiddleware";
 import path from "path";
 import passport from "passport";
+import NodeCache from "node-cache";
 
+const cache = new NodeCache({ stdTTL: 300 });
 const router = Router();
 
 router.get(
   "/",
   asyncWrapper(async (_req, res) => {
-    const vaults = await Vault.find();
+    let vaults = cache.get("vaults");
+    if (!vaults) {
+      vaults = await Vault.find();
+      cache.set("vaults", vaults);
+    }
     res.json(vaults);
   }),
 );
@@ -44,13 +50,14 @@ router.post(
       backingRatio: z.preprocess((val) => Number(val), z.number()),
       backingPercentage: z.preprocess((val) => Number(val), z.number()),
       tokenSymbol: z.string(),
-      NFTAddress: z.string(),
       NFTLimit: z.preprocess((val) => Number(val), z.number()),
     });
 
     const validatedData = validator.parse(req.body);
     const vault = new Vault({ ...validatedData, img: req.file.filename });
     await vault.save();
+
+    cache.del("vaults");
     res.json(vault);
   }),
 );
