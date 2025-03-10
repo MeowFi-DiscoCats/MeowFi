@@ -2,7 +2,7 @@ import { Router } from "express";
 import asyncWrapper from "../utils/asyncWrapper";
 import Vault from "../models/vault";
 import { z } from "zod";
-import { uploadImg } from "../setup/multer";
+import { processAndSaveImage, uploadImg } from "../setup/multer";
 import { CustomError } from "../utils/errorMiddleware";
 import path from "path";
 import passport from "passport";
@@ -31,6 +31,7 @@ router.post(
     if (!req.file) {
       throw new CustomError("file not found", 400);
     }
+    const filename = await processAndSaveImage(req.file);
 
     const validator = z.object({
       title: z.string(),
@@ -54,7 +55,7 @@ router.post(
     });
 
     const validatedData = validator.parse(req.body);
-    const vault = new Vault({ ...validatedData, img: req.file.filename });
+    const vault = new Vault({ ...validatedData, img: filename });
     await vault.save();
 
     cache.del("vaults");
