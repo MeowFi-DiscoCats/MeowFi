@@ -1,4 +1,9 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
 import TimeVaults from './pages/TimeVaults';
 import Navbar from './components/NavBar';
 import AdminRoutes from './pages/Admin';
@@ -6,6 +11,7 @@ import AdminRoutes from './pages/Admin';
 import { createAppKit } from '@reown/appkit/react';
 import { EthersAdapter } from '@reown/appkit-adapter-ethers';
 import { AppKitNetwork, monadTestnet } from '@reown/appkit/networks';
+import Faucet from './pages/Faucet';
 
 const projectId: string = import.meta.env.VITE_REOWN_PROJECT_ID;
 const networks: [AppKitNetwork] = [monadTestnet];
@@ -14,7 +20,7 @@ const metadata = {
   name: 'MeowFi',
   description: 'MeowFi is a platform for NFT Time Vaults',
   url: 'https://meowfi.xyz',
-  icons: ['https://meowfi.xyz/avatars'],
+  icons: ['https://meowfi.xyz/images/logo.webp'],
 };
 
 createAppKit({
@@ -32,19 +38,26 @@ createAppKit({
   projectId,
   features: {
     analytics: true,
-  }
+  },
 });
 
 function Layout() {
-  const location = useLocation();
-  const isAdminPage = location.pathname.startsWith('/admin');
-
   return (
     <>
-      {!isAdminPage && <Navbar />}
       <Routes>
-        <Route index element={<TimeVaults />} />
+        <Route
+          index
+          element={
+            <>
+              <Navbar />
+              <TimeVaults />
+            </>
+          }
+        />
         <Route path="/admin/*" element={<AdminRoutes />} />
+        <Route path="/faucet" element={<Faucet />} />
+        <Route path="/error" element={<ErrorPage />} />
+        <Route path="*" element={<Navigate to="/error" replace />} />
       </Routes>
     </>
   );
@@ -55,6 +68,15 @@ function App() {
     <BrowserRouter>
       <Layout />
     </BrowserRouter>
+  );
+}
+
+function ErrorPage() {
+  return (
+    <div>
+      <h1>404</h1>
+      <p>Page not found</p>
+    </div>
   );
 }
 

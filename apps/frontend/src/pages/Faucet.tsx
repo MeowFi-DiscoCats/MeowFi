@@ -1,16 +1,8 @@
-import { useState } from 'react';
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from '@/components/ui/dialog';
-import { LuPlus } from 'react-icons/lu';
+import CatEar from '../components/svg/CatEar';
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
 import { BrowserProvider, Contract, Eip1193Provider, ethers } from 'ethers';
 import { tokenAbi, usdcContractAddress } from '@/lib/abi.data';
+import { useState } from 'react';
 
 export default function Faucet() {
   const [sendAddress, setSendAddress] = useState('');
@@ -47,18 +39,22 @@ export default function Faucet() {
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <button className="flex items-center rounded-md bg-emerald-500 px-4 py-2 text-white transition hover:bg-emerald-600">
-          <LuPlus className="mr-2 h-5 w-5" />
-          Faucet
-        </button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Add Funds</DialogTitle>
-        </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
+    <section className="mt-4 px-[3vw] py-10 pt-20 ">
+      <div className="bg-cream border-saffron gap-8 relative flex flex-col items-center justify-center mx-auto min-h-[600px] max-w-[1100px] rounded-2xl border-4 p-6 max-md:px-4 max-sm:rounded-none">
+        <img
+          width="100"
+          className="absolute -top-7 left-1/2 -z-10 -translate-x-1/2 -translate-y-1/2 transform"
+          src="/images/welcomeCat.webp"
+          alt="Welcome Cat"
+        />
+        <div className="absolute -top-10 left-[10%] -z-10 scale-x-[-1] transform">
+          <CatEar />
+        </div>
+        <div className="absolute -top-10 right-[10%] -z-10">
+          <CatEar />
+        </div>
+        <h2 className='text-4xl font-Showcard text-orange'>ADD FAUCET</h2>
+        <form onSubmit={handleSubmit} className="max-w-96 w-full space-y-4">
           <div>
             <label
               htmlFor="address"
@@ -91,16 +87,14 @@ export default function Faucet() {
               required
             />
           </div>
-          <DialogFooter>
-            <button
-              type="submit"
-              className="rounded bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600"
-            >
-              Submit
-            </button>
-          </DialogFooter>
+          <button
+            type="submit"
+            className="bg-yellow w-full text-center px-4 py-2 text-black rounded-xl transition hover:bg-yellow/90"
+          >
+            Submit
+          </button>
         </form>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </section>
   );
 }

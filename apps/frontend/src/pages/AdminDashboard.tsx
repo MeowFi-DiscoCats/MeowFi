@@ -1,5 +1,4 @@
 import VaultManagement from '@/components/VaultManagement';
-import Faucet from '@/components/Faucet';
 import { LuLogOut } from 'react-icons/lu';
 import { useAppKit, useAppKitAccount } from '@reown/appkit/react';
 
@@ -34,9 +33,6 @@ export default function AdminDashboard() {
         </header>
         <div className="flex flex-col gap-4 rounded border border-gray-200 bg-white p-6 shadow">
           <VaultManagement />
-          <div>
-            <Faucet />
-          </div>
         </div>
       </div>
     </div>
