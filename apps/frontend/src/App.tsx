@@ -32,8 +32,7 @@ createAppKit({
   projectId,
   features: {
     analytics: true,
-  },
-  themeMode: 'light',
+  }
 });
 
 function Layout() {

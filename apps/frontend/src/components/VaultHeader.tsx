@@ -28,7 +28,7 @@ export default function VaultHeader() {
           </span>
           <Dialog>
             <DialogTrigger asChild>
-              <button className="bg-light-orange border-b-sienna hover:bg-light-orange/90 border-b-2 text-white">
+              <button className="bg-yellow border-b-gunmetal shadow-inner-custom hover:bg-yellow/90 border-b-2 text-gunmetal">
                 Manual
               </button>
             </DialogTrigger>

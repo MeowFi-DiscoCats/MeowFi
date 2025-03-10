@@ -27,9 +27,8 @@ const navLinks = [
   { label: 'Bribe Wars', soon: true },
 ];
 const manualLinks = ['Docs', 'To Do', 'Twitter', 'Discord'];
-const chains = ['Berachain', 'Testnet', 'Supranet'];
 const mobileNavItemClass =
-  'bg-cream text-chocolate border-orange font-Bubblegum relative flex h-[42px] w-full items-center justify-center gap-1 rounded-xl border-2 px-3 hover:hue-rotate-280';
+  'bg-cream text-chocolate border-orange font-Bubblegum relative flex h-[42px] w-full items-center justify-center gap-1 rounded-xl border-2 px-3 hover:hue-rotate-180';
 
 export default function NavBar() {
   const { open } = useAppKit();
@@ -43,9 +42,9 @@ export default function NavBar() {
             to="/"
             className="font-Showcard text-center text-2xl leading-6 font-bold tracking-wider text-white uppercase duration-50 hover:scale-[1.01]"
           >
-            Meow <br /> Fi
+            <img width="100px" src="/images/logo.webp" alt="logo" />
           </NavLink>
-          <div className="[&>a]:bg-cream [&>a]:text-chocolate [&>a]:border-orange [&>a]:font-Bubblegum flex items-center gap-2 max-[870px]:hidden max-lg:gap-1 [&>a]:relative [&>a]:flex [&>a]:h-[42px] [&>a]:items-center [&>a]:rounded-xl [&>a]:border-2 [&>a]:px-3 [&>a]:hover:hue-rotate-280">
+          <div className="[&>a]:bg-cream [&>a]:text-chocolate [&>a]:border-orange [&>a]:font-Bubblegum flex items-center gap-2 max-[870px]:hidden max-lg:gap-1 [&>a]:relative [&>a]:flex [&>a]:h-[42px] [&>a]:items-center [&>a]:rounded-xl [&>a]:border-2 [&>a]:px-3 [&>a]:hover:hue-rotate-180">
             {navLinks.map(({ label, to }) =>
               to ? (
                 <NavLink key={label} to={to}>
@@ -64,36 +63,47 @@ export default function NavBar() {
         {/* Chain Select, Connect Wallet & Manual Dropdown */}
         <div className="max-[550px]:bg-cream bottom-0 left-0 z-30 flex items-center gap-2 max-[550px]:fixed max-[550px]:w-full max-[550px]:p-2 max-[550px]:px-6 [&>button]:rounded-xl">
           <div className="[&>button]:bg-cream [&>button]:border-light-orange [&>button]:text-chocolate [&>button]:font-Bubblegum max-[550px]:order-2 [&>button]:h-10 [&>button]:rounded-xl [&>button]:border [&>button]:px-1 [&>button]:pl-0">
-            <Select>
+            <Select defaultValue="Monad">
               <SelectTrigger>
-                <img
-                  width="20px"
-                  className="mx-2 max-[550px]:mr-0"
-                  src="/images/chain.webp"
-                  alt="blockchain"
-                />
-                <div className="[&>*]:font-Bubblegum max-[550px]:hidden">
-                  <SelectValue placeholder="Berachain" />
+                <div className="[&>*]:font-Bubblegum max-[550px]:w-8 overflow-hidden">
+                  <SelectValue />
                 </div>
               </SelectTrigger>
-              <SelectContent className="border-gunmetal border-1">
+              <SelectContent className="border-gunmetal rounded-xl border-1">
                 <SelectGroup>
-                  {chains.map((chain, index) => (
-                    <SelectItem
-                      className="[&>*]:font-Bubblegum [&>*]:text-chocolate"
-                      key={index}
-                      value={chain}
-                    >
-                      {chain}
-                    </SelectItem>
-                  ))}
+                  <SelectItem
+                    className="[&>*]:font-Bubblegum [&>*]:text-chocolate"
+                    value="Monad"
+                  >
+                    <div className="font-Bubblegum ml-2 flex gap-2">
+                      <img
+                        width="20px"
+                        src="/images/monad.webp"
+                        alt="Monad"
+                      />
+                      Monad
+                    </div>
+                  </SelectItem>
+                  <SelectItem
+                    className="[&>*]:font-Bubblegum [&>*]:text-chocolate"
+                    value="Berahain"
+                  >
+                    <div className="font-Bubblegum ml-2 flex gap-2">
+                      <img
+                        width="20px"
+                        src="/images/chain.webp"
+                        alt="blockchain"
+                      />
+                      Berahain
+                    </div>
+                  </SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
           </div>
           <span className="flex items-center" onClick={() => open()}>
             {!isConnected ? (
-              <a className="font-Bubblegum hover:bg-orange shadow-inner-custom bg-light-orange flex h-[42px] items-center rounded-xl px-2 text-center leading-6 font-bold tracking-wider text-nowrap text-white max-[550px]:order-1">
+              <a className="font-Bubblegum hover:bg-yellow/95 shadow-inner-custom bg-yellow text-gunmetal flex h-[42px] items-center rounded-xl px-2 text-center leading-6 tracking-wider text-nowrap max-[550px]:order-1">
                 Connect Wallet
               </a>
             ) : (

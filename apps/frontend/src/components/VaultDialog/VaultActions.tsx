@@ -187,9 +187,9 @@ export function VaultActions({ index }: { index: number }) {
 
   return (
     <div className="flex flex-1 flex-col gap-3">
-      <p className="text-center font-semibold">
+      <p className="border-y border-crimson p-1 text-center font-semibold">
         {joinTimeLeft === '0d:0h:0m:0s'
-          ? 'Vault Closed'
+          ? 'VAULT CLOSED'
           : `Vault Closes In: ${joinTimeLeft}`}
       </p>
       <div className="border-gunmetal flex items-center justify-between gap-2 rounded-xl border bg-white p-2">
@@ -227,7 +227,7 @@ export function VaultActions({ index }: { index: number }) {
         <button
           onClick={() => setQuantity(Math.min(vault.NFTLimit, quantity + 1))}
           className="px-2"
-          disabled={quantity >= vault.availableSupply}
+          // disabled={quantity >= vault.availableSupply}
         >
           +
         </button>

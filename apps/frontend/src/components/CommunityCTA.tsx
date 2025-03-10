@@ -8,14 +8,17 @@ export default function CommunityCTA() {
         src="/images/catGroup.webp"
         alt="contact"
       />
-      <h3 className="text-lg font-semibold">Do you have more questions?</h3>
       <p>
-        End-to-end payments and financial management in a single solution. Meet
-        the right platform to help realize.
+        We turn locked assets into liquid NFTs, unlocking multi-layered yield
+        through Bribe Mechanisms.
       </p>
-      <button className="font-Bubblegum border-gunmetal bg-yellow border p-3 hover:-hue-rotate-15">
+       <p className="text-xl font-bold">Still curious, kitty?</p>
+      <a
+        href="https://discord.com/invite/RZWntTWFrb"
+        className="font-Bubblegum border-gunmetal bg-yellow border p-3 hover:-hue-rotate-15"
+      >
         Join the Cats
-      </button>
+      </a>
     </div>
   );
 }

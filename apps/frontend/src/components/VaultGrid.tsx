@@ -20,36 +20,9 @@ export default function VaultGrid() {
     fetchData
   );
 
-  if (isLoading)
-    return (
-      <section className="px-[3vw] py-10 pt-20 max-[550px]:pt-10">
-        <div className="bg-cream border-saffron relative mx-auto max-w-[1100px] rounded-2xl border-4 p-6 max-md:px-4 max-sm:rounded-none">
-          <p>Loading...</p>
-        </div>
-      </section>
-    );
-
-  if (error)
-    return (
-      <section className="px-[3vw] py-10 pt-20 max-[550px]:pt-10">
-        <div className="bg-cream border-saffron relative mx-auto max-w-[1100px] rounded-2xl border-4 p-6 max-md:px-4 max-sm:rounded-none">
-          <p>Error: {error.message}</p>
-        </div>
-      </section>
-    );
-
-  if (!data || data.length === 0)
-    return (
-      <section className="px-[3vw] py-10 pt-20 max-[550px]:pt-10">
-        <div className="bg-cream border-saffron relative mx-auto max-w-[1100px] rounded-2xl border-4 p-6 max-md:px-4 max-sm:rounded-none">
-          <p>No data available</p>
-        </div>
-      </section>
-    );
-
   return (
     <section className="px-[3vw] py-10 pt-20 max-[550px]:pt-10">
-      <div className="bg-cream border-saffron relative mx-auto max-w-[1100px] rounded-2xl border-4 p-6 max-md:px-4 max-sm:rounded-none">
+      <div className="bg-cream border-saffron relative mx-auto min-h-[600px] max-w-[1100px] rounded-2xl border-4 p-6 max-md:px-4 max-sm:rounded-none">
         <img
           width="100"
           className="absolute -top-7 left-1/2 -z-10 -translate-x-1/2 -translate-y-1/2 transform"
@@ -63,11 +36,43 @@ export default function VaultGrid() {
           <CatEar />
         </div>
         <VaultHeader />
-        <div className="flex flex-wrap justify-center gap-8 max-lg:gap-4">
-          {data.map((card, index) => (
-            <VaultCard key={index} index={index} vault={card} />
-          ))}
-        </div>
+
+        {isLoading ? (
+          <div className="flex h-full flex-col items-center justify-center py-12">
+            <img
+              src="/images/sleepyCat.webp"
+              alt="Loading"
+              className="mb-4 w-32"
+            />
+            <p className="text-center text-lg">Loading...</p>
+          </div>
+        ) : error ? (
+          <div className="flex h-full flex-col items-center justify-center py-12">
+            <img
+              src="/images/sleepyCat.webp"
+              alt="Error"
+              className="mb-4 w-32"
+            />
+            <p className="text-center text-lg text-red-500">
+              Error: {error.message}
+            </p>
+          </div>
+        ) : !data || data.length === 0 ? (
+          <div className="flex h-full flex-col items-center justify-center py-12">
+            <img
+              src="/images/sleepyCat.webp"
+              alt="No Data"
+              className="mb-4 w-32"
+            />
+            <p className="text-center text-lg">No data available</p>
+          </div>
+        ) : (
+          <div className="flex flex-wrap justify-center gap-8 max-lg:gap-4">
+            {data.map((card, index) => (
+              <VaultCard key={index} index={index} vault={card} />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

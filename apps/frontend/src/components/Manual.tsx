@@ -49,7 +49,7 @@ export default function Manual() {
       case 1:
         return (
           <div className="flex flex-col p-4">
-            <div className="my-8 flex items-center gap-8 max-[550px]:flex-col">
+            <div className="my-8 flex-1 flex items-center gap-8 max-[550px]:flex-col">
               <img
                 width="250px"
                 className="flex-1"
@@ -139,9 +139,9 @@ export default function Manual() {
                 You’ve Been Cat-verted!{' '}
               </h1>
             </div>
-            <img src="/images/sleepyCat.webp" alt="" />
+            <img width="190px" src="/images/sleepyCat.webp" alt="" />
             <p className="max-w-72 text-center">
-              ongrats, you’re now part of felines! You’ve unlocked the secrets
+              Congrats, you’re now part of felines! You’ve unlocked the secrets
               of NFT Time-Lock Vaults—bribes, multi-layer yield, Liquid NFTs,
               and all the juicy perks.
             </p>
@@ -159,7 +159,7 @@ export default function Manual() {
   };
 
   return (
-    <DialogContent className="bg-cream overflow-hidden rounded-2xl border-none p-0 sm:max-w-[550px] [&>button]:hidden">
+    <DialogContent className="bg-cream min-h-[450px] overflow-hidden rounded-2xl border-none p-0 sm:max-w-[550px] [&>button]:hidden">
       <DialogHeader className="hidden">
         <DialogTitle>Manual</DialogTitle>
         <DialogDescription>

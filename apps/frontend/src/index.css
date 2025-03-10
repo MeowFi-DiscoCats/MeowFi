@@ -148,7 +148,7 @@
   }
 
   body {
-    @apply bg-sky text-foreground;
+    @apply bg-gunmetal text-foreground;
   }
 }
 
@@ -169,5 +169,5 @@ button {
 }
 
 .active {
-  @apply hue-rotate-280;
+  @apply hue-rotate-180;
 }

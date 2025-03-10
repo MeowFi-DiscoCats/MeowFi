@@ -18,7 +18,7 @@ export default function VaultCard({
 }) {
   return (
     <div className="border-gunmetal relative w-full max-w-[300px] overflow-hidden rounded-xl border-1 bg-white shadow max-md:max-w-[250px] max-sm:max-w-[400px]">
-      <h2 className="bg-yellow mb-2 flex w-full items-center justify-center gap-2 rounded-[0%_0%_50%_50%_/_0%_0%_30%_30%] py-2 text-center font-semibold text-black">
+      <h2 className="bg-yellow mb-2 flex w-full items-center justify-center gap-2 rounded-[0%_0%_50%_50%_/_0%_0%_30%_30%] py-2 text-center text-lg font-semibold text-black">
         {vault.title}
         <HoverCard>
           <HoverCardTrigger asChild>
@@ -57,7 +57,7 @@ export default function VaultCard({
           className="relative aspect-square w-[130px] rounded-full"
         >
           <img
-            className="absolute top-1/2 left-1/2 h-[126px] w-[126px] -translate-x-1/2 -translate-y-1/2 transform rounded-full border-2 border-white"
+            className="absolute bg-white top-1/2 left-1/2 h-[126px] w-[126px] -translate-x-1/2 -translate-y-1/2 transform rounded-full border-2 border-white"
             src={`${apiUrl}/vault/${vault.img}`}
             alt={vault.title}
           />

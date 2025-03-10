@@ -17,18 +17,36 @@ export default function Footer() {
         }}
       >
         <CarouselContent>
-          {Array.from({ length: 5 }).map((_, index) => (
-            <CarouselItem className="bg-amber" key={index}>
-              <div>
-                <img
-                  className="w-full rounded-2xl max-md:h-32"
-                  loading="lazy"
-                  src="/images/banner.webp"
-                  alt="banner"
-                />
-              </div>
-            </CarouselItem>
-          ))}
+          <CarouselItem className="bg-amber">
+            <div className="relative h-[165px] max-md:h-24 max-lg:h-36 w-full overflow-hidden">
+              <img
+                loading="lazy"
+                src="/images/banner1.webp"
+                alt="banner"
+                className="absolute h-full w-auto object-cover object-left"
+              />
+            </div>
+          </CarouselItem>
+          <CarouselItem className="bg-amber">
+            <div className="relative h-[165px] max-md:h-24 max-lg:h-36 w-full overflow-hidden">
+              <img
+                loading="lazy"
+                src="/images/banner2.webp"
+                alt="banner"
+                className="absolute h-full w-auto object-cover object-left"
+              />
+            </div>
+          </CarouselItem>
+          <CarouselItem className="bg-amber">
+            <div className="relative h-[165px] max-md:h-24 max-lg:h-36 w-full overflow-hidden">
+              <img
+                loading="lazy"
+                src="/images/banner3.webp"
+                alt="banner"
+                className="absolute h-full w-auto object-cover object-left"
+              />
+            </div>
+          </CarouselItem>
         </CarouselContent>
       </Carousel>
     </footer>

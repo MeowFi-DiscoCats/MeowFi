@@ -39,16 +39,19 @@ export function VaultHeader({ index }: { index: number }) {
               </span>
               <span className="text-gunmetal/80 ml-2 flex items-center text-sm">
                 <strong className="mr-1">Vault: </strong>{' '}
-                {vault.proxyAddress.slice(0, 5)}...
+                {vault.proxyAddress.slice(0, 10)}...
                 <button
                   onClick={handleCopy}
-                  className="bg-yellow hover:bg-amber ml-2 rounded p-1 px-2 text-xs text-black transition"
+                  className="hover:bg-yellow bg-amber ml-2 rounded p-1 px-2 text-xs text-black transition"
                 >
                   {copied ? 'Copied' : 'Copy'}
                 </button>
               </span>
             </DialogDescription>
           </div>
+        </div>
+        <div>
+          <span className='bg-amber p-1 px-3 rounded-lg'>Limit per wallet:{vault.NFTLimit}</span>
         </div>
       </div>
       <DialogDescription className="text-start md:hidden">
