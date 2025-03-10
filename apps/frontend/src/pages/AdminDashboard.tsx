@@ -1,6 +1,11 @@
 import VaultManagement from '@/components/VaultManagement';
 import { LuLogOut } from 'react-icons/lu';
 import { useAppKit, useAppKitAccount } from '@reown/appkit/react';
+import CatEar from '@/components/svg/CatEar';
+import Avatar from '@/components/svg/Avatar';
+import { Link } from 'react-router-dom';
+import AdminCollect from '@/components/AdminCollect';
+import AdminDeposit from '@/components/AdminDeposit';
 
 export default function AdminDashboard() {
   const handleLogout = () => {
@@ -11,29 +16,52 @@ export default function AdminDashboard() {
 
   const { isConnected } = useAppKitAccount();
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="mx-auto max-w-7xl p-8">
-        <header className="mb-8 flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+    <div className="min-h-screen">
+      <div className="mx-auto max-w-7xl">
+        <header className="m-4 mb-8 flex flex-wrap items-center justify-between gap-4">
+          <Link className="font-Showcard text-4xl text-white" to="/">
+            Dashboard
+          </Link>
           <div className="flex gap-4">
-            <button
-              onClick={() => open()}
-              className="rounded-md bg-blue-600 px-4 py-2 text-white shadow transition duration-200 ease-in-out hover:bg-blue-700"
-            >
-              {!isConnected ? 'Connect Wallet' : 'Connected'}
-            </button>
+            <span className="flex items-center" onClick={() => open()}>
+              {!isConnected ? (
+                <a className="font-Bubblegum hover:bg-yellow/95 shadow-inner-custom bg-yellow text-gunmetal flex h-[42px] items-center rounded-xl px-2 text-center leading-6 tracking-wider text-nowrap max-[550px]:order-1">
+                  Connect Wallet
+                </a>
+              ) : (
+                <a className="to-amber from-orange inline-block aspect-square w-10 rounded-full bg-gradient-to-b">
+                  <Avatar />
+                </a>
+              )}
+            </span>
             <button
               onClick={handleLogout}
-              className="flex items-center rounded-md bg-red-500 px-4 py-2 text-white transition hover:bg-red-600"
+              className="flex items-center rounded-xl bg-red-500 px-4 py-2 text-white transition hover:bg-red-600"
             >
               <LuLogOut className="mr-2 h-5 w-5" />
               Logout
             </button>
           </div>
         </header>
-        <div className="flex flex-col gap-4 rounded border border-gray-200 bg-white p-6 shadow">
-          <VaultManagement />
-        </div>
+        <section className="mt-4 px-[3vw] py-10 pt-20">
+          <div className="bg-cream border-saffron relative mx-auto min-h-[400px] max-w-[1100px] gap-8 rounded-2xl border-4 p-6 max-md:px-4 max-sm:rounded-none">
+            <img
+              width="100"
+              className="absolute -top-7 left-1/2 -z-10 -translate-x-1/2 -translate-y-1/2 transform"
+              src="/images/welcomeCat.webp"
+              alt="Welcome Cat"
+            />
+            <div className="absolute -top-10 left-[10%] -z-10 scale-x-[-1] transform">
+              <CatEar />
+            </div>
+            <div className="absolute -top-10 right-[10%] -z-10">
+              <CatEar />
+            </div>
+            <VaultManagement />
+            <AdminCollect />
+            <AdminDeposit />
+          </div>
+        </section>
       </div>
     </div>
   );
