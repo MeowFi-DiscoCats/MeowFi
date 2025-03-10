@@ -39,8 +39,8 @@ export default function Faucet() {
   };
 
   return (
-    <section className="mt-4 px-[3vw] py-10 pt-20 ">
-      <div className="bg-cream border-saffron gap-8 relative flex flex-col items-center justify-center mx-auto min-h-[600px] max-w-[1100px] rounded-2xl border-4 p-6 max-md:px-4 max-sm:rounded-none">
+    <section className="mt-4 px-[3vw] py-10 pt-20">
+      <div className="bg-cream border-saffron relative mx-auto flex min-h-[600px] max-w-[1100px] flex-col items-center justify-center gap-8 rounded-2xl border-4 p-6 max-md:px-4 max-sm:rounded-none">
         <img
           width="100"
           className="absolute -top-7 left-1/2 -z-10 -translate-x-1/2 -translate-y-1/2 transform"
@@ -53,8 +53,8 @@ export default function Faucet() {
         <div className="absolute -top-10 right-[10%] -z-10">
           <CatEar />
         </div>
-        <h2 className='text-4xl font-Showcard text-orange'>ADD FAUCET</h2>
-        <form onSubmit={handleSubmit} className="max-w-96 w-full space-y-4">
+        <h2 className="font-Showcard text-orange text-4xl">ADD FAUCET</h2>
+        <form onSubmit={handleSubmit} className="w-full max-w-96 space-y-4">
           <div>
             <label
               htmlFor="address"
@@ -89,7 +89,7 @@ export default function Faucet() {
           </div>
           <button
             type="submit"
-            className="bg-yellow w-full text-center px-4 py-2 text-black rounded-xl transition hover:bg-yellow/90"
+            className="bg-yellow hover:bg-yellow/90 w-full rounded-xl px-4 py-2 text-center text-black transition"
           >
             Submit
           </button>

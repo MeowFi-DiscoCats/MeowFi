@@ -51,7 +51,9 @@ export function VaultHeader({ index }: { index: number }) {
           </div>
         </div>
         <div>
-          <span className='bg-amber p-1 px-3 rounded-lg'>Limit per wallet:{vault.NFTLimit}</span>
+          <span className="bg-amber rounded-lg p-1 px-3">
+            Limit per wallet:{vault.NFTLimit}
+          </span>
         </div>
       </div>
       <DialogDescription className="text-start md:hidden">

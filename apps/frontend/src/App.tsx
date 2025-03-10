@@ -1,9 +1,4 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-} from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import TimeVaults from './pages/TimeVaults';
 import Navbar from './components/NavBar';
 import AdminRoutes from './pages/Admin';

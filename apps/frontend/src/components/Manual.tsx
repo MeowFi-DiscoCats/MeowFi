@@ -49,7 +49,7 @@ export default function Manual() {
       case 1:
         return (
           <div className="flex flex-col p-4">
-            <div className="my-8 flex-1 flex items-center gap-8 max-[550px]:flex-col">
+            <div className="my-8 flex flex-1 items-center gap-8 max-[550px]:flex-col">
               <img
                 width="250px"
                 className="flex-1"

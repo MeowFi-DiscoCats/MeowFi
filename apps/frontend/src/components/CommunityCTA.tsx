@@ -12,7 +12,7 @@ export default function CommunityCTA() {
         We turn locked assets into liquid NFTs, unlocking multi-layered yield
         through Bribe Mechanisms.
       </p>
-       <p className="text-xl font-bold">Still curious, kitty?</p>
+      <p className="text-xl font-bold">Still curious, kitty?</p>
       <a
         href="https://discord.com/invite/RZWntTWFrb"
         className="font-Bubblegum border-gunmetal bg-yellow border p-3 hover:-hue-rotate-15"

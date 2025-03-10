@@ -187,7 +187,7 @@ export function VaultActions({ index }: { index: number }) {
 
   return (
     <div className="flex flex-1 flex-col gap-3">
-      <p className="border-y border-crimson p-1 text-center font-semibold">
+      <p className="border-crimson border-y p-1 text-center font-semibold">
         {joinTimeLeft === '0d:0h:0m:0s'
           ? 'VAULT CLOSED'
           : `Vault Closes In: ${joinTimeLeft}`}

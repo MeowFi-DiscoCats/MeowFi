@@ -57,7 +57,7 @@ export default function VaultCard({
           className="relative aspect-square w-[130px] rounded-full"
         >
           <img
-            className="absolute bg-white top-1/2 left-1/2 h-[126px] w-[126px] -translate-x-1/2 -translate-y-1/2 transform rounded-full border-2 border-white"
+            className="absolute top-1/2 left-1/2 h-[126px] w-[126px] -translate-x-1/2 -translate-y-1/2 transform rounded-full border-2 border-white bg-white"
             src={`${apiUrl}/vault/${vault.img}`}
             alt={vault.title}
           />

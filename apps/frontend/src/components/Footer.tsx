@@ -18,7 +18,7 @@ export default function Footer() {
       >
         <CarouselContent>
           <CarouselItem className="bg-amber">
-            <div className="relative h-[165px] max-md:h-24 max-lg:h-36 w-full overflow-hidden">
+            <div className="relative h-[165px] w-full overflow-hidden max-lg:h-36 max-md:h-24">
               <img
                 loading="lazy"
                 src="/images/banner1.webp"
@@ -28,7 +28,7 @@ export default function Footer() {
             </div>
           </CarouselItem>
           <CarouselItem className="bg-amber">
-            <div className="relative h-[165px] max-md:h-24 max-lg:h-36 w-full overflow-hidden">
+            <div className="relative h-[165px] w-full overflow-hidden max-lg:h-36 max-md:h-24">
               <img
                 loading="lazy"
                 src="/images/banner2.webp"
@@ -38,7 +38,7 @@ export default function Footer() {
             </div>
           </CarouselItem>
           <CarouselItem className="bg-amber">
-            <div className="relative h-[165px] max-md:h-24 max-lg:h-36 w-full overflow-hidden">
+            <div className="relative h-[165px] w-full overflow-hidden max-lg:h-36 max-md:h-24">
               <img
                 loading="lazy"
                 src="/images/banner3.webp"

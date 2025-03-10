@@ -65,7 +65,7 @@ export default function NavBar() {
           <div className="[&>button]:bg-cream [&>button]:border-light-orange [&>button]:text-chocolate [&>button]:font-Bubblegum max-[550px]:order-2 [&>button]:h-10 [&>button]:rounded-xl [&>button]:border [&>button]:px-1 [&>button]:pl-0">
             <Select defaultValue="Monad">
               <SelectTrigger>
-                <div className="[&>*]:font-Bubblegum max-[550px]:w-8 overflow-hidden">
+                <div className="[&>*]:font-Bubblegum overflow-hidden max-[550px]:w-8">
                   <SelectValue />
                 </div>
               </SelectTrigger>
@@ -76,11 +76,7 @@ export default function NavBar() {
                     value="Monad"
                   >
                     <div className="font-Bubblegum ml-2 flex gap-2">
-                      <img
-                        width="20px"
-                        src="/images/monad.webp"
-                        alt="Monad"
-                      />
+                      <img width="20px" src="/images/monad.webp" alt="Monad" />
                       Monad
                     </div>
                   </SelectItem>
