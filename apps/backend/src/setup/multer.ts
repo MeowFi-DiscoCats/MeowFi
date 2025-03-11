@@ -1,25 +1,29 @@
 import multer, { StorageEngine, Multer } from "multer";
 import sharp from "sharp";
-import fs from "fs";
-import path from "path";
+import { UTApi, UTFile } from "uploadthing/server";
 
 const storageImg: StorageEngine = multer.memoryStorage();
-
 const uploadImg: Multer = multer({ storage: storageImg });
 
-const processAndSaveImage = async (
+const processAndUploadImage = async (
   file: Express.Multer.File,
 ): Promise<string> => {
   const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-  const outputFilename = `image-${uniqueSuffix}.webp`;
-  const outputPath = path.join(__dirname, "./../files/images", outputFilename);
-  console.log(outputPath);
+  const customFileName = `image-${uniqueSuffix}.webp`;
 
-  fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+  const processedBuffer = await sharp(file.buffer)
+    .resize(250)
+    .webp({ quality: 80 })
+    .toBuffer();
 
-  await sharp(file.buffer).resize(250).webp({ quality: 80 }).toFile(outputPath);
-
-  return outputFilename;
+  const utapi = new UTApi();
+  const utFile = new UTFile([processedBuffer], customFileName);
+  const uploadResponse = await utapi.uploadFiles([utFile]);
+  const fileUrl = uploadResponse[0].data?.ufsUrl;
+  if (!fileUrl) {
+    throw new Error("Failed to upload image to UploadThing");
+  }
+  return fileUrl;
 };
 
-export { uploadImg, processAndSaveImage };
+export { uploadImg, processAndUploadImage };
