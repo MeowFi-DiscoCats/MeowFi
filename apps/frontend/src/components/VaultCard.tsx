@@ -7,8 +7,6 @@ import {
 } from '@/components/ui/hover-card';
 import { IVault } from '../../../backend/src/models/IVault';
 
-const apiUrl = import.meta.env.VITE_API_URL;
-
 export default function VaultCard({
   index,
   vault,
@@ -58,7 +56,7 @@ export default function VaultCard({
         >
           <img
             className="absolute top-1/2 left-1/2 h-[126px] w-[126px] -translate-x-1/2 -translate-y-1/2 transform rounded-full border-2 border-white bg-white"
-            src={`${apiUrl}/vault/${vault.img}`}
+            src={vault.img}
             alt={vault.title}
           />
         </div>
