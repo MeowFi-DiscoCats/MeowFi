@@ -1,3 +1,5 @@
+import { ethers } from 'ethers';
+
 export interface CountdownValues {
   days: number;
   hours: number;
@@ -5,8 +7,8 @@ export interface CountdownValues {
   seconds: number;
 }
 
-export function formatBalance(userBalance: string): number {
-  return parseInt(userBalance) / 10 ** 18;
+export function formatBalance(userBalance: string, decimal: number): string {
+  return ethers.formatUnits(userBalance, decimal);
 }
 
 export function parseDateTime(dateTimeValue: string): Date | null {

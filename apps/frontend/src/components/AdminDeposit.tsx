@@ -61,7 +61,9 @@ export default function AdminDeposit() {
       );
       const conf = await tx.wait();
       if (conf) {
-        const tx2 = await proxyContract.depositExternalFunds(amount);
+        const tx2 = await proxyContract.depositExternalFunds(
+          (Number(amount) * 10 ** Number(decimals)).toString()
+        );
         const conf2 = await tx2.wait();
         if (conf2) {
           setNotification(

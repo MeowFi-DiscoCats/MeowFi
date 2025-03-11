@@ -32,6 +32,7 @@ export function VaultActions({ index }: { index: number }) {
   const [claimTimeLeft, setClaimTimeLeft] = useState<string>('0d:0h:0m:0s');
 
   const [userBalance, setUserBalance] = useState<string>('0');
+  const [decimals, setdecimals] = useState(0);
   const [isBalanceLoading, setIsBalanceLoading] = useState<boolean>(false);
 
   const [depositLoading, setDepositLoading] = useState<boolean>(false);
@@ -79,6 +80,9 @@ export function VaultActions({ index }: { index: number }) {
           tokenAbi,
           provider
         );
+
+        const decimal = await tokenContract.decimals();
+        setdecimals(decimal);
         const balance = await tokenContract.balanceOf(address);
         setUserBalance(balance.toString());
       } catch (error) {
@@ -102,8 +106,9 @@ export function VaultActions({ index }: { index: number }) {
           provider
         );
         const result = await proxyContract.vaults(address);
+        console.log(result.tokenAmount);
         setHoldings({
-          tokenAmount: parseFloat(result.tokenAmount) || 0,
+          tokenAmount: result.tokenAmount || 0,
           nftAmount: parseFloat(result.nftAmount) || 0,
         });
       } catch (error) {
@@ -147,7 +152,7 @@ export function VaultActions({ index }: { index: number }) {
 
       const approveTx = await tokenContract.approve(
         vault.proxyAddress,
-        (quantity * Number(vault.price)).toString()
+        (quantity * Number(vault.price) * 10 ** Number(decimals)).toString()
       );
       await approveTx.wait();
 
@@ -264,7 +269,7 @@ export function VaultActions({ index }: { index: number }) {
         Balance:{' '}
         {isBalanceLoading
           ? 'Loading...'
-          : `${formatBalance(userBalance)} ${vault.tokenSymbol}`}
+          : `${formatBalance(userBalance, decimals)} ${vault.tokenSymbol}`}
       </p>
       <div className="flex gap-2">
         <button
@@ -296,7 +301,8 @@ export function VaultActions({ index }: { index: number }) {
             {holdings.nftAmount} NFTs
           </div>
           <div className="border-gunmetal flex-1 border-b p-1 text-center">
-            {holdings.tokenAmount} {vault.tokenSymbol}
+            {ethers.formatUnits(holdings.tokenAmount, decimals)}{' '}
+            {vault.tokenSymbol}
           </div>
         </div>
         <div className="bg-cream flex items-center justify-center gap-2 p-2 text-xs">
