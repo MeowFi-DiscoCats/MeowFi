@@ -12,7 +12,8 @@ const processAndSaveImage = async (
 ): Promise<string> => {
   const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
   const outputFilename = `image-${uniqueSuffix}.webp`;
-  const outputPath = path.join(__dirname, "./src/files/images", outputFilename);
+  const outputPath = path.join(__dirname, "./../files/images", outputFilename);
+  console.log(outputPath);
 
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 

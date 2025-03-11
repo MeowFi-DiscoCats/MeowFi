@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserProvider, Contract, Eip1193Provider } from 'ethers';
+import { BrowserProvider, Contract, Eip1193Provider, ethers } from 'ethers';
 import { useQueryClient } from '@tanstack/react-query';
 import { IVault } from '../../../../backend/src/models/IVault';
 import {
@@ -37,13 +37,36 @@ export function VaultActions({ index }: { index: number }) {
   const [depositLoading, setDepositLoading] = useState<boolean>(false);
   const [withdrawLoading] = useState<boolean>(false);
   const [claimLoading, setClaimLoading] = useState<boolean>(false);
-
+  const [availableSupply, setAvailableSupply] = useState<number>(vault.availableSupply);
   const [refresher, setRefresher] = useState<number>(0);
+
+  useEffect(() => {
+   async function fetchAvailableSupply() {
+      try {
+        const provider = new ethers.JsonRpcProvider(
+          import.meta.env.VITE_ALCHEMY_URL
+        );
+        const proxyContract = new Contract(
+          vault.proxyAddress,
+          timeVaultV1Abi,
+          provider
+        );
+        const availableSupply = await proxyContract.getNftCount();
+        setAvailableSupply(Number(availableSupply));
+      }
+      catch (error) {
+        console.error('Error fetching available supply:', error);
+      }
+    }
+   fetchAvailableSupply();
+  }, [vault.proxyAddress,refresher]);
+
 
   const { isConnected, address } = useAppKitAccount();
   const { walletProvider }: { walletProvider: Eip1193Provider } =
     useAppKitProvider('eip155');
   const { chainId } = useAppKitNetworkCore();
+
 
   useEffect(() => {
     async function fetchBalance() {
@@ -81,8 +104,8 @@ export function VaultActions({ index }: { index: number }) {
         );
         const result = await proxyContract.vaults(address);
         setHoldings({
-          tokenAmount: result.tokenAmount?.toNumber() || 0,
-          nftAmount: result.nft?.toNumber() || 0,
+          tokenAmount: parseFloat(result.tokenAmount) || 0,
+          nftAmount: parseFloat(result.nftAmount) || 0,
         });
       } catch (error) {
         console.error('Error fetching vault holdings:', error);
@@ -121,6 +144,7 @@ export function VaultActions({ index }: { index: number }) {
         signer
       );
       const tokenContract = new Contract(vault.tokenAddress, tokenAbi, signer);
+      console.log("failed here")
 
       const approveTx = await tokenContract.approve(
         vault.proxyAddress,
@@ -217,7 +241,7 @@ export function VaultActions({ index }: { index: number }) {
       <div className="border-gunmetal bg-yellow flex justify-between rounded-lg border p-2 font-semibold">
         <span>Vault Supply:</span>
         <span className="font-Teko tracking-wider">
-          {vault.availableSupply}/{vault.totalSupply}
+          {availableSupply}/{vault.totalSupply}
         </span>
       </div>
       <div className="border-gunmetal flex justify-between rounded-lg border bg-white p-1">

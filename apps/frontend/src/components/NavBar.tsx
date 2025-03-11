@@ -42,7 +42,7 @@ export default function NavBar() {
             to="/"
             className="font-Showcard text-center text-2xl leading-6 font-bold tracking-wider text-white uppercase duration-50 hover:scale-[1.01]"
           >
-            <img width="100px" src="/images/logo.webp" alt="logo" />
+            <img width="80px" src="/images/logo.webp" alt="logo" />
           </NavLink>
           <div className="[&>a]:bg-cream [&>a]:text-chocolate [&>a]:border-orange [&>a]:font-Bubblegum flex items-center gap-2 max-[870px]:hidden max-lg:gap-1 [&>a]:relative [&>a]:flex [&>a]:h-[42px] [&>a]:items-center [&>a]:rounded-xl [&>a]:border-2 [&>a]:px-3 [&>a]:hover:hue-rotate-180">
             {navLinks.map(({ label, to }) =>

@@ -220,13 +220,13 @@ const VaultManagement: React.FC = () => {
 
       const contract = await ContractFactory.deploy(
         v2, // _logic
-        ethers.parseUnits(formData.price, 18), // _nftPrice - ensure BigNumber
-        BigInt(NFTLimit), // _nftLimitPerAddress - ensure BigInt
+        formData.price, // _nftPrice - ensure BigNumber
+        NFTLimit, // _nftLimitPerAddress - ensure BigInt
         ethers.getAddress(address), // initialOwner - ensure proper address format
         ethers.getAddress(formData.tokenAddress), // _tokenAddress - ensure proper address format
-        ethers.parseUnits(formData.totalSupply, 18), // _nftLimit - ensure BigNumber
-        BigInt(unixTimestampLock), // _joiningPeriod - ensure BigInt
-        BigInt(UnixTimestampClaim) // _claimingPeriod - ensure BigInt
+        formData.totalSupply, // _nftLimit - ensure BigNumber
+        unixTimestampLock, // _joiningPeriod - ensure BigInt
+        UnixTimestampClaim // _claimingPeriod - ensure BigInt
       );
 
       const receipt = await contract.deploymentTransaction()?.wait();

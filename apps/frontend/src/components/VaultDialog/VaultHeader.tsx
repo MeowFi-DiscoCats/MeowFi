@@ -63,7 +63,7 @@ export function VaultHeader({ index }: { index: number }) {
         </span>
         <span className="text-gunmetal/80 ml-2 text-sm">
           <strong>Vault: </strong>
-          {vault.title}
+          {vault.proxyAddress.slice(0, 10)}...
         </span>
       </DialogDescription>
     </DialogHeader>

@@ -4,12 +4,67 @@ import HourGlass from '../svg/HourGlass';
 import Scale from '../svg/Scale';
 import { useQueryClient } from '@tanstack/react-query';
 import { IVault } from '../../../../backend/src/models/IVault';
+import { useEffect, useState } from 'react';
+import { Contract, ethers } from 'ethers';
+import { timeVaultV1Abi } from '@/lib/abi.data';
 
 export function VaultMetrics({ index }: { index: number }) {
   const queryClient = useQueryClient();
   const vaults: IVault[] = queryClient.getQueryData(['vaults'])!;
+
   const vault = vaults[index];
 
+  const [vaultMetrics, setVaultMetrics] = useState({
+    yieldValue: vault.yieldValue || vault.yieldValue,
+    backingRatio: vault.backingRatio || vault.backingRatio,
+    backingPercentage: vault.backingPercentage || vault.backingPercentage,
+  });
+
+  useEffect(() => {
+    if (!vault.proxyAddress) return;
+
+    const fetchVaultMetrics = async () => {
+      try {
+        const provider = new ethers.JsonRpcProvider(
+          import.meta.env.VITE_ALCHEMY_URL
+        );
+        const proxyContract = new Contract(
+          vault.proxyAddress,
+          timeVaultV1Abi,
+          provider
+        );
+
+        const [nftCount, totalFunds, yieldedFunds, activeFunds] =
+          await Promise.all([
+            proxyContract.getNftCount(),
+            proxyContract.totalFunds(),
+            proxyContract.yieldedFunds(),
+            proxyContract.activeFunds(),
+          ]);
+
+        const nftCountValue = Number(nftCount);
+        const totalFundsValue = Number(totalFunds);
+        const yieldedFundsValue = Number(yieldedFunds);
+        const activeFundsValue = Number(activeFunds);
+
+        const yieldValue =
+          nftCountValue > 0 ? yieldedFundsValue / nftCountValue : 0;
+        const backingRatio =
+          totalFundsValue > 0 ? activeFundsValue / totalFundsValue : 0;
+        const backingPercentage = backingRatio * 100;
+
+        setVaultMetrics({
+          yieldValue,
+          backingRatio,
+          backingPercentage,
+        });
+      } catch (error) {
+        console.error('Error fetching vault metrics:', error);
+      }
+    };
+
+    fetchVaultMetrics();
+  }, [vault.proxyAddress]);
   return (
     <div className="mt-9 flex flex-1 flex-col justify-end">
       <div className="from-crimson/50 to-crimson mx-4 flex items-center gap-2 rounded-xl bg-gradient-to-t p-2 text-white">
@@ -27,7 +82,9 @@ export function VaultMetrics({ index }: { index: number }) {
               <Scale />
             </div>
             <p className="font-Teko font-semibold">
-              <span className="text-2xl">{vault.yieldValue} </span>
+              <span className="text-2xl">
+                {Math.floor(vaultMetrics.yieldValue)}
+              </span>
               {vault.tokenSymbol}
             </p>
             <p className="text-center text-sm font-semibold">Yield Generated</p>
@@ -50,14 +107,14 @@ export function VaultMetrics({ index }: { index: number }) {
           <div className="relative w-full flex-1">
             <div
               className="bg-amber absolute bottom-2 left-2 max-h-[calc(100%-16px)] w-[calc(100%-16px)] rounded-xl"
-              style={{ height: `${vault.backingPercentage}%` }}
+              style={{ height: `${vaultMetrics.backingPercentage}%` }}
             />
             <div className="relative z-20 flex h-full flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-white/12 bg-white/10 backdrop-blur-sm">
               <p className="font-Teko flex items-center gap-2 text-xl text-white">
-                <LuZap /> Ratio: {vault.backingRatio}
+                <LuZap /> Ratio: {vaultMetrics.backingRatio}
               </p>
               <p className="font-Teko text-3xl font-bold text-white">
-                {vault.backingPercentage}%
+                {vaultMetrics.backingPercentage}%
               </p>
             </div>
           </div>
