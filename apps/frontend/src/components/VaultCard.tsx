@@ -7,8 +7,6 @@ import {
 } from '@/components/ui/hover-card';
 import { IVault } from '../../../backend/src/models/IVault';
 
-const apiUrl = import.meta.env.VITE_API_URL;
-
 export default function VaultCard({
   index,
   vault,

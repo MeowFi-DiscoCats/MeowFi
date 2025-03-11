@@ -37,11 +37,13 @@ export function VaultActions({ index }: { index: number }) {
   const [depositLoading, setDepositLoading] = useState<boolean>(false);
   const [withdrawLoading] = useState<boolean>(false);
   const [claimLoading, setClaimLoading] = useState<boolean>(false);
-  const [availableSupply, setAvailableSupply] = useState<number>(vault.availableSupply);
+  const [availableSupply, setAvailableSupply] = useState<number>(
+    vault.availableSupply
+  );
   const [refresher, setRefresher] = useState<number>(0);
 
   useEffect(() => {
-   async function fetchAvailableSupply() {
+    async function fetchAvailableSupply() {
       try {
         const provider = new ethers.JsonRpcProvider(
           import.meta.env.VITE_ALCHEMY_URL
@@ -53,20 +55,17 @@ export function VaultActions({ index }: { index: number }) {
         );
         const availableSupply = await proxyContract.getNftCount();
         setAvailableSupply(Number(availableSupply));
-      }
-      catch (error) {
+      } catch (error) {
         console.error('Error fetching available supply:', error);
       }
     }
-   fetchAvailableSupply();
-  }, [vault.proxyAddress,refresher]);
-
+    fetchAvailableSupply();
+  }, [vault.proxyAddress, refresher]);
 
   const { isConnected, address } = useAppKitAccount();
   const { walletProvider }: { walletProvider: Eip1193Provider } =
     useAppKitProvider('eip155');
   const { chainId } = useAppKitNetworkCore();
-
 
   useEffect(() => {
     async function fetchBalance() {
@@ -144,7 +143,7 @@ export function VaultActions({ index }: { index: number }) {
         signer
       );
       const tokenContract = new Contract(vault.tokenAddress, tokenAbi, signer);
-      console.log("failed here")
+      console.log('failed here');
 
       const approveTx = await tokenContract.approve(
         vault.proxyAddress,
