@@ -44,13 +44,12 @@ export function VaultMetrics({ index }: { index: number }) {
         const decimal = await tokenContract.decimals();
         setdecimals(decimal);
 
-        const [nftCount, totalFunds, yieldedFunds, activeFunds,nftPrice] =
+        const [nftCount, totalFunds, yieldedFunds, nftPrice] =
           await Promise.all([
             proxyContract.getNftCount(),
             proxyContract.totalFunds(),
             proxyContract.yieldedFunds(),
-            proxyContract.activeFunds(),
-            proxyContract.nftPrice()
+            proxyContract.nftPrice(),
           ]);
 
         const nftCountValue = Number(nftCount);
@@ -61,7 +60,9 @@ export function VaultMetrics({ index }: { index: number }) {
         const yieldValue =
           nftCountValue > 0 ? yieldedFundsValue - totalFundsValue : 0;
         const backingRatio =
-        yieldedFundsValue > 0 ? yieldedFundsValue / (nftCountValue*activenftPrice) : 0;
+          yieldedFundsValue > 0
+            ? yieldedFundsValue / (nftCountValue * activenftPrice)
+            : 0;
         const backingPercentage = backingRatio * 100;
 
         setVaultMetrics({
@@ -75,7 +76,7 @@ export function VaultMetrics({ index }: { index: number }) {
     };
 
     fetchVaultMetrics();
-  }, [vault.proxyAddress]);
+  }, [vault.proxyAddress, vault.tokenAddress]);
   return (
     <div className="mt-9 flex flex-1 flex-col justify-end">
       <div className="from-crimson/50 to-crimson mx-4 flex items-center gap-2 rounded-xl bg-gradient-to-t p-2 text-white">

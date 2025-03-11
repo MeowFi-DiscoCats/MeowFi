@@ -38,11 +38,13 @@ export function VaultActions({ index }: { index: number }) {
   const [depositLoading, setDepositLoading] = useState<boolean>(false);
   const [withdrawLoading] = useState<boolean>(false);
   const [claimLoading, setClaimLoading] = useState<boolean>(false);
-  const [availableSupply, setAvailableSupply] = useState<number>(vault.availableSupply);
+  const [availableSupply, setAvailableSupply] = useState<number>(
+    vault.availableSupply
+  );
   const [refresher, setRefresher] = useState<number>(0);
 
   useEffect(() => {
-   async function fetchAvailableSupply() {
+    async function fetchAvailableSupply() {
       try {
         const provider = new ethers.JsonRpcProvider(
           import.meta.env.VITE_ALCHEMY_URL
@@ -54,20 +56,17 @@ export function VaultActions({ index }: { index: number }) {
         );
         const availableSupply = await proxyContract.getNftCount();
         setAvailableSupply(Number(availableSupply));
-      }
-      catch (error) {
+      } catch (error) {
         console.error('Error fetching available supply:', error);
       }
     }
-   fetchAvailableSupply();
-  }, [vault.proxyAddress,refresher]);
-
+    fetchAvailableSupply();
+  }, [vault.proxyAddress, refresher]);
 
   const { isConnected, address } = useAppKitAccount();
   const { walletProvider }: { walletProvider: Eip1193Provider } =
     useAppKitProvider('eip155');
   const { chainId } = useAppKitNetworkCore();
-
 
   useEffect(() => {
     async function fetchBalance() {
@@ -82,9 +81,8 @@ export function VaultActions({ index }: { index: number }) {
           provider
         );
 
-      
-        const decimal=await tokenContract.decimals()
-        setdecimals(decimal)
+        const decimal = await tokenContract.decimals();
+        setdecimals(decimal);
         const balance = await tokenContract.balanceOf(address);
         setUserBalance(balance.toString());
       } catch (error) {
@@ -108,9 +106,9 @@ export function VaultActions({ index }: { index: number }) {
           provider
         );
         const result = await proxyContract.vaults(address);
-        console.log(result.tokenAmount)
+        console.log(result.tokenAmount);
         setHoldings({
-          tokenAmount: (result.tokenAmount) || 0,
+          tokenAmount: result.tokenAmount || 0,
           nftAmount: parseFloat(result.nftAmount) || 0,
         });
       } catch (error) {
@@ -150,11 +148,11 @@ export function VaultActions({ index }: { index: number }) {
         signer
       );
       const tokenContract = new Contract(vault.tokenAddress, tokenAbi, signer);
-      console.log("failed here")
+      console.log('failed here');
 
       const approveTx = await tokenContract.approve(
         vault.proxyAddress,
-        (quantity * Number(vault.price)*10** Number(decimals)).toString()
+        (quantity * Number(vault.price) * 10 ** Number(decimals)).toString()
       );
       await approveTx.wait();
 
@@ -271,7 +269,7 @@ export function VaultActions({ index }: { index: number }) {
         Balance:{' '}
         {isBalanceLoading
           ? 'Loading...'
-          : `${formatBalance(userBalance,decimals)} ${vault.tokenSymbol}`}
+          : `${formatBalance(userBalance, decimals)} ${vault.tokenSymbol}`}
       </p>
       <div className="flex gap-2">
         <button
@@ -303,7 +301,8 @@ export function VaultActions({ index }: { index: number }) {
             {holdings.nftAmount} NFTs
           </div>
           <div className="border-gunmetal flex-1 border-b p-1 text-center">
-            {ethers.formatUnits(holdings.tokenAmount,decimals)} {vault.tokenSymbol}
+            {ethers.formatUnits(holdings.tokenAmount, decimals)}{' '}
+            {vault.tokenSymbol}
           </div>
         </div>
         <div className="bg-cream flex items-center justify-center gap-2 p-2 text-xs">

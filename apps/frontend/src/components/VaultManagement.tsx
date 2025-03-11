@@ -218,13 +218,17 @@ const VaultManagement: React.FC = () => {
         wallet
       );
 
-      const tokenContract=new Contract(formData.tokenAddress,tokenAbi,wallet)
-      const decimal=await tokenContract.decimals()
-      console.log(decimal)
+      const tokenContract = new Contract(
+        formData.tokenAddress,
+        tokenAbi,
+        wallet
+      );
+      const decimal = await tokenContract.decimals();
+      console.log(decimal);
 
       const contract = await ContractFactory.deploy(
         v2, // _logic
-        (Number(formData.price) *10**Number(decimal)).toString(), // _nftPrice - ensure BigNumber
+        (Number(formData.price) * 10 ** Number(decimal)).toString(), // _nftPrice - ensure BigNumber
         NFTLimit, // _nftLimitPerAddress - ensure BigInt
         ethers.getAddress(address), // initialOwner - ensure proper address format
         ethers.getAddress(formData.tokenAddress), // _tokenAddress - ensure proper address format
