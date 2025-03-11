@@ -6,13 +6,15 @@ import { useQueryClient } from '@tanstack/react-query';
 import { IVault } from '../../../../backend/src/models/IVault';
 import { useEffect, useState } from 'react';
 import { Contract, ethers } from 'ethers';
-import { timeVaultV1Abi } from '@/lib/abi.data';
+import { timeVaultV1Abi, tokenAbi } from '@/lib/abi.data';
+import { formatBalance } from '@/lib/VaultHelper';
 
 export function VaultMetrics({ index }: { index: number }) {
   const queryClient = useQueryClient();
   const vaults: IVault[] = queryClient.getQueryData(['vaults'])!;
 
   const vault = vaults[index];
+  const [decimals, setdecimals] = useState(0);
 
   const [vaultMetrics, setVaultMetrics] = useState({
     yieldValue: vault.yieldValue || vault.yieldValue,
@@ -33,24 +35,33 @@ export function VaultMetrics({ index }: { index: number }) {
           timeVaultV1Abi,
           provider
         );
+        const tokenContract = new Contract(
+          vault.tokenAddress,
+          tokenAbi,
+          provider
+        );
 
-        const [nftCount, totalFunds, yieldedFunds, activeFunds] =
+        const decimal = await tokenContract.decimals();
+        setdecimals(decimal);
+
+        const [nftCount, totalFunds, yieldedFunds, activeFunds,nftPrice] =
           await Promise.all([
             proxyContract.getNftCount(),
             proxyContract.totalFunds(),
             proxyContract.yieldedFunds(),
             proxyContract.activeFunds(),
+            proxyContract.nftPrice()
           ]);
 
         const nftCountValue = Number(nftCount);
         const totalFundsValue = Number(totalFunds);
         const yieldedFundsValue = Number(yieldedFunds);
-        const activeFundsValue = Number(activeFunds);
+        const activenftPrice = Number(nftPrice);
 
         const yieldValue =
-          nftCountValue > 0 ? yieldedFundsValue / nftCountValue : 0;
+          nftCountValue > 0 ? yieldedFundsValue - totalFundsValue : 0;
         const backingRatio =
-          totalFundsValue > 0 ? activeFundsValue / totalFundsValue : 0;
+        yieldedFundsValue > 0 ? yieldedFundsValue / (nftCountValue*activenftPrice) : 0;
         const backingPercentage = backingRatio * 100;
 
         setVaultMetrics({
@@ -83,7 +94,7 @@ export function VaultMetrics({ index }: { index: number }) {
             </div>
             <p className="font-Teko font-semibold">
               <span className="text-2xl">
-                {Math.floor(vaultMetrics.yieldValue)}
+                {formatBalance(vaultMetrics.yieldValue.toString(), decimals)}
               </span>
               {vault.tokenSymbol}
             </p>

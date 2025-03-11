@@ -20,8 +20,8 @@ import {
 } from '@/components/ui/select';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PlusCircle, CheckCircle, XCircle } from 'lucide-react';
-import { BrowserProvider, Eip1193Provider, ethers } from 'ethers';
-import { proxyAbi, proxyByteCode, v2 } from '@/lib/abi.data';
+import { BrowserProvider, Contract, Eip1193Provider, ethers } from 'ethers';
+import { proxyAbi, proxyByteCode, tokenAbi, v2 } from '@/lib/abi.data';
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
 
 type VaultType = 'fixed' | 'flexible';
@@ -218,9 +218,13 @@ const VaultManagement: React.FC = () => {
         wallet
       );
 
+      const tokenContract=new Contract(formData.tokenAddress,tokenAbi,wallet)
+      const decimal=await tokenContract.decimals()
+      console.log(decimal)
+
       const contract = await ContractFactory.deploy(
         v2, // _logic
-        formData.price, // _nftPrice - ensure BigNumber
+        (Number(formData.price) *10**Number(decimal)).toString(), // _nftPrice - ensure BigNumber
         NFTLimit, // _nftLimitPerAddress - ensure BigInt
         ethers.getAddress(address), // initialOwner - ensure proper address format
         ethers.getAddress(formData.tokenAddress), // _tokenAddress - ensure proper address format
