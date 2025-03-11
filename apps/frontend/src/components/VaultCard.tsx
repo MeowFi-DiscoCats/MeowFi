@@ -26,8 +26,8 @@ export default function VaultCard({
           </HoverCardTrigger>
           <HoverCardContent className="bg-yellow border-gunmetal w-[250px] rounded-xl border">
             <p className="text-center">
-              View details on rewards, lock periods, and liquidity options on
-              clicking join the vault
+              View details on rewards, lock periods, and liquidity options by
+              clicking Join the Vault.
             </p>
           </HoverCardContent>
         </HoverCard>

@@ -77,6 +77,11 @@ export function VaultMetrics({ index }: { index: number }) {
 
     fetchVaultMetrics();
   }, [vault.proxyAddress, vault.tokenAddress]);
+
+  const formatToTwoDecimals = (value: number) => {
+    return parseFloat(value.toFixed(2));
+  };
+
   return (
     <div className="mt-9 flex flex-1 flex-col justify-end">
       <div className="from-crimson/50 to-crimson mx-4 flex items-center gap-2 rounded-xl bg-gradient-to-t p-2 text-white">
@@ -119,14 +124,18 @@ export function VaultMetrics({ index }: { index: number }) {
           <div className="relative w-full flex-1">
             <div
               className="bg-amber absolute bottom-2 left-2 max-h-[calc(100%-16px)] w-[calc(100%-16px)] rounded-xl"
-              style={{ height: `${vaultMetrics.backingPercentage}%` }}
+              style={{
+                height: `${formatToTwoDecimals(vaultMetrics.backingPercentage)}%`,
+              }}
             />
             <div className="relative z-20 flex h-full flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-white/12 bg-white/10 backdrop-blur-sm">
               <p className="font-Teko flex items-center gap-2 text-xl text-white">
-                <LuZap /> Ratio: {vaultMetrics.backingRatio}
+                <LuZap /> Ratio:{' '}
+                {formatToTwoDecimals(vaultMetrics.backingRatio).toFixed(2)}
               </p>
               <p className="font-Teko text-3xl font-bold text-white">
-                {vaultMetrics.backingPercentage}%
+                {formatToTwoDecimals(vaultMetrics.backingPercentage).toFixed(2)}
+                %
               </p>
             </div>
           </div>

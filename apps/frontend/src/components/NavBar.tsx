@@ -82,7 +82,7 @@ export default function NavBar() {
                   </SelectItem>
                   <SelectItem
                     className="[&>*]:font-Bubblegum [&>*]:text-chocolate"
-                    value="Berahain"
+                    value="Berachain"
                   >
                     <div className="font-Bubblegum ml-2 flex gap-2">
                       <img
@@ -90,7 +90,7 @@ export default function NavBar() {
                         src="/images/chain.webp"
                         alt="blockchain"
                       />
-                      Berahain
+                      Berachain
                     </div>
                   </SelectItem>
                 </SelectGroup>

@@ -64,6 +64,12 @@ export function VaultHeader({ index }: { index: number }) {
         <span className="text-gunmetal/80 ml-2 text-sm">
           <strong>Vault: </strong>
           {vault.proxyAddress.slice(0, 10)}...
+          <button
+            onClick={handleCopy}
+            className="hover:bg-yellow bg-amber ml-2 rounded p-1 px-2 text-xs text-black transition"
+          >
+            {copied ? 'Copied' : 'Copy'}
+          </button>
         </span>
       </DialogDescription>
     </DialogHeader>
