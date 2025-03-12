@@ -15,10 +15,10 @@ const fetchData = async (): Promise<IVault[]> => {
 };
 
 export default function VaultGrid() {
-  const { data, error, isLoading } = useQuery<IVault[], Error>(
-    ['vaults'],
-    fetchData
-  );
+  const { data, error, isLoading } = useQuery<IVault[], Error>({
+    queryKey: ['vaults'],
+    queryFn: fetchData,
+  });
 
   return (
     <section className="px-[3vw] py-10 pt-20 max-[550px]:pt-10">

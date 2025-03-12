@@ -13,6 +13,7 @@ import {
   getTimeRemaining,
   formatCountdown,
 } from '@/lib/VaultHelper';
+import { toast } from 'sonner';
 
 export function VaultActions({ index }: { index: number }) {
   const queryClient = useQueryClient();
@@ -106,7 +107,6 @@ export function VaultActions({ index }: { index: number }) {
           provider
         );
         const result = await proxyContract.vaults(address);
-        console.log(result.tokenAmount);
         setHoldings({
           tokenAmount: result.tokenAmount || 0,
           nftAmount: parseFloat(result.nftAmount) || 0,
@@ -135,7 +135,7 @@ export function VaultActions({ index }: { index: number }) {
 
   async function handleDeposit() {
     if (!isConnected) {
-      alert('Please connect your wallet.');
+      toast('Please connect your wallet.');
       return;
     }
     setDepositLoading(true);
@@ -148,7 +148,6 @@ export function VaultActions({ index }: { index: number }) {
         signer
       );
       const tokenContract = new Contract(vault.tokenAddress, tokenAbi, signer);
-      console.log('failed here');
 
       const approveTx = await tokenContract.approve(
         vault.proxyAddress,
@@ -159,12 +158,16 @@ export function VaultActions({ index }: { index: number }) {
       const depositTx = await proxyContract.joinVault(quantity);
       const receipt = await depositTx.wait();
       if (receipt) {
-        alert('Deposit successful.');
+        toast('Deposit successful', {
+          description: 'You have successfully deposited',
+        });
         setRefresher((prev) => prev + 1);
       }
     } catch (error) {
       console.error('Error during deposit:', error);
-      alert('Deposit failed. Please try again.');
+      toast('Deposit failed', {
+        description: 'Please try again',
+      });
     } finally {
       setDepositLoading(false);
     }
@@ -176,11 +179,13 @@ export function VaultActions({ index }: { index: number }) {
 
   async function handleClaim() {
     if (claimTimeLeft !== '0d:0h:0m:0s') {
-      alert('Claim period has not started yet.');
+      toast('Claim failed', {
+        description: 'Claim period not started yet',
+      });
       return;
     }
     if (!isConnected) {
-      alert('Please connect your wallet.');
+      toast('Please connect your wallet.');
       return;
     }
     setClaimLoading(true);
@@ -194,7 +199,9 @@ export function VaultActions({ index }: { index: number }) {
       );
       const NFTAddress = await proxyContract.nftAddress();
       if (!NFTAddress) {
-        alert('NFT Address not found.');
+        toast('Claim failed', {
+          description: 'NFT contract not found',
+        });
         return;
       }
 
@@ -206,13 +213,17 @@ export function VaultActions({ index }: { index: number }) {
         const claimTx = await proxyContract.claimBack();
         const receipt = await claimTx.wait();
         if (receipt) {
-          alert('Claim successful.');
+          toast('Claim successful', {
+            description: 'received your funds',
+          });
         }
       }
       setRefresher((prev) => prev + 1);
     } catch (error) {
       console.error('Error during claim:', error);
-      alert('Claim failed. Please try again.');
+      toast('Claim failed', {
+        description: 'Please try again',
+      });
     } finally {
       setClaimLoading(false);
     }
@@ -258,7 +269,11 @@ export function VaultActions({ index }: { index: number }) {
         </button>
         <div>{quantity}</div>
         <button
-          onClick={() => setQuantity(Math.min(vault.NFTLimit, quantity + 1))}
+          onClick={() =>
+            setQuantity(
+              Math.min(vault.NFTLimit - holdings.nftAmount, quantity + 1)
+            )
+          }
           className="px-2"
           // disabled={quantity >= vault.availableSupply}
         >
@@ -269,7 +284,7 @@ export function VaultActions({ index }: { index: number }) {
         Balance:{' '}
         {isBalanceLoading
           ? 'Loading...'
-          : `${formatBalance(userBalance, decimals)} ${vault.tokenSymbol}`}
+          : `${formatBalance(userBalance, decimals).slice(0, 7)} ${vault.tokenSymbol}`}
       </p>
       <div className="flex gap-2">
         <button

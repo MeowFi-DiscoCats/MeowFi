@@ -3,6 +3,7 @@ import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
 import { BrowserProvider, Contract, Eip1193Provider, ethers } from 'ethers';
 import { tokenAbi, usdcContractAddress } from '@/lib/abi.data';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 export default function Faucet() {
   const [sendAddress, setSendAddress] = useState('');
@@ -14,28 +15,35 @@ export default function Faucet() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Adding funds to:', sendAddress, 'Amount:', amount);
-    if (isConnected) {
-      const ethersProvider = new BrowserProvider(walletProvider);
-      const signer = await ethersProvider.getSigner();
+    try {
+      if (isConnected) {
+        const ethersProvider = new BrowserProvider(walletProvider);
+        const signer = await ethersProvider.getSigner();
 
-      const tokencontract = new Contract(usdcContractAddress, tokenAbi, signer);
-      const decimals: number = await tokencontract.decimals();
-      console.log(decimals);
+        const tokencontract = new Contract(
+          usdcContractAddress,
+          tokenAbi,
+          signer
+        );
+        const decimals: number = await tokencontract.decimals();
 
-      const tx = await tokencontract.mint(
-        sendAddress,
-        ethers.parseUnits(amount, decimals)
-      );
-      const conf = await tx.wait();
-      if (conf) {
-        alert(`${amount} usdc Sent to ${sendAddress}`);
-      } else {
-        alert(`Error sending funds.`);
+        const tx = await tokencontract.mint(
+          sendAddress,
+          ethers.parseUnits(amount, decimals)
+        );
+        const conf = await tx.wait();
+        if (conf) {
+          toast(`${amount} usdc Sent to ${sendAddress}`);
+        } else {
+          toast(`Error sending funds.`);
+        }
       }
+      setSendAddress('');
+      setAmount('');
+    } catch (e: unknown) {
+      toast('Error sending funds.');
+      console.error(e);
     }
-    setSendAddress('');
-    setAmount('');
   };
 
   return (

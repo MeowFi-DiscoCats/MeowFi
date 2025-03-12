@@ -29,12 +29,11 @@ const AdminLoginPage = () => {
         }
       );
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
+        throw new Error(response.statusText || 'Login failed');
       }
 
+      const data = await response.json();
       localStorage.setItem('token', data.token);
       window.location.href = '/admin/dashboard';
     } catch (err) {
