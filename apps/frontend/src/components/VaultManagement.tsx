@@ -18,11 +18,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { PlusCircle, CheckCircle, XCircle } from 'lucide-react';
+import { PlusCircle } from 'lucide-react';
 import { BrowserProvider, Contract, Eip1193Provider, ethers } from 'ethers';
 import { nativeTimeVaultAbi, nativeTimeVaultByteCode, proxyAbi, proxyByteCode, tokenAbi, v2 } from '@/lib/abi.data';
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
+import { toast } from 'sonner';
 
 type VaultType = 'fixed' | 'flexible';
 
@@ -61,12 +61,6 @@ interface FormErrors {
   [key: string]: string;
 }
 
-interface Notification {
-  type: 'success' | 'error';
-  title: string;
-  message: string;
-}
-
 const VaultManagement: React.FC = () => {
   const { address, isConnected } = useAppKitAccount();
   const { walletProvider } = useAppKitProvider('eip155') as {
@@ -93,7 +87,6 @@ const VaultManagement: React.FC = () => {
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [notification, setNotification] = useState<Notification | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
@@ -184,17 +177,6 @@ const VaultManagement: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const showNotification = (
-    type: 'success' | 'error',
-    title: string,
-    message: string
-  ): void => {
-    setNotification({ type, title, message });
-    setTimeout(() => {
-      setNotification(null);
-    }, 5000);
-  };
-
   const deployContract = async (
     wallet: ethers.JsonRpcSigner,
     formData: FormData
@@ -275,11 +257,7 @@ const VaultManagement: React.FC = () => {
 
     console.log('Submitting form...');
     if (!isConnected) {
-      showNotification(
-        'error',
-        'Error',
-        'Wallet not connected. Please connect your wallet first.'
-      );
+      toast('Wallet not connected. Please connect your wallet first.');
       return;
     }
 
@@ -327,15 +305,10 @@ const VaultManagement: React.FC = () => {
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Failed to add vault');
+        throw new Error('Failed to add vault');
       }
 
-      showNotification(
-        'success',
-        'Success',
-        'Vault has been added successfully'
-      );
+      toast('Vault has been added successfully');
 
       setFormData({
         title: '',
@@ -357,355 +330,329 @@ const VaultManagement: React.FC = () => {
 
       setOpen(false);
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : 'An unexpected error occurred';
-      showNotification('error', 'Error', errorMessage);
+      toast('Failed to add vault: ');
+      console.error('Vault add error:', error);
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div>
-      {notification && (
-        <div className="mb-4">
-          <Alert
-            variant={notification.type === 'error' ? 'destructive' : 'default'}
-          >
-            {notification.type === 'success' ? (
-              <CheckCircle className="h-4 w-4" />
-            ) : (
-              <XCircle className="h-4 w-4" />
-            )}
-            <AlertTitle>{notification.title}</AlertTitle>
-            <AlertDescription>{notification.message}</AlertDescription>
-          </Alert>
-        </div>
-      )}
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button size="lg">
+          <PlusCircle className="h-5 w-5" />
+          Add Vault
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-h-[98vh] max-w-4xl overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Add New Vault</DialogTitle>
+          <DialogDescription>
+            Fill in the details to create a new vault. All fields are required.
+          </DialogDescription>
+        </DialogHeader>
 
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <Button size="lg" className="flex items-center gap-2">
-            <PlusCircle className="h-5 w-5" />
-            Add Vault
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="max-h-[98vh] max-w-4xl overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Add New Vault</DialogTitle>
-            <DialogDescription>
-              Fill in the details to create a new vault. All fields are
-              required.
-            </DialogDescription>
-          </DialogHeader>
-
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-              {/* Left Column */}
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="title" className="mb-2">
-                    Title
-                  </Label>
-                  <Input
-                    id="title"
-                    name="title"
-                    placeholder="Enter title"
-                    value={formData.title}
-                    onChange={handleChange}
-                    className={errors.title ? 'border-red-500' : ''}
-                  />
-                  {errors.title && (
-                    <p className="mt-1 text-sm text-red-500">{errors.title}</p>
-                  )}
-                </div>
-
-                <div>
-                  <Label htmlFor="img" className="mb-2">
-                    Image
-                  </Label>
-                  <Input
-                    id="img"
-                    name="img"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    className={errors.img ? 'border-red-500' : ''}
-                  />
-                  {errors.img && (
-                    <p className="mt-1 text-sm text-red-500">{errors.img}</p>
-                  )}
-                </div>
-
-                <div>
-                  <Label htmlFor="lockedInPeriod" className="mb-2">
-                    Locked In Period (days)
-                  </Label>
-                  <Input
-                    id="lockedInPeriod"
-                    name="lockedInPeriod"
-                    placeholder="Enter locked in period in days"
-                    value={formData.lockedInPeriod}
-                    onChange={handleChange}
-                    className={errors.lockedInPeriod ? 'border-red-500' : ''}
-                  />
-                  {errors.lockedInPeriod && (
-                    <p className="mt-1 text-sm text-red-500">
-                      {errors.lockedInPeriod}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <Label htmlFor="APR" className="mb-2">
-                    APR (%)
-                  </Label>
-                  <Input
-                    id="APR"
-                    name="APR"
-                    placeholder="Enter APR percentage"
-                    value={formData.APR}
-                    onChange={handleChange}
-                    className={errors.APR ? 'border-red-500' : ''}
-                  />
-                  {errors.APR && (
-                    <p className="mt-1 text-sm text-red-500">{errors.APR}</p>
-                  )}
-                </div>
-
-                <div>
-                  <Label htmlFor="type" className="mb-2">
-                    Type
-                  </Label>
-                  <Select
-                    value={formData.type}
-                    onValueChange={(value) => handleSelectChange(value, 'type')}
-                  >
-                    <SelectTrigger
-                      className={errors.type ? 'border-red-500' : ''}
-                    >
-                      <SelectValue placeholder="Select type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="fixed">Fixed</SelectItem>
-                      <SelectItem value="flexible">Flexible</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  {errors.type && (
-                    <p className="mt-1 text-sm text-red-500">{errors.type}</p>
-                  )}
-                </div>
-
-                <div>
-                  <Label htmlFor="earnings" className="mb-2">
-                    Earnings
-                  </Label>
-                  <Input
-                    id="earnings"
-                    name="earnings"
-                    placeholder="Enter earnings"
-                    value={formData.earnings}
-                    onChange={handleChange}
-                    className={errors.earnings ? 'border-red-500' : ''}
-                  />
-                  {errors.earnings && (
-                    <p className="mt-1 text-sm text-red-500">
-                      {errors.earnings}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <Label htmlFor="tokenAddress" className="mb-2">
-                    Token Address
-                  </Label>
-                  <Input
-                    id="tokenAddress"
-                    name="tokenAddress"
-                    placeholder="Enter token address (0x...)"
-                    value={formData.tokenAddress}
-                    onChange={handleChange}
-                    className={errors.tokenAddress ? 'border-red-500' : ''}
-                  />
-                  {errors.tokenAddress && (
-                    <p className="mt-1 text-sm text-red-500">
-                      {errors.tokenAddress}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <Label htmlFor="AirdropIncentivised" className="mb-2">
-                    Airdrop Incentivised
-                  </Label>
-                  <Input
-                    id="AirdropIncentivised"
-                    name="AirdropIncentivised"
-                    placeholder="Enter airdrop incentivised value"
-                    value={formData.AirdropIncentivised}
-                    onChange={handleChange}
-                    className={
-                      errors.AirdropIncentivised ? 'border-red-500' : ''
-                    }
-                  />
-                  {errors.AirdropIncentivised && (
-                    <p className="mt-1 text-sm text-red-500">
-                      {errors.AirdropIncentivised}
-                    </p>
-                  )}
-                </div>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            {/* Left Column */}
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="title" className="mb-2">
+                  Title
+                </Label>
+                <Input
+                  id="title"
+                  name="title"
+                  placeholder="Enter title"
+                  value={formData.title}
+                  onChange={handleChange}
+                  className={errors.title ? 'border-red-500' : ''}
+                />
+                {errors.title && (
+                  <p className="mt-1 text-sm text-red-500">{errors.title}</p>
+                )}
               </div>
 
-              {/* Right Column */}
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="NFTLimit" className="mb-2">
-                    NFT Limit
-                  </Label>
-                  <Input
-                    id="NFTLimit"
-                    name="NFTLimit"
-                    placeholder="Enter NFT limit"
-                    value={formData.NFTLimit}
-                    onChange={handleChange}
-                    className={errors.NFTLimit ? 'border-red-500' : ''}
-                  />
-                  {errors.NFTLimit && (
-                    <p className="mt-1 text-sm text-red-500">
-                      {errors.NFTLimit}
-                    </p>
-                  )}
-                </div>
+              <div>
+                <Label htmlFor="img" className="mb-2">
+                  Image
+                </Label>
+                <Input
+                  id="img"
+                  name="img"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className={errors.img ? 'border-red-500' : ''}
+                />
+                {errors.img && (
+                  <p className="mt-1 text-sm text-red-500">{errors.img}</p>
+                )}
+              </div>
 
-                <div>
-                  <Label htmlFor="totalSupply" className="mb-2">
-                    Total Supply
-                  </Label>
-                  <Input
-                    id="totalSupply"
-                    name="totalSupply"
-                    placeholder="Enter total supply"
-                    value={formData.totalSupply}
-                    onChange={handleChange}
-                    className={errors.totalSupply ? 'border-red-500' : ''}
-                  />
-                  {errors.totalSupply && (
-                    <p className="mt-1 text-sm text-red-500">
-                      {errors.totalSupply}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <Label htmlFor="joinInPeriod" className="mb-2">
-                    Join period end
-                  </Label>
-                  <Input
-                    id="joinInPeriod"
-                    type="datetime-local"
-                    name="joinInPeriod"
-                    placeholder="Select date and time"
-                    value={formData.joinInPeriod}
-                    onChange={handleChange}
-                    className={errors.joinInPeriod ? 'border-red-500' : ''}
-                  />
-                  {errors.joinInPeriod && (
-                    <p className="mt-1 text-sm text-red-500">
-                      {errors.joinInPeriod}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <Label htmlFor="price" className="mb-2">
-                    Price
-                  </Label>
-                  <Input
-                    id="price"
-                    name="price"
-                    placeholder="Enter price"
-                    value={formData.price}
-                    onChange={handleChange}
-                    className={errors.price ? 'border-red-500' : ''}
-                  />
-                  {errors.price && (
-                    <p className="mt-1 text-sm text-red-500">{errors.price}</p>
-                  )}
-                </div>
-                <div>
-                  <Label htmlFor="backingRatio" className="mb-2">
-                    Backing Ratio
-                  </Label>
-                  <Input
-                    id="backingRatio"
-                    name="backingRatio"
-                    placeholder="Enter backing ratio"
-                    value={formData.backingRatio}
-                    onChange={handleChange}
-                    className={errors.backingRatio ? 'border-red-500' : ''}
-                  />
-                  {errors.backingRatio && (
-                    <p className="mt-1 text-sm text-red-500">
-                      {errors.backingRatio}
-                    </p>
-                  )}
-                </div>
+              <div>
+                <Label htmlFor="lockedInPeriod" className="mb-2">
+                  Locked In Period (days)
+                </Label>
+                <Input
+                  id="lockedInPeriod"
+                  name="lockedInPeriod"
+                  placeholder="Enter locked in period in days"
+                  value={formData.lockedInPeriod}
+                  onChange={handleChange}
+                  className={errors.lockedInPeriod ? 'border-red-500' : ''}
+                />
+                {errors.lockedInPeriod && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.lockedInPeriod}
+                  </p>
+                )}
+              </div>
 
-                <div>
-                  <Label htmlFor="backingPercentage" className="mb-2">
-                    Backing Percentage (%)
-                  </Label>
-                  <Input
-                    id="backingPercentage"
-                    name="backingPercentage"
-                    placeholder="Enter backing percentage"
-                    value={formData.backingPercentage}
-                    onChange={handleChange}
-                    className={errors.backingPercentage ? 'border-red-500' : ''}
-                  />
-                  {errors.backingPercentage && (
-                    <p className="mt-1 text-sm text-red-500">
-                      {errors.backingPercentage}
-                    </p>
-                  )}
-                </div>
+              <div>
+                <Label htmlFor="APR" className="mb-2">
+                  APR (%)
+                </Label>
+                <Input
+                  id="APR"
+                  name="APR"
+                  placeholder="Enter APR percentage"
+                  value={formData.APR}
+                  onChange={handleChange}
+                  className={errors.APR ? 'border-red-500' : ''}
+                />
+                {errors.APR && (
+                  <p className="mt-1 text-sm text-red-500">{errors.APR}</p>
+                )}
+              </div>
 
-                <div>
-                  <Label htmlFor="tokenSymbol" className="mb-2">
-                    Token Symbol
-                  </Label>
-                  <Input
-                    id="tokenSymbol"
-                    name="tokenSymbol"
-                    placeholder="Enter token symbol"
-                    value={formData.tokenSymbol}
-                    onChange={handleChange}
-                    className={errors.tokenSymbol ? 'border-red-500' : ''}
-                  />
-                  {errors.tokenSymbol && (
-                    <p className="mt-1 text-sm text-red-500">
-                      {errors.tokenSymbol}
-                    </p>
-                  )}
-                </div>
+              <div>
+                <Label htmlFor="type" className="mb-2">
+                  Type
+                </Label>
+                <Select
+                  value={formData.type}
+                  onValueChange={(value) => handleSelectChange(value, 'type')}
+                >
+                  <SelectTrigger
+                    className={errors.type ? 'border-red-500' : ''}
+                  >
+                    <SelectValue placeholder="Select type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="fixed">Fixed</SelectItem>
+                    <SelectItem value="flexible">Flexible</SelectItem>
+                  </SelectContent>
+                </Select>
+                {errors.type && (
+                  <p className="mt-1 text-sm text-red-500">{errors.type}</p>
+                )}
+              </div>
+
+              <div>
+                <Label htmlFor="earnings" className="mb-2">
+                  Earnings
+                </Label>
+                <Input
+                  id="earnings"
+                  name="earnings"
+                  placeholder="Enter earnings"
+                  value={formData.earnings}
+                  onChange={handleChange}
+                  className={errors.earnings ? 'border-red-500' : ''}
+                />
+                {errors.earnings && (
+                  <p className="mt-1 text-sm text-red-500">{errors.earnings}</p>
+                )}
+              </div>
+
+              <div>
+                <Label htmlFor="tokenAddress" className="mb-2">
+                  Token Address
+                </Label>
+                <Input
+                  id="tokenAddress"
+                  name="tokenAddress"
+                  placeholder="Enter token address (0x...)"
+                  value={formData.tokenAddress}
+                  onChange={handleChange}
+                  className={errors.tokenAddress ? 'border-red-500' : ''}
+                />
+                {errors.tokenAddress && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.tokenAddress}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <Label htmlFor="AirdropIncentivised" className="mb-2">
+                  Airdrop Incentivised
+                </Label>
+                <Input
+                  id="AirdropIncentivised"
+                  name="AirdropIncentivised"
+                  placeholder="Enter airdrop incentivised value"
+                  value={formData.AirdropIncentivised}
+                  onChange={handleChange}
+                  className={errors.AirdropIncentivised ? 'border-red-500' : ''}
+                />
+                {errors.AirdropIncentivised && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.AirdropIncentivised}
+                  </p>
+                )}
               </div>
             </div>
 
-            <DialogFooter>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setOpen(false)}
-                className="mr-2"
-              >
-                Cancel
-              </Button>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Submitting...' : 'Add Vault'}
-              </Button>
-            </DialogFooter>
-          </form>
-        </DialogContent>
-      </Dialog>
-    </div>
+            {/* Right Column */}
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="NFTLimit" className="mb-2">
+                  NFT Limit
+                </Label>
+                <Input
+                  id="NFTLimit"
+                  name="NFTLimit"
+                  placeholder="Enter NFT limit"
+                  value={formData.NFTLimit}
+                  onChange={handleChange}
+                  className={errors.NFTLimit ? 'border-red-500' : ''}
+                />
+                {errors.NFTLimit && (
+                  <p className="mt-1 text-sm text-red-500">{errors.NFTLimit}</p>
+                )}
+              </div>
+
+              <div>
+                <Label htmlFor="totalSupply" className="mb-2">
+                  Total Supply
+                </Label>
+                <Input
+                  id="totalSupply"
+                  name="totalSupply"
+                  placeholder="Enter total supply"
+                  value={formData.totalSupply}
+                  onChange={handleChange}
+                  className={errors.totalSupply ? 'border-red-500' : ''}
+                />
+                {errors.totalSupply && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.totalSupply}
+                  </p>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="joinInPeriod" className="mb-2">
+                  Join period end
+                </Label>
+                <Input
+                  id="joinInPeriod"
+                  type="datetime-local"
+                  name="joinInPeriod"
+                  placeholder="Select date and time"
+                  value={formData.joinInPeriod}
+                  onChange={handleChange}
+                  className={errors.joinInPeriod ? 'border-red-500' : ''}
+                />
+                {errors.joinInPeriod && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.joinInPeriod}
+                  </p>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="price" className="mb-2">
+                  Price
+                </Label>
+                <Input
+                  id="price"
+                  name="price"
+                  placeholder="Enter price"
+                  value={formData.price}
+                  onChange={handleChange}
+                  className={errors.price ? 'border-red-500' : ''}
+                />
+                {errors.price && (
+                  <p className="mt-1 text-sm text-red-500">{errors.price}</p>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="backingRatio" className="mb-2">
+                  Backing Ratio
+                </Label>
+                <Input
+                  id="backingRatio"
+                  name="backingRatio"
+                  placeholder="Enter backing ratio"
+                  value={formData.backingRatio}
+                  onChange={handleChange}
+                  className={errors.backingRatio ? 'border-red-500' : ''}
+                />
+                {errors.backingRatio && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.backingRatio}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <Label htmlFor="backingPercentage" className="mb-2">
+                  Backing Percentage (%)
+                </Label>
+                <Input
+                  id="backingPercentage"
+                  name="backingPercentage"
+                  placeholder="Enter backing percentage"
+                  value={formData.backingPercentage}
+                  onChange={handleChange}
+                  className={errors.backingPercentage ? 'border-red-500' : ''}
+                />
+                {errors.backingPercentage && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.backingPercentage}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <Label htmlFor="tokenSymbol" className="mb-2">
+                  Token Symbol
+                </Label>
+                <Input
+                  id="tokenSymbol"
+                  name="tokenSymbol"
+                  placeholder="Enter token symbol"
+                  value={formData.tokenSymbol}
+                  onChange={handleChange}
+                  className={errors.tokenSymbol ? 'border-red-500' : ''}
+                />
+                {errors.tokenSymbol && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.tokenSymbol}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setOpen(false)}
+              className="mr-2"
+            >
+              Cancel
+            </Button>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Submitting...' : 'Add Vault'}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 };
 

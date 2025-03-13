@@ -3,6 +3,7 @@ import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
 import { BrowserProvider, Contract, Eip1193Provider, ethers } from 'ethers';
 import { tokenAbi, usdcContractAddress } from '@/lib/abi.data';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 export default function Faucet() {
   const [sendAddress, setSendAddress] = useState('');
@@ -14,33 +15,40 @@ export default function Faucet() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Adding funds to:', sendAddress, 'Amount:', amount);
-    if (isConnected) {
-      const ethersProvider = new BrowserProvider(walletProvider);
-      const signer = await ethersProvider.getSigner();
+    try {
+      if (isConnected) {
+        const ethersProvider = new BrowserProvider(walletProvider);
+        const signer = await ethersProvider.getSigner();
 
-      const tokencontract = new Contract(usdcContractAddress, tokenAbi, signer);
-      const decimals: number = await tokencontract.decimals();
-      console.log(decimals);
+        const tokencontract = new Contract(
+          usdcContractAddress,
+          tokenAbi,
+          signer
+        );
+        const decimals: number = await tokencontract.decimals();
 
-      const tx = await tokencontract.mint(
-        sendAddress,
-        ethers.parseUnits(amount, decimals)
-      );
-      const conf = await tx.wait();
-      if (conf) {
-        alert(`${amount} usdc Sent to ${sendAddress}`);
-      } else {
-        alert(`Error sending funds.`);
+        const tx = await tokencontract.mint(
+          sendAddress,
+          ethers.parseUnits(amount, decimals)
+        );
+        const conf = await tx.wait();
+        if (conf) {
+          toast(`${amount} usdc Sent to ${sendAddress}`);
+        } else {
+          toast(`Error sending funds.`);
+        }
       }
+      setSendAddress('');
+      setAmount('');
+    } catch (e: unknown) {
+      toast('Error sending funds.');
+      console.error(e);
     }
-    setSendAddress('');
-    setAmount('');
   };
 
   return (
     <section className="mt-4 px-[3vw] py-10 pt-20">
-      <div className="bg-cream border-saffron relative mx-auto flex min-h-[600px] max-w-[1100px] flex-col items-center justify-center gap-8 rounded-2xl border-4 p-6 max-md:px-4 max-sm:rounded-none">
+      <div className="bg-cream border-saffron relative mx-auto flex min-h-[500px] max-w-[600px] flex-col items-center justify-center gap-8 rounded-2xl border-4 p-6 max-md:px-4 max-sm:rounded-none">
         <img
           width="100"
           className="absolute -top-7 left-1/2 -z-10 -translate-x-1/2 -translate-y-1/2 transform"

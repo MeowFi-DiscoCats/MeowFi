@@ -17,7 +17,7 @@ export default function AdminDashboard() {
   const { isConnected } = useAppKitAccount();
   return (
     <div className="min-h-screen">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-6xl">
         <header className="m-4 mb-8 flex flex-wrap items-center justify-between gap-4">
           <Link className="font-Showcard text-4xl text-white" to="/">
             Dashboard
@@ -57,9 +57,11 @@ export default function AdminDashboard() {
             <div className="absolute -top-10 right-[10%] -z-10">
               <CatEar />
             </div>
-            <VaultManagement />
-            <AdminCollect />
-            <AdminDeposit />
+            <div className="flex flex-wrap items-center gap-4">
+              <VaultManagement />
+              <AdminCollect />
+              <AdminDeposit />
+            </div>
           </div>
         </section>
       </div>

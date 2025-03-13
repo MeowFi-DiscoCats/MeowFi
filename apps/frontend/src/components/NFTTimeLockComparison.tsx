@@ -60,31 +60,19 @@ export default function NFTTimeLockComparison({
 }) {
   const fixedFeatures: Feature[] = [
     {
-      icon: (
-        <img
-          width="32px"
-          src="https://obya3wwefi.ufs.sh/f/vL3P6gZND4ZgzFe3c85xSPFsXHiNl8Mu9wdB0KVJEgOcTpev"
-          alt="plant"
-        />
-      ),
+      icon: <img width="32px" src="/images/tradingCard.webp" alt="plant" />,
       title: 'Tradable Position',
-      description: 'Its not tradable',
+      description: 'It is not tradable > NFTs are Locked',
     },
     {
-      icon: (
-        <img
-          width="32px"
-          src="https://obya3wwefi.ufs.sh/f/vL3P6gZND4ZgMa83QjHNLYm1lFtkQV0xvg8iaSy3sCPquZA4"
-          alt="plant"
-        />
-      ),
-      title: 'High Yeild',
-      description: 'Higer Yeild - 5+ Sources',
+      icon: <img width="32px" src="/images/plant.webp" alt="plant" />,
+      title: 'Boosted Yield',
+      description: 'Fixed Vault earns boosted yield',
     },
     {
       icon: <Timer />,
       title: 'Time and NFT Lock',
-      description: 'Time Lock - NFT Locked',
+      description: 'Locked NFT - Time Lock',
     },
   ];
 
@@ -92,17 +80,17 @@ export default function NFTTimeLockComparison({
     {
       icon: <img width="32px" src="/images/tradingCard.webp" alt="plant" />,
       title: 'Tradable Position',
-      description: 'Liquid NFT is tradable',
+      description: 'It is not tradable > NFTs are Locked',
     },
     {
       icon: <img width="32px" src="/images/plant.webp" alt="plant" />,
-      title: 'Stable Yeild',
-      description: 'Yeild - 5+ Sources',
+      title: 'Stable Yield',
+      description: 'Multi-layer yield',
     },
     {
       icon: <Timer />,
       title: 'Time and NFT Lock',
-      description: 'Time Lock - NFT Locked',
+      description: 'Liquid NFT - Time Lock',
     },
   ];
 

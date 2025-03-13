@@ -6,12 +6,12 @@ import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
 import { BrowserProvider, Contract, Eip1193Provider } from 'ethers';
 import { nativeTimeVaultAbi, timeVaultV1Abi, tokenAbi } from '@/lib/abi.data';
 
+import { toast } from 'sonner';
+
 export default function AdminDeposit() {
   const [amount, setAmount] = useState('');
   const [proxyAddress, setProxyAddress] = useState('');
   const [tokenAddress, setTokenAddress] = useState('');
-  const [error, setError] = useState('');
-  const [notification, setNotification] = useState('');
 
   const { isConnected } = useAppKitAccount();
   const { walletProvider } = useAppKitProvider('eip155') as {
@@ -25,25 +25,21 @@ export default function AdminDeposit() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    setError('');
-    setNotification('');
 
     if (!isValidAddress(proxyAddress) || !isValidAddress(tokenAddress)) {
-      setError(
-        'Invalid address format. Please enter a valid Ethereum address.'
-      );
+      toast('Invalid address format. Please enter a valid Ethereum address.');
       return;
     }
 
     if (!isValidAmount(amount)) {
-      setError('Invalid amount. Please enter a positive number.');
+      toast('Invalid amount. Please enter a positive number.');
       return;
     }
 
-    setNotification('Deposit initiated. Transaction is being processed.');
+    toast('Deposit initiated. Transaction is being processed.');
 
     if (!isConnected) {
-      setError('Wallet is not connected.');
+      toast('Wallet is not connected.');
       return;
     }
 
@@ -60,9 +56,10 @@ export default function AdminDeposit() {
         const tx2 = await proxyContract.depositExternalFunds({value:(Number(amount) * 10 ** 18).toString()});
         const conf2 = await tx2.wait();
         if (conf2) {
-          setNotification(
-            `Successfully deposited ${amount} tokens to ${proxyAddress}`
-          );
+          toast(`Successfully deposited ${amount} tokens to ${proxyAddress}`);
+          setAmount('');
+          setProxyAddress('');
+          setTokenAddress('');
         }
       
       // const tx = await tokencontract.approve(
@@ -80,55 +77,41 @@ export default function AdminDeposit() {
       //   }
       // }
     } catch (e: unknown) {
-      setError('Transaction failed. Please check your input and try again.');
+      toast('Transaction failed. Please check your input and try again.');
       console.error(e);
     }
   };
 
   return (
-    <div className="flex">
-      {notification && (
-        <div className="mb-4 rounded-lg bg-green-500 p-2 text-white">
-          {notification}
-        </div>
-      )}
-      {error && (
-        <div className="mb-4 rounded-lg bg-red-500 p-2 text-white">{error}</div>
-      )}
-
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button className="mt-4 rounded-md px-8 py-5">Deposit Funds</Button>
-        </DialogTrigger>
-        <DialogContent>
-          <h2 className="font-Showcard pt-8 text-center text-2xl">
-            Deposit Funds
-          </h2>
-          <form
-            className="flex flex-col gap-4 p-4 py-12"
-            onSubmit={handleSubmit}
-          >
-            <Input
-              placeholder="Amount"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-            />
-            <Input
-              placeholder="Proxy Address"
-              value={proxyAddress}
-              onChange={(e) => setProxyAddress(e.target.value)}
-            />
-            <Input
-              placeholder="Token Address"
-              value={tokenAddress}
-              onChange={(e) => setTokenAddress(e.target.value)}
-            />
-            <Button className="w-full" type="submit">
-              Submit
-            </Button>
-          </form>
-        </DialogContent>
-      </Dialog>
-    </div>
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button size="lg">Deposit Funds</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <h2 className="font-Showcard pt-8 text-center text-2xl">
+          Deposit Funds
+        </h2>
+        <form className="flex flex-col gap-4 p-4 py-12" onSubmit={handleSubmit}>
+          <Input
+            placeholder="Amount"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+          />
+          <Input
+            placeholder="Proxy Address"
+            value={proxyAddress}
+            onChange={(e) => setProxyAddress(e.target.value)}
+          />
+          <Input
+            placeholder="Token Address"
+            value={tokenAddress}
+            onChange={(e) => setTokenAddress(e.target.value)}
+          />
+          <Button className="w-full" type="submit">
+            Submit
+          </Button>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 }

@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { ethers } from 'ethers';
 
 export interface CountdownValues {
   days: number;
@@ -7,8 +7,8 @@ export interface CountdownValues {
   seconds: number;
 }
 
-export function formatBalance(userBalance: string,decimal:number): string {
-  return ethers.formatUnits(userBalance,decimal);
+export function formatBalance(userBalance: string, decimal: number): string {
+  return ethers.formatUnits(userBalance, decimal);
 }
 
 export function parseDateTime(dateTimeValue: string): Date | null {

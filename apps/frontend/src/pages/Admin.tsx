@@ -29,12 +29,11 @@ const AdminLoginPage = () => {
         }
       );
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
+        throw new Error(response.statusText || 'Login failed');
       }
 
+      const data = await response.json();
       localStorage.setItem('token', data.token);
       window.location.href = '/admin/dashboard';
     } catch (err) {
@@ -54,7 +53,7 @@ const AdminLoginPage = () => {
 
   return (
     <section className="mt-4 px-[3vw] py-10 pt-20">
-      <div className="bg-cream border-saffron relative mx-auto flex min-h-[600px] max-w-[1100px] flex-col items-center justify-center gap-8 rounded-2xl border-4 p-6 max-md:px-4 max-sm:rounded-none">
+      <div className="bg-cream border-saffron relative mx-auto flex min-h-[500px] max-w-[600px] flex-col items-center justify-center gap-8 rounded-2xl border-4 p-6 max-md:px-4 max-sm:rounded-none">
         <img
           width="100"
           className="absolute -top-7 left-1/2 -z-10 -translate-x-1/2 -translate-y-1/2 transform"
