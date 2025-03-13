@@ -27,5 +27,5 @@ jobs:
         run: |
           docker buildx build --push \
             --platform linux/amd64 \
-            -t portfoliov3.azurecr.io/meowfi-backend:latest \
+            -t portfoliov3.azurecr.io/meowfi:latest \
             ./apps/backend
