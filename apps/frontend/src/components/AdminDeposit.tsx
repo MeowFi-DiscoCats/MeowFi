@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
 import { BrowserProvider, Contract, Eip1193Provider } from 'ethers';
-import { nativeTimeVaultAbi, timeVaultV1Abi, tokenAbi } from '@/lib/abi.data';
+import { nativeTimeVaultAbi } from '@/lib/abi.data';
 
 import { toast } from 'sonner';
 
@@ -46,22 +46,27 @@ export default function AdminDeposit() {
     try {
       const ethersProvider = new BrowserProvider(walletProvider);
       const signer = await ethersProvider.getSigner();
-      const proxyContract = new Contract(proxyAddress, nativeTimeVaultAbi, signer);
+      const proxyContract = new Contract(
+        proxyAddress,
+        nativeTimeVaultAbi,
+        signer
+      );
       // const proxyContract = new Contract(proxyAddress, timeVaultV1Abi, signer);
       // const tokencontract = new Contract(tokenAddress, tokenAbi, signer);
 
       // const decimals: bigint = await tokencontract.decimals();
 
-      
-        const tx2 = await proxyContract.depositExternalFunds({value:(Number(amount) * 10 ** 18).toString()});
-        const conf2 = await tx2.wait();
-        if (conf2) {
-          toast(`Successfully deposited ${amount} tokens to ${proxyAddress}`);
-          setAmount('');
-          setProxyAddress('');
-          setTokenAddress('');
-        }
-      
+      const tx2 = await proxyContract.depositExternalFunds({
+        value: (Number(amount) * 10 ** 18).toString(),
+      });
+      const conf2 = await tx2.wait();
+      if (conf2) {
+        toast(`Successfully deposited ${amount} tokens to ${proxyAddress}`);
+        setAmount('');
+        setProxyAddress('');
+        setTokenAddress('');
+      }
+
       // const tx = await tokencontract.approve(
       //   proxyContract,
       //   (Number(amount) * 10 ** Number(decimals)).toString()
