@@ -21,7 +21,7 @@ import {
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PlusCircle, CheckCircle, XCircle } from 'lucide-react';
 import { BrowserProvider, Contract, Eip1193Provider, ethers } from 'ethers';
-import { proxyAbi, proxyByteCode, tokenAbi, v2 } from '@/lib/abi.data';
+import { nativeTimeVaultAbi, nativeTimeVaultByteCode, proxyAbi, proxyByteCode, tokenAbi, v2 } from '@/lib/abi.data';
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
 
 type VaultType = 'fixed' | 'flexible';
@@ -213,21 +213,38 @@ const VaultManagement: React.FC = () => {
       }
 
       const ContractFactory = new ethers.ContractFactory(
-        proxyAbi,
-        proxyByteCode,
+        nativeTimeVaultAbi,
+        nativeTimeVaultByteCode,
         wallet
       );
+      // const ContractFactory = new ethers.ContractFactory(
+      //   proxyAbi,
+      //   proxyByteCode,
+      //   wallet
+      // );
 
-      const tokenContract=new Contract(formData.tokenAddress,tokenAbi,wallet)
-      const decimal=await tokenContract.decimals()
-      console.log(decimal)
+      // const tokenContract=new Contract(formData.tokenAddress,tokenAbi,wallet)
+      // const decimal=await tokenContract.decimals()
+      // console.log(decimal)
 
+      // const contract = await ContractFactory.deploy(
+      //   v2, // _logic
+      //   (Number(formData.price) *10**18).toString(), // _nftPrice - ensure BigNumber
+      //   // (Number(formData.price) *10**Number(decimal)).toString(), // _nftPrice - ensure BigNumber
+      //   NFTLimit, // _nftLimitPerAddress - ensure BigInt
+      //   ethers.getAddress(address), // initialOwner - ensure proper address format
+      //   // ethers.getAddress(formData.tokenAddress), // _tokenAddress - ensure proper address format
+      //   formData.totalSupply, // _nftLimit - ensure BigNumber
+      //   unixTimestampLock, // _joiningPeriod - ensure BigInt
+      //   UnixTimestampClaim // _claimingPeriod - ensure BigInt
+      // );
       const contract = await ContractFactory.deploy(
-        v2, // _logic
-        (Number(formData.price) *10**Number(decimal)).toString(), // _nftPrice - ensure BigNumber
+       
+        (Number(formData.price) *10**18).toString(), // _nftPrice - ensure BigNumber
+        // (Number(formData.price) *10**Number(decimal)).toString(), // _nftPrice - ensure BigNumber
         NFTLimit, // _nftLimitPerAddress - ensure BigInt
         ethers.getAddress(address), // initialOwner - ensure proper address format
-        ethers.getAddress(formData.tokenAddress), // _tokenAddress - ensure proper address format
+        // ethers.getAddress(formData.tokenAddress), // _tokenAddress - ensure proper address format
         formData.totalSupply, // _nftLimit - ensure BigNumber
         unixTimestampLock, // _joiningPeriod - ensure BigInt
         UnixTimestampClaim // _claimingPeriod - ensure BigInt
@@ -273,7 +290,7 @@ const VaultManagement: React.FC = () => {
 
       const ethersProvider = new BrowserProvider(walletProvider);
       const signer = await ethersProvider.getSigner();
-
+      console.log("hello")
       const contractAddress = await deployContract(signer, formData);
 
       if (!contractAddress) {

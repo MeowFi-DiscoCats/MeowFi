@@ -6,7 +6,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { IVault } from '../../../../backend/src/models/IVault';
 import { useEffect, useState } from 'react';
 import { Contract, ethers } from 'ethers';
-import { timeVaultV1Abi, tokenAbi } from '@/lib/abi.data';
+import { nativeTimeVaultAbi, timeVaultV1Abi, tokenAbi } from '@/lib/abi.data';
 import { formatBalance } from '@/lib/VaultHelper';
 
 export function VaultMetrics({ index }: { index: number }) {
@@ -32,17 +32,17 @@ export function VaultMetrics({ index }: { index: number }) {
         );
         const proxyContract = new Contract(
           vault.proxyAddress,
-          timeVaultV1Abi,
+          nativeTimeVaultAbi,
           provider
         );
-        const tokenContract = new Contract(
-          vault.tokenAddress,
-          tokenAbi,
-          provider
-        );
+        // const tokenContract = new Contract(
+        //   vault.tokenAddress,
+        //   tokenAbi,
+        //   provider
+        // );
 
-        const decimal = await tokenContract.decimals();
-        setdecimals(decimal);
+        // const decimal = await tokenContract.decimals();
+        setdecimals(18);
 
         const [nftCount, totalFunds, yieldedFunds, activeFunds,nftPrice] =
           await Promise.all([

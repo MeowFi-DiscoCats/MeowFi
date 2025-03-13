@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
 import { BrowserProvider, Contract, Eip1193Provider } from 'ethers';
-import { timeVaultV1Abi, tokenAbi } from '@/lib/abi.data';
+import { nativeTimeVaultAbi, timeVaultV1Abi, tokenAbi } from '@/lib/abi.data';
 
 export default function AdminDeposit() {
   const [amount, setAmount] = useState('');
@@ -50,25 +50,35 @@ export default function AdminDeposit() {
     try {
       const ethersProvider = new BrowserProvider(walletProvider);
       const signer = await ethersProvider.getSigner();
-      const proxyContract = new Contract(proxyAddress, timeVaultV1Abi, signer);
-      const tokencontract = new Contract(tokenAddress, tokenAbi, signer);
+      const proxyContract = new Contract(proxyAddress, nativeTimeVaultAbi, signer);
+      // const proxyContract = new Contract(proxyAddress, timeVaultV1Abi, signer);
+      // const tokencontract = new Contract(tokenAddress, tokenAbi, signer);
 
-      const decimals: bigint = await tokencontract.decimals();
+      // const decimals: bigint = await tokencontract.decimals();
 
-      const tx = await tokencontract.approve(
-        proxyContract,
-        (Number(amount) * 10 ** Number(decimals)).toString()
-      );
-      const conf = await tx.wait();
-      if (conf) {
-        const tx2 = await proxyContract.depositExternalFunds((Number(amount) * 10 ** Number(decimals)).toString());
+      
+        const tx2 = await proxyContract.depositExternalFunds({value:(Number(amount) * 10 ** 18).toString()});
         const conf2 = await tx2.wait();
         if (conf2) {
           setNotification(
             `Successfully deposited ${amount} tokens to ${proxyAddress}`
           );
         }
-      }
+      
+      // const tx = await tokencontract.approve(
+      //   proxyContract,
+      //   (Number(amount) * 10 ** Number(decimals)).toString()
+      // );
+      // const conf = await tx.wait();
+      // if (conf) {
+      //   const tx2 = await proxyContract.depositExternalFunds((Number(amount) * 10 ** Number(decimals)).toString());
+      //   const conf2 = await tx2.wait();
+      //   if (conf2) {
+      //     setNotification(
+      //       `Successfully deposited ${amount} tokens to ${proxyAddress}`
+      //     );
+      //   }
+      // }
     } catch (e: unknown) {
       setError('Transaction failed. Please check your input and try again.');
       console.error(e);

@@ -7,7 +7,7 @@ import {
   useAppKitNetworkCore,
   useAppKitProvider,
 } from '@reown/appkit/react';
-import { tokenAbi, timeVaultV1Abi, NFTabi } from '@/lib/abi.data';
+import { tokenAbi, timeVaultV1Abi, NFTabi, nativeTimeVaultAbi } from '@/lib/abi.data';
 import {
   formatBalance,
   getTimeRemaining,
@@ -49,7 +49,7 @@ export function VaultActions({ index }: { index: number }) {
         );
         const proxyContract = new Contract(
           vault.proxyAddress,
-          timeVaultV1Abi,
+          nativeTimeVaultAbi,
           provider
         );
         const availableSupply = await proxyContract.getNftCount();
@@ -76,16 +76,17 @@ export function VaultActions({ index }: { index: number }) {
       setIsBalanceLoading(true);
       try {
         const provider = new BrowserProvider(walletProvider, chainId);
-        const tokenContract = new Contract(
-          vault.tokenAddress,
-          tokenAbi,
-          provider
-        );
+        // const tokenContract = new Contract(
+        //   vault.tokenAddress,
+        //   tokenAbi,
+        //   provider
+        // );
 
       
-        const decimal=await tokenContract.decimals()
-        setdecimals(decimal)
-        const balance = await tokenContract.balanceOf(address);
+        // const decimal=await tokenContract.decimals()
+        setdecimals(18)
+        const balance = await provider.getBalance(address)
+        // const balance = await tokenContract.balanceOf(address);
         setUserBalance(balance.toString());
       } catch (error) {
         console.error('Error fetching token balance:', error);
@@ -104,7 +105,7 @@ export function VaultActions({ index }: { index: number }) {
         const provider = new BrowserProvider(walletProvider, chainId);
         const proxyContract = new Contract(
           vault.proxyAddress,
-          timeVaultV1Abi,
+          nativeTimeVaultAbi,
           provider
         );
         const result = await proxyContract.vaults(address);
@@ -146,19 +147,34 @@ export function VaultActions({ index }: { index: number }) {
       const signer = await provider.getSigner();
       const proxyContract = new Contract(
         vault.proxyAddress,
-        timeVaultV1Abi,
+        nativeTimeVaultAbi,
         signer
       );
-      const tokenContract = new Contract(vault.tokenAddress, tokenAbi, signer);
-      console.log("failed here")
+      
 
-      const approveTx = await tokenContract.approve(
-        vault.proxyAddress,
-        (quantity * Number(vault.price)*10** Number(decimals)).toString()
-      );
-      await approveTx.wait();
+      // const proxyContract = new Contract(
+      //   vault.proxyAddress,
+      //   timeVaultV1Abi,
+      //   signer
+      // );
+      // const tokenContract = new Contract(vault.tokenAddress, tokenAbi, signer);
+      // console.log("failed here")
 
-      const depositTx = await proxyContract.joinVault(quantity);
+      // const approveTx = await tokenContract.approve(
+      //   vault.proxyAddress,
+      //   (quantity * Number(vault.price)*10** Number(decimals)).toString()
+      // );
+      // await approveTx.wait();
+
+      // const depositTx = await proxyContract.joinVault(quantity);
+      // const receipt = await depositTx.wait();
+      // if (receipt) {
+      //   alert('Deposit successful.');
+      //   setRefresher((prev) => prev + 1);
+      // }
+      const depositTx = await proxyContract.joinVault(quantity, {
+        value: (quantity * Number(vault.price)*10** Number(decimals)).toString()
+    });
       const receipt = await depositTx.wait();
       if (receipt) {
         alert('Deposit successful.');
@@ -191,7 +207,7 @@ export function VaultActions({ index }: { index: number }) {
       const signer = await provider.getSigner();
       const proxyContract = new Contract(
         vault.proxyAddress,
-        timeVaultV1Abi,
+        nativeTimeVaultAbi,
         signer
       );
       const NFTAddress = await proxyContract.nftAddress();
@@ -212,6 +228,29 @@ export function VaultActions({ index }: { index: number }) {
         }
       }
       setRefresher((prev) => prev + 1);
+      // const proxyContract = new Contract(
+      //   vault.proxyAddress,
+      //   timeVaultV1Abi,
+      //   signer
+      // );
+      // const NFTAddress = await proxyContract.nftAddress();
+      // if (!NFTAddress) {
+      //   alert('NFT Address not found.');
+      //   return;
+      // }
+
+      // const nftContract = new Contract(NFTAddress, NFTabi, signer);
+
+      // const tx2 = await nftContract.setApprovalForAll(vault.proxyAddress, true);
+      // const conf2 = await tx2.wait();
+      // if (conf2) {
+      //   const claimTx = await proxyContract.claimBack();
+      //   const receipt = await claimTx.wait();
+      //   if (receipt) {
+      //     alert('Claim successful.');
+      //   }
+      // }
+      // setRefresher((prev) => prev + 1);
     } catch (error) {
       console.error('Error during claim:', error);
       alert('Claim failed. Please try again.');

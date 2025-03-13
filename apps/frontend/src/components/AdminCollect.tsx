@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
 import { BrowserProvider, Contract, Eip1193Provider } from 'ethers';
-import { timeVaultV1Abi } from '@/lib/abi.data';
+import { nativeTimeVaultAbi, timeVaultV1Abi } from '@/lib/abi.data';
 
 export default function AdminCollect() {
   const [proxyAddress, setProxyAddress] = useState('');
@@ -44,7 +44,8 @@ export default function AdminCollect() {
     try {
       const ethersProvider = new BrowserProvider(walletProvider);
       const signer = await ethersProvider.getSigner();
-      const proxyContract = new Contract(proxyAddress, timeVaultV1Abi, signer);
+      const proxyContract = new Contract(proxyAddress, nativeTimeVaultAbi, signer);
+      // const proxyContract = new Contract(proxyAddress, timeVaultV1Abi, signer);
       const tx = await proxyContract.withdrawAllFunds(receiverAddress);
       await tx.wait();
       setNotification(`Funds withdrawn to ${receiverAddress}`);
