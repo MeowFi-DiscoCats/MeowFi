@@ -56,6 +56,7 @@ export function VaultActions({ index }: { index: number }) {
           provider
         );
         const availableSupply = await proxyContract.getNftCount();
+        console.log(availableSupply)
         setAvailableSupply(Number(availableSupply));
       } catch (error) {
         console.error('Error fetching available supply:', error);

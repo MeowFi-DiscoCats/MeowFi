@@ -58,7 +58,7 @@ export function VaultMetrics({ index }: { index: number }) {
         const activenftPrice = Number(nftPrice);
 
         const yieldValue =
-          nftCountValue > 0 ? yieldedFundsValue - totalFundsValue : 0;
+        yieldedFundsValue > 0 ? yieldedFundsValue - totalFundsValue : 0;
         const backingRatio =
           yieldedFundsValue > 0
             ? yieldedFundsValue / (nftCountValue * activenftPrice)
