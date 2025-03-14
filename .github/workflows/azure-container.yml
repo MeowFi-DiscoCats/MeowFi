@@ -3,7 +3,9 @@ name: Build and Push to Azure Container Registry
 on:
   push:
     branches:
-      - '**'
+      - 'main'
+    paths:
+      - 'apps/backend/**'
 
 jobs:
   build:
