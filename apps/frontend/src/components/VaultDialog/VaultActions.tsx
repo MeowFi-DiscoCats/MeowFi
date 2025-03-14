@@ -7,7 +7,7 @@ import {
   useAppKitNetworkCore,
   useAppKitProvider,
 } from '@reown/appkit/react';
-import { tokenAbi, timeVaultV1Abi, NFTabi, nativeTimeVaultAbi } from '@/lib/abi.data';
+import { NFTabi, nativeTimeVaultAbi } from '@/lib/abi.data';
 import {
   formatBalance,
   getTimeRemaining,
@@ -83,10 +83,9 @@ export function VaultActions({ index }: { index: number }) {
         //   provider
         // );
 
-      
         // const decimal=await tokenContract.decimals()
-        setdecimals(18)
-        const balance = await provider.getBalance(address)
+        setdecimals(18);
+        const balance = await provider.getBalance(address);
         // const balance = await tokenContract.balanceOf(address);
         setUserBalance(balance.toString());
       } catch (error) {
@@ -150,7 +149,6 @@ export function VaultActions({ index }: { index: number }) {
         nativeTimeVaultAbi,
         signer
       );
-      
 
       // const proxyContract = new Contract(
       //   vault.proxyAddress,
@@ -173,8 +171,12 @@ export function VaultActions({ index }: { index: number }) {
       //   setRefresher((prev) => prev + 1);
       // }
       const depositTx = await proxyContract.joinVault(quantity, {
-        value: (quantity * Number(vault.price)*10** Number(decimals)).toString()
-    });
+        value: (
+          quantity *
+          Number(vault.price) *
+          10 ** Number(decimals)
+        ).toString(),
+      });
       const receipt = await depositTx.wait();
       if (receipt) {
         toast('Deposit successful', {

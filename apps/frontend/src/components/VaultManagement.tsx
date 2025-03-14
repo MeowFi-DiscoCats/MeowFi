@@ -19,8 +19,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { PlusCircle } from 'lucide-react';
-import { BrowserProvider, Contract, Eip1193Provider, ethers } from 'ethers';
-import { nativeTimeVaultAbi, nativeTimeVaultByteCode, proxyAbi, proxyByteCode, tokenAbi, v2 } from '@/lib/abi.data';
+import { BrowserProvider, Eip1193Provider, ethers } from 'ethers';
+import { nativeTimeVaultAbi, nativeTimeVaultByteCode } from '@/lib/abi.data';
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
 import { toast } from 'sonner';
 
@@ -221,8 +221,7 @@ const VaultManagement: React.FC = () => {
       //   UnixTimestampClaim // _claimingPeriod - ensure BigInt
       // );
       const contract = await ContractFactory.deploy(
-       
-        (Number(formData.price) *10**18).toString(), // _nftPrice - ensure BigNumber
+        (Number(formData.price) * 10 ** 18).toString(), // _nftPrice - ensure BigNumber
         // (Number(formData.price) *10**Number(decimal)).toString(), // _nftPrice - ensure BigNumber
         NFTLimit, // _nftLimitPerAddress - ensure BigInt
         ethers.getAddress(address), // initialOwner - ensure proper address format
@@ -268,7 +267,7 @@ const VaultManagement: React.FC = () => {
 
       const ethersProvider = new BrowserProvider(walletProvider);
       const signer = await ethersProvider.getSigner();
-      console.log("hello")
+      console.log('hello');
       const contractAddress = await deployContract(signer, formData);
 
       if (!contractAddress) {
