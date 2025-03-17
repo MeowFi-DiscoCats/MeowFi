@@ -50,6 +50,7 @@ export function VaultActions({ index }: { index: number }) {
         const provider = new ethers.JsonRpcProvider(
           import.meta.env.VITE_ALCHEMY_URL
         );
+        console.log(vault.proxyAddress)
         const proxyContract = new Contract(
           vault.proxyAddress,
           nativeTimeVaultAbi,
