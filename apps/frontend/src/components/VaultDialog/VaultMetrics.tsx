@@ -44,23 +44,20 @@ export function VaultMetrics({ index }: { index: number }) {
         // const decimal = await tokenContract.decimals();
         setdecimals(18);
 
-        const [nftCount, totalFunds] =
-          await Promise.all([
-            proxyContract.getNftCount(),
-            proxyContract.totalFunds(),
-            
-            
-          ]);
-          const yieldedFunds=await proxyContract.yieldedFunds()
-          const nftPrice=await proxyContract.nftPrice()
-          console.log(nftCount)
+        const [nftCount, totalFunds] = await Promise.all([
+          proxyContract.getNftCount(),
+          proxyContract.totalFunds(),
+        ]);
+        const yieldedFunds = await proxyContract.yieldedFunds();
+        const nftPrice = await proxyContract.nftPrice();
+        console.log(nftCount);
         const nftCountValue = Number(nftCount);
         const totalFundsValue = Number(totalFunds);
         const yieldedFundsValue = Number(yieldedFunds);
         const activenftPrice = Number(nftPrice);
 
         const yieldValue =
-        yieldedFundsValue > 0 ? yieldedFundsValue - totalFundsValue : 0;
+          yieldedFundsValue > 0 ? yieldedFundsValue - totalFundsValue : 0;
         const backingRatio =
           yieldedFundsValue > 0
             ? yieldedFundsValue / (nftCountValue * activenftPrice)

@@ -50,14 +50,14 @@ export function VaultActions({ index }: { index: number }) {
         const provider = new ethers.JsonRpcProvider(
           import.meta.env.VITE_ALCHEMY_URL
         );
-        console.log(vault.proxyAddress)
+        console.log(vault.proxyAddress);
         const proxyContract = new Contract(
           vault.proxyAddress,
           nativeTimeVaultAbi,
           provider
         );
         const availableSupply = await proxyContract.getNftCount();
-        console.log(availableSupply)
+        console.log(availableSupply);
         setAvailableSupply(Number(availableSupply));
       } catch (error) {
         console.error('Error fetching available supply:', error);

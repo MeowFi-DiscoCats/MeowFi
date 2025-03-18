@@ -1,6 +1,5 @@
 import express, { Application } from "express";
 import cors from "cors";
-import "./setup/mongoose";
 import dotenv from "dotenv";
 import { errorMiddleware } from "./utils/errorMiddleware";
 
