@@ -1,4 +1,10 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  Outlet,
+} from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import TimeVaults from './pages/TimeVaults';
 import Navbar from './components/NavBar';
@@ -7,6 +13,7 @@ import Faucet from './pages/Faucet';
 import { createAppKit } from '@reown/appkit/react';
 import { EthersAdapter } from '@reown/appkit-adapter-ethers';
 import { AppKitNetwork, monadTestnet } from '@reown/appkit/networks';
+import Footer from './components/Footer';
 
 const projectId: string = import.meta.env.VITE_REOWN_PROJECT_ID;
 const networks: [AppKitNetwork] = [monadTestnet];
@@ -38,33 +45,38 @@ createAppKit({
   },
 });
 
-function Layout() {
+function MainLayout() {
   return (
     <>
-      <Routes>
-        <Route
-          index
-          element={
-            <>
-              <Navbar />
-              <TimeVaults />
-            </>
-          }
-        />
-        {/* Use Suspense for lazy-loaded components */}
-        <Route
-          path="/admin/*"
-          element={
-            <Suspense fallback={<div>Loading Admin...</div>}>
-              <AdminRoutes />
-            </Suspense>
-          }
-        />
-        <Route path="/faucet" element={<Faucet />} />
-        <Route path="/error" element={<ErrorPage />} />
-        <Route path="*" element={<Navigate to="/error" replace />} />
-      </Routes>
+      <Navbar />
+      <Outlet />
+      <Footer />
     </>
+  );
+}
+
+function Layout() {
+  return (
+    <Routes>
+      {/* Routes with Navbar */}
+      <Route path="/" element={<MainLayout />}>
+        <Route index element={<TimeVaults />} />
+        <Route path="faucet" element={<Faucet />} />
+      </Route>
+      {/* Admin routes with lazy loading */}
+      <Route
+        path="/admin/*"
+        element={
+          <Suspense fallback={<div>Loading Admin...</div>}>
+            <AdminRoutes />
+          </Suspense>
+        }
+      />
+      {/* Error page */}
+      <Route path="/error" element={<ErrorPage />} />
+      {/* Catch-all route */}
+      <Route path="*" element={<Navigate to="/error" replace />} />
+    </Routes>
   );
 }
 

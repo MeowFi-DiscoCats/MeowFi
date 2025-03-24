@@ -1,6 +1,5 @@
 import CommunityCTA from '@/components/CommunityCTA';
 import FAQSection from '@/components/FAQSection';
-import Footer from '@/components/Footer';
 import MascotShowcase from '@/components/MascotShowcase';
 import NFTTimeLockComparison from '@/components/NFTTimeLockComparison';
 import VaultGrid from '@/components/VaultGrid';
@@ -18,7 +17,6 @@ export default function TimeVaults() {
           <CommunityCTA />
         </div>
       </section>
-      <Footer />
     </>
   );
 }
