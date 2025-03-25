@@ -17,19 +17,19 @@ export default function Faucet() {
   const tasks = [
     {
       title: 'Follow @mydiscocats on Twitter ( X )',
-      url: 'https://discord.gg/liquidnft',
+      url: 'https://x.com/mydiscocats',
       completed: false,
       icon: <FaXTwitter />,
     },
     {
       title: 'Join @mydiscocats Discord Channel ( Be part of the fam )',
-      url: 'https://discord.gg/liquidnft',
+      url: 'https://discord.com/invite/RZWntTWFrb',
       completed: false,
       icon: <FaDiscord />,
     },
     {
       title: 'Engage by Liking & RT announcement on Twitter ( X )',
-      url: 'https://discord.gg/liquidnft',
+      url: 'https://x.com/mydiscocats',
       completed: false,
       icon: <ReTwitte />,
     },
@@ -52,7 +52,7 @@ export default function Faucet() {
         <div className="absolute -top-10 right-[10%] -z-10">
           <CatEar />
         </div>
-        <div className="flex flex-col items-center gap-4 px-6 max-md:px-4">
+        <div className="flex flex-col items-center gap-4 px-6 pt-12 max-md:px-4">
           <h1 className="font-Showcard py-4 text-center text-6xl text-white max-md:text-4xl max-sm:text-3xl">
             Liquid NFT Faucet
           </h1>
@@ -137,10 +137,13 @@ export default function Faucet() {
             Claim NFT
           </button>
         </div>
-        <section className="w-full border-t-2 border-zinc-600">
-          <h4 className="py-4 text-center text-4xl font-bold text-white">
+        <section className="flex w-full flex-col items-center justify-center border-t-2 border-zinc-600">
+          <h4 className="pt-12 text-center text-4xl font-semibold text-white">
             {data.poweredBy}
           </h4>
+          <p>
+            <span>Type</span>
+          </p>
         </section>
       </div>
     </section>

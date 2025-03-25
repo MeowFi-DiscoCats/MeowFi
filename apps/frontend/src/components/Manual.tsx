@@ -28,7 +28,7 @@ export default function Manual() {
               <p className="py-1 text-sm">
                 Lock your assets, stack rewards, and maximize yield with our
                 <strong> multi-layered yield vaults! </strong> Choose between
-                <strong> Fixed Lock-Up Vaults</strong> for higher yield or
+                <strong> Fixed Lock-Up Vaults </strong> for higher yield or
                 <strong>Flexible Lock-Up Vaults </strong> for tradable
                 positions.
               </p>
@@ -108,8 +108,8 @@ export default function Manual() {
               <h2 className="text-xl font-extrabold">Purr with rewards! </h2>
               <p className="py-1 text-sm">
                 With <strong> NFT Time-Lock Vaults</strong>, your funds work for
-                you. <strong> Fixed Vaults</strong>
-                offer higher yields, while <strong>Flexible Vaults</strong>
+                you. <strong> Fixed Vaults </strong>
+                offer higher yields, while <strong>Flexible Vaults </strong>
                 keeps you liquid. Enjoy exclusive perks and airdrops beyond
                 bribes and watch your Vault NFT’s backing as it stacks
                 multi-layered yield.
@@ -159,7 +159,7 @@ export default function Manual() {
   };
 
   return (
-    <DialogContent className="bg-cream min-h-[450px] overflow-hidden rounded-2xl border-none p-0 sm:max-w-[550px] [&>button]:hidden">
+    <DialogContent className="bg-cream overflow-hidden rounded-2xl border-none p-0 sm:max-w-[550px] [&>button]:hidden">
       <DialogHeader className="hidden">
         <DialogTitle>Manual</DialogTitle>
         <DialogDescription>
