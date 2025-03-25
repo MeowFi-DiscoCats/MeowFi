@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -68,12 +68,12 @@ export default function NavBar() {
 
         {/* Chain Select, Connect Wallet & Manual Dropdown */}
         <div className="max-[550px]:bg-cream bottom-0 left-0 z-30 flex items-center gap-2 max-[550px]:fixed max-[550px]:w-full max-[550px]:p-2 max-[550px]:px-6 [&>button]:rounded-xl">
-          <NavLink
+          <Link
             className="bg-sky rounded-xl border-2 border-white p-2"
             to="/faucet"
           >
             <WaterTap />
-          </NavLink>
+          </Link>
           <div className="[&>button]:bg-cream [&>button]:border-light-orange [&>button]:text-chocolate [&>button]:font-Bubblegum max-[550px]:order-2 [&>button]:rounded-xl [&>button]:border-2 [&>button]:p-5 [&>button]:px-1 [&>button]:pl-0 max-[550px]:[&>button]:py-[19px]">
             <Select defaultValue="Monad">
               <SelectTrigger>

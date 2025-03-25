@@ -4,6 +4,7 @@ import {
   Route,
   Navigate,
   Outlet,
+  Link,
 } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import TimeVaults from './pages/TimeVaults';
@@ -58,12 +59,10 @@ function MainLayout() {
 function Layout() {
   return (
     <Routes>
-      {/* Routes with Navbar */}
       <Route path="/" element={<MainLayout />}>
         <Route index element={<TimeVaults />} />
         <Route path="faucet" element={<Faucet />} />
       </Route>
-      {/* Admin routes with lazy loading */}
       <Route
         path="/admin/*"
         element={
@@ -72,9 +71,7 @@ function Layout() {
           </Suspense>
         }
       />
-      {/* Error page */}
       <Route path="/error" element={<ErrorPage />} />
-      {/* Catch-all route */}
       <Route path="*" element={<Navigate to="/error" replace />} />
     </Routes>
   );
@@ -90,9 +87,18 @@ function App() {
 
 function ErrorPage() {
   return (
-    <div>
-      <h1>404</h1>
-      <p>Page not found</p>
+    <div className="flex min-h-screen flex-col items-center justify-center px-4 text-white">
+      <h1 className="text-9xl font-extrabold">404</h1>
+      <p className="mt-4 text-3xl font-semibold">Page Not Found</p>
+      <p className="mt-2 text-center text-lg text-gray-400">
+        The page you are looking for doesnt exist or has been moved.
+      </p>
+      <Link
+        to="/"
+        className="mt-8 inline-block rounded border border-white px-6 py-3 transition duration-200 hover:bg-white hover:text-gray-900"
+      >
+        Go Back Home
+      </Link>
     </div>
   );
 }
