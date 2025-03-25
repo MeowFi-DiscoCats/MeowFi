@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { Contract, ethers } from 'ethers';
 import { nativeTimeVaultAbi } from '@/lib/abi.data';
 import { formatBalance } from '@/lib/VaultHelper';
+import Triangle from '../svg/Triangle';
 
 export function VaultMetrics({ index }: { index: number }) {
   const queryClient = useQueryClient();
@@ -86,7 +87,7 @@ export function VaultMetrics({ index }: { index: number }) {
       <div className="from-crimson/50 to-crimson mx-4 flex items-center gap-2 rounded-xl bg-gradient-to-t p-2 text-white">
         <AirDrop />
         <div>
-          <p>Points {vault.AirdropIncentivised}x</p>
+          <p className="font-thin">Extra Fries !!</p>
           <h4 className="font-Teko font-semibold">Airdrop Incentivised</h4>
         </div>
         <LuCheck size="30px" className="ml-auto" />
@@ -95,15 +96,19 @@ export function VaultMetrics({ index }: { index: number }) {
         <div className="flex flex-1 flex-col gap-3">
           <div className="bg-gunmetal relative flex flex-1 flex-col items-center justify-end gap-2 rounded-xl p-4 text-white">
             <div className="absolute top-4 left-0 h-full w-full">
+              <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 transform drop-shadow-[0_0_6px_rgba(255,255,0,0.6)]">
+                <Triangle />
+              </div>
+
               <Scale />
             </div>
             <p className="font-Teko font-semibold">
-              <span className="text-2xl">
-                {formatBalance(vaultMetrics.yieldValue.toString(), decimals)}
+              <span className="mr-1 text-2xl">
+                ${formatBalance(vaultMetrics.yieldValue.toString(), decimals)}
               </span>
               {vault.tokenSymbol}
             </p>
-            <p className="text-center text-sm font-semibold">Yield Generated</p>
+            <p className="text-center text-sm font-thin">Yield Generated</p>
           </div>
           <div className="bg-gunmetal flex flex-1 items-center justify-center rounded-xl p-4">
             <div className="flex items-center justify-center gap-2 text-white">
@@ -112,14 +117,14 @@ export function VaultMetrics({ index }: { index: number }) {
                 <p className="font-Teko text-3xl font-semibold">
                   {vault.lockedInPeriod}D
                 </p>
-                <p>Time-Lock</p>
+                <p className="font-thin">Remaining</p>
               </div>
             </div>
           </div>
         </div>
         <div className="bg-gunmetal flex flex-1 flex-col rounded-xl p-3">
           <h5 className="text-center font-thin text-white">Backing</h5>
-          <div className="mx-auto mt-4 mb-1 h-4 w-10 rounded-full border border-white/12 bg-white/10" />
+          <div className="mx-auto mt-4 mb-1 h-4 w-10 rounded-full border-2 border-white/12 bg-white/10" />
           <div className="relative w-full flex-1">
             <div
               className="bg-amber absolute bottom-2 left-2 max-h-[calc(100%-16px)] w-[calc(100%-16px)] rounded-xl"
@@ -128,13 +133,13 @@ export function VaultMetrics({ index }: { index: number }) {
               }}
             />
             <div className="relative z-20 flex h-full flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-white/12 bg-white/10 backdrop-blur-sm">
-              <p className="font-Teko flex items-center gap-2 text-xl text-white">
-                <LuZap /> Ratio:{' '}
+              <p className="font-Teko flex items-center text-xl text-white">
+                <LuZap /> <span className="font-Teko mr-1 text-xl">Ratio:</span>
                 {formatToTwoDecimals(vaultMetrics.backingRatio).toFixed(2)}
               </p>
               <p className="font-Teko text-3xl font-bold text-white">
                 {formatToTwoDecimals(vaultMetrics.backingPercentage).toFixed(2)}
-                %
+                <span className="font-Teko ml-1 text-sm">%</span>
               </p>
             </div>
           </div>

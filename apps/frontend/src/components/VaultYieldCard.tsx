@@ -9,10 +9,9 @@ const data = [
 
 export default function VaultYieldCard() {
   return (
-    <>
+    <div className="bg-gunmetal flex gap-4 rounded-xl border border-zinc-500 p-4">
       <div className="relative h-36 w-36">
         <div className="font-Teko absolute flex h-full w-full items-center justify-center text-2xl font-semibold">
-          {' '}
           20%
         </div>
         <ResponsiveContainer width="100%" height="100%">
@@ -32,8 +31,8 @@ export default function VaultYieldCard() {
           </PieChart>
         </ResponsiveContainer>
       </div>
-      <div className="py-4 pr-4">
-        <h2 className="font-Teko font-semibold">Vault Yield</h2>
+      <div className="py-4 pr-4 text-sm">
+        <h2 className="font-Teko text-xl font-semibold">Vault Yield</h2>
         <p className="text-xs">(last hour)</p>
         <p className="flex items-center gap-2">
           <span className="bg-amber inline-block h-3 w-3"></span>Lending
@@ -45,6 +44,6 @@ export default function VaultYieldCard() {
           <span className="bg-amber inline-block h-3 w-3"></span>Vault Fees
         </p>
       </div>
-    </>
+    </div>
   );
 }
