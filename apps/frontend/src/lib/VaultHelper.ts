@@ -49,3 +49,25 @@ export function getTimeRemaining(dateTimeValue: string): CountdownValues {
 export function formatCountdown(timeValues: CountdownValues): string {
   return `${timeValues.days}d:${timeValues.hours}h:${timeValues.minutes}m:${timeValues.seconds}s`;
 }
+
+function truncateToDecimals(value: string, decimals: number): string {
+    // Split into whole and fractional parts
+    const [whole, fraction] = value.split('.');
+    
+    if (!fraction || fraction.length <= decimals) {
+      return value; // No truncation needed
+    }
+  
+    // Truncate the fractional part
+    const truncatedFraction = fraction.substring(0, decimals);
+    
+    return `${whole}.${truncatedFraction}`;
+  }
+  
+  // Using ethers.js specifically for BigNumber handling
+  export function formatSmallNumber(value: string | ethers.BigNumberish): string {
+    const bn = ethers.toBigInt(value);
+    const str = ethers.formatUnits(bn, 18); // Assuming 18 decimals like ETH
+    
+    return truncateToDecimals(str, 7); // Keep 7 decimal places
+  }

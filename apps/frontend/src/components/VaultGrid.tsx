@@ -1,24 +1,29 @@
 import CatEar from '@/components/svg/CatEar';
 import VaultHeader from './VaultHeader';
 import VaultCard from './VaultCard';
-import { useQuery } from '@tanstack/react-query';
 import { IVault } from '../../../backend/src/models/IVault';
+import {  dataArr } from '@/lib/default';
 
-const apiUrl = import.meta.env.VITE_API_URL;
+// const apiUrl = import.meta.env.VITE_API_URL;
 
-const fetchData = async (): Promise<IVault[]> => {
-  const response = await fetch(`${apiUrl}/vault`);
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
-  }
-  return response.json();
-};
+// const fetchData = async (): Promise<IVault[]> => {
+//   const response = await fetch(`${apiUrl}/vault`);
+//   if (!response.ok) {
+//     throw new Error('Network response was not ok');
+//   }
+//   return response.json();
+// };
 
 export default function VaultGrid() {
-  const { data, error, isLoading } = useQuery<IVault[], Error>({
-    queryKey: ['vaults'],
-    queryFn: fetchData,
-  });
+  // const { data, error, isLoading } = useQuery<IVault[], Error>({
+  //   queryKey: ['vaults'],
+  //   queryFn: fetchData,
+  // });
+  const data:IVault[]=dataArr;
+  const isLoading=false;
+  const error=false;
+
+  console.log(data)
 
   return (
     <section className="px-[3vw] py-10 pt-20 max-[550px]:pt-10">
@@ -54,7 +59,7 @@ export default function VaultGrid() {
               className="mb-4 w-32"
             />
             <p className="text-center text-lg text-red-500">
-              Error: {error.message}
+              Error: {error}
             </p>
           </div>
         ) : !data || data.length === 0 ? (
@@ -68,7 +73,7 @@ export default function VaultGrid() {
           </div>
         ) : (
           <div className="flex flex-wrap justify-center gap-8 max-lg:gap-4">
-            {data.map((card, index) => (
+            {data.length>0&&data.map((card, index) => (
               <VaultCard key={index} index={index} vault={card} />
             ))}
           </div>

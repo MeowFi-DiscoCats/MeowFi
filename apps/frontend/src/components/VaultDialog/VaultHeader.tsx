@@ -5,16 +5,19 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { LucideChevronLeft } from 'lucide-react';
-import { useState } from 'react';
+import {  useState } from 'react';
 import { IVault } from '../../../../backend/src/models/IVault';
-import { useQueryClient } from '@tanstack/react-query';
+import { dataArr } from '@/lib/default';
 
 export function VaultHeader({ index }: { index: number }) {
   const [copied, setCopied] = useState(false);
-
-  const queryClient = useQueryClient();
-  const vaults: IVault[] = queryClient.getQueryData(['vaults'])!;
+  // const vaults: IVault[] = queryClient.getQueryData(['vaults'])!;
+  const vaults: IVault[] = dataArr
   const vault = vaults[index];
+  
+
+
+
 
   const handleCopy = () => {
     navigator.clipboard.writeText(vault.proxyAddress);

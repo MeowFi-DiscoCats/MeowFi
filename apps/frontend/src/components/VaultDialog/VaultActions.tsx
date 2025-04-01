@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { BrowserProvider, Contract, Eip1193Provider, ethers } from 'ethers';
-import { useQueryClient } from '@tanstack/react-query';
 import { IVault } from '../../../../backend/src/models/IVault';
 import {
   useAppKitAccount,
@@ -10,14 +9,14 @@ import {
 import { NFTabi, nativeTimeVaultAbi } from '@/lib/abi.data';
 import {
   formatBalance,
-  getTimeRemaining,
-  formatCountdown,
 } from '@/lib/VaultHelper';
 import { toast } from 'sonner';
+import { dataArr } from '@/lib/default';
 
 export function VaultActions({ index }: { index: number }) {
-  const queryClient = useQueryClient();
-  const vaults: IVault[] = queryClient.getQueryData(['vaults'])!;
+  
+  // const vaults: IVault[] = queryClient.getQueryData(['vaults'])!;
+  const vaults: IVault[] = dataArr
   const vault = vaults[index];
 
   const [quantity, setQuantity] = useState<number>(1);
@@ -121,20 +120,89 @@ export function VaultActions({ index }: { index: number }) {
     }
     fetchVaultHoldings();
   }, [address, vault.proxyAddress, walletProvider, chainId, refresher]);
-
   useEffect(() => {
-    function updateCountdowns() {
-      const joinRemaining = getTimeRemaining(vault.joinInPeriod);
+    let intervalId: NodeJS.Timeout;
+  
+    async function fetchPeriod() {
+      if (!address || !vault.proxyAddress || !walletProvider) return;
+  
+      try {
+        const provider = new BrowserProvider(walletProvider, chainId);
+        const proxyContract = new Contract(
+          vault.proxyAddress,
+          nativeTimeVaultAbi,
+          provider
+        );
+  
+        // Fetch periods from contract
+        const [_joiningPeriod, _claimingPeriod] = await Promise.all([
+          proxyContract.joiningPeriod(),
+          proxyContract.claimingPeriod()
+        ]);
+  
+        // Convert BigNumber to number
+        const joiningPeriod = Number(_joiningPeriod);
+        const claimingPeriod = Number(_claimingPeriod);
+  
+        if (joiningPeriod > 0 && claimingPeriod > 0) {
+          // Immediate update
+          updateCountdowns(joiningPeriod, claimingPeriod);
+  
+          // Set up interval for updates
+          intervalId = setInterval(
+            () => updateCountdowns(joiningPeriod, claimingPeriod),
+            1000
+          );
+        }
+      } catch (error) {
+        console.error('Error fetching vault periods:', error);
+        // Consider setting some error state here
+      }
+    }
+  
+    function updateCountdowns(joiningPeriod: number, claimingPeriod: number) {
+      const now = Math.floor(Date.now() / 1000); // Current time in seconds
+      
+      // Calculate remaining time
+      const joinRemaining = joiningPeriod - now;
+      const claimRemaining = claimingPeriod - now;
+  
+      // Format and update state
       setJoinTimeLeft(formatCountdown(joinRemaining));
-
-      const claimRemaining = getTimeRemaining(vault.claimInPeriod);
       setClaimTimeLeft(formatCountdown(claimRemaining));
     }
+  
+    function formatCountdown(seconds: number): string {
+      if (seconds <= 0) return "00d:00h:00m:00s";
+  
+      const days = Math.floor(seconds / (60 * 60 * 24));
+      const hours = Math.floor((seconds % (60 * 60 * 24)) / (60 * 60));
+      const minutes = Math.floor((seconds % (60 * 60)) / 60);
+      const secs = Math.floor(seconds % 60);
+  
+      return `${days.toString().padStart(2, '0')}d:${hours.toString().padStart(2, '0')}h:${minutes.toString().padStart(2, '0')}m:${secs.toString().padStart(2, '0')}s`;
+    }
+  
+    fetchPeriod();
+  
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [address, vault.proxyAddress, walletProvider, chainId, refresher]);
+ 
+  // useEffect(() => {
+  //   function updateCountdowns() {
+  //     const joinRemaining = getTimeRemaining(vault.joinInPeriod);
+  //     setJoinTimeLeft(formatCountdown(joinRemaining));
 
-    updateCountdowns();
-    const intervalId = setInterval(updateCountdowns, 1000);
-    return () => clearInterval(intervalId);
-  }, [vault.joinInPeriod, vault.claimInPeriod]);
+  //     const claimRemaining = getTimeRemaining(vault.claimInPeriod);
+  //     setClaimTimeLeft(formatCountdown(claimRemaining));
+  //   }
+
+  //   updateCountdowns();
+  //   const intervalId = setInterval(updateCountdowns, 1000);
+  //   return () => clearInterval(intervalId);
+  // }, [vault.joinInPeriod, vault.claimInPeriod]);
 
   async function handleDeposit() {
     if (!isConnected) {
@@ -200,7 +268,7 @@ export function VaultActions({ index }: { index: number }) {
   }
 
   async function handleClaim() {
-    if (claimTimeLeft !== '0d:0h:0m:0s') {
+    if (claimTimeLeft !== '00d:00h:00m:00s') {
       toast('Claim failed', {
         description: 'Claim period not started yet',
       });
@@ -375,7 +443,7 @@ export function VaultActions({ index }: { index: number }) {
           className="bg-amber p-1"
           disabled={claimLoading}
         >
-          {claimTimeLeft === '0d:0h:0m:0s'
+          {claimTimeLeft === '00d:00h:00m:00s'
             ? 'Claim'
             : claimLoading
               ? 'Claiming...'

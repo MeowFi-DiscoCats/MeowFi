@@ -2,27 +2,29 @@ import { LuZap, LuCheck } from 'react-icons/lu';
 import AirDrop from '../svg/AirDrop';
 import HourGlass from '../svg/HourGlass';
 import Scale from '../svg/Scale';
-import { useQueryClient } from '@tanstack/react-query';
+// import { useQueryClient } from '@tanstack/react-query';
 import { IVault } from '../../../../backend/src/models/IVault';
 import { useEffect, useState } from 'react';
 import { Contract, ethers } from 'ethers';
 import { nativeTimeVaultAbi } from '@/lib/abi.data';
-import { formatBalance } from '@/lib/VaultHelper';
+import {  formatSmallNumber } from '@/lib/VaultHelper';
 import Triangle from '../svg/Triangle';
+import { dataArr } from '@/lib/default';
 
 export function VaultMetrics({ index }: { index: number }) {
-  const queryClient = useQueryClient();
-  const vaults: IVault[] = queryClient.getQueryData(['vaults'])!;
+  // const queryClient = useQueryClient();
+  // const vaults: IVault[] = queryClient.getQueryData(['vaults'])!;
+  const vaults: IVault[] = dataArr
 
   const vault = vaults[index];
-  const [decimals, setdecimals] = useState(0);
+  // const [decimals, setdecimals] = useState(0);
 
   const [vaultMetrics, setVaultMetrics] = useState({
     yieldValue: vault.yieldValue || vault.yieldValue,
     backingRatio: vault.backingRatio || vault.backingRatio,
     backingPercentage: vault.backingPercentage || vault.backingPercentage,
   });
-
+  
   useEffect(() => {
     if (!vault.proxyAddress) return;
 
@@ -43,7 +45,7 @@ export function VaultMetrics({ index }: { index: number }) {
         // );
 
         // const decimal = await tokenContract.decimals();
-        setdecimals(18);
+        // setdecimals(18);
 
         const [nftCount, totalFunds] = await Promise.all([
           proxyContract.getNftCount(),
@@ -62,7 +64,7 @@ export function VaultMetrics({ index }: { index: number }) {
         const backingRatio =
           yieldedFundsValue > 0
             ? yieldedFundsValue / (nftCountValue * activenftPrice)
-            : 0;
+            : 1;
         const backingPercentage = backingRatio * 100;
 
         setVaultMetrics({
@@ -103,8 +105,8 @@ export function VaultMetrics({ index }: { index: number }) {
               <Scale />
             </div>
             <p className="font-Teko font-semibold">
-              <span className="mr-1 text-2xl">
-                ${formatBalance(vaultMetrics.yieldValue.toString(), decimals)}
+              <span className="mr-1 text- ">
+                ${(formatSmallNumber(vaultMetrics.yieldValue.toString()))}
               </span>
               {vault.tokenSymbol}
             </p>
