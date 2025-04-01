@@ -25,7 +25,7 @@ export default function VaultCard({
 
 const [vaultMetrics, setVaultMetrics] = useState({
     yieldValue: vault.yieldValue || vault.yieldValue,
-    backingRatio: vault.backingRatio || vault.backingRatio,
+    locingPeriod: 0,
     backingPercentage: vault.backingPercentage || vault.backingPercentage,
   });
 
@@ -50,6 +50,9 @@ const [vaultMetrics, setVaultMetrics] = useState({
           ]);
           const yieldedFunds = await proxyContract.yieldedFunds();
           const nftPrice = await proxyContract.nftPrice();
+          const joiningPeriod = await proxyContract.joiningPeriod();
+          const claimingPeriod = await proxyContract.claimingPeriod();
+          const dayLocin=Math.floor((Number(claimingPeriod)-Number(joiningPeriod)) / 86400)
           console.log(nftCount);
           const nftCountValue = Number(nftCount);
           const totalFundsValue = Number(totalFunds);
@@ -67,7 +70,7 @@ const [vaultMetrics, setVaultMetrics] = useState({
   
           setVaultMetrics({
             yieldValue,
-            backingRatio,
+            locingPeriod:Number(dayLocin),
             backingPercentage,
           });
         } catch (error) {
@@ -135,7 +138,7 @@ const [vaultMetrics, setVaultMetrics] = useState({
       </div>
       <div className="border-gunmetal bg-cream mx-6 flex justify-between rounded-full border-1 px-2 py-1 text-sm">
         <span>Locked-In Period:</span>
-        <span className="text-sienna font-bold">{vault.lockedInPeriod}</span>
+        <span className="text-sienna font-bold">{vaultMetrics.locingPeriod}</span>
       </div>
       <VaultDialog index={index} />
     </div>
