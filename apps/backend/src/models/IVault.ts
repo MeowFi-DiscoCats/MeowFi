@@ -18,5 +18,5 @@ export interface IVault {
   backingPercentage: number;
   tokenSymbol: string;
   NFTLimit: number;
-  isErc20:boolean;
+  isErc20: boolean;
 }

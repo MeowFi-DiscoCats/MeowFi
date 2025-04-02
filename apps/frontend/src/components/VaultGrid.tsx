@@ -2,7 +2,7 @@ import CatEar from '@/components/svg/CatEar';
 import VaultHeader from './VaultHeader';
 import VaultCard from './VaultCard';
 import { IVault } from '../../../backend/src/models/IVault';
-import {  dataArr } from '@/lib/default';
+import { dataArr } from '@/lib/default';
 
 // const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -19,11 +19,11 @@ export default function VaultGrid() {
   //   queryKey: ['vaults'],
   //   queryFn: fetchData,
   // });
-  const data:IVault[]=dataArr;
-  const isLoading=false;
-  const error=false;
+  const data: IVault[] = dataArr;
+  const isLoading = false;
+  const error = false;
 
-  console.log(data)
+  console.log(data);
 
   return (
     <section className="px-[3vw] py-10 pt-20 max-[550px]:pt-10">
@@ -58,9 +58,7 @@ export default function VaultGrid() {
               alt="Error"
               className="mb-4 w-32"
             />
-            <p className="text-center text-lg text-red-500">
-              Error: {error}
-            </p>
+            <p className="text-center text-lg text-red-500">Error: {error}</p>
           </div>
         ) : !data || data.length === 0 ? (
           <div className="flex h-full flex-col items-center justify-center py-12">
@@ -73,9 +71,10 @@ export default function VaultGrid() {
           </div>
         ) : (
           <div className="flex flex-wrap justify-center gap-8 max-lg:gap-4">
-            {data.length>0&&data.map((card, index) => (
-              <VaultCard key={index} index={index} vault={card} />
-            ))}
+            {data.length > 0 &&
+              data.map((card, index) => (
+                <VaultCard key={index} index={index} vault={card} />
+              ))}
           </div>
         )}
       </div>

@@ -7,16 +7,13 @@ import {
   useAppKitProvider,
 } from '@reown/appkit/react';
 import { NFTabi, nativeTimeVaultAbi } from '@/lib/abi.data';
-import {
-  formatBalance,
-} from '@/lib/VaultHelper';
+import { formatBalance } from '@/lib/VaultHelper';
 import { toast } from 'sonner';
 import { dataArr } from '@/lib/default';
 
 export function VaultActions({ index }: { index: number }) {
-  
   // const vaults: IVault[] = queryClient.getQueryData(['vaults'])!;
-  const vaults: IVault[] = dataArr
+  const vaults: IVault[] = dataArr;
   const vault = vaults[index];
 
   const [quantity, setQuantity] = useState<number>(1);
@@ -122,10 +119,10 @@ export function VaultActions({ index }: { index: number }) {
   }, [address, vault.proxyAddress, walletProvider, chainId, refresher]);
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
-  
+
     async function fetchPeriod() {
       if (!address || !vault.proxyAddress || !walletProvider) return;
-  
+
       try {
         const provider = new BrowserProvider(walletProvider, chainId);
         const proxyContract = new Contract(
@@ -133,21 +130,21 @@ export function VaultActions({ index }: { index: number }) {
           nativeTimeVaultAbi,
           provider
         );
-  
+
         // Fetch periods from contract
         const [_joiningPeriod, _claimingPeriod] = await Promise.all([
           proxyContract.joiningPeriod(),
-          proxyContract.claimingPeriod()
+          proxyContract.claimingPeriod(),
         ]);
-  
+
         // Convert BigNumber to number
         const joiningPeriod = Number(_joiningPeriod);
         const claimingPeriod = Number(_claimingPeriod);
-  
+
         if (joiningPeriod > 0 && claimingPeriod > 0) {
           // Immediate update
           updateCountdowns(joiningPeriod, claimingPeriod);
-  
+
           // Set up interval for updates
           intervalId = setInterval(
             () => updateCountdowns(joiningPeriod, claimingPeriod),
@@ -159,37 +156,37 @@ export function VaultActions({ index }: { index: number }) {
         // Consider setting some error state here
       }
     }
-  
+
     function updateCountdowns(joiningPeriod: number, claimingPeriod: number) {
       const now = Math.floor(Date.now() / 1000); // Current time in seconds
-      
+
       // Calculate remaining time
       const joinRemaining = joiningPeriod - now;
       const claimRemaining = claimingPeriod - now;
-  
+
       // Format and update state
       setJoinTimeLeft(formatCountdown(joinRemaining));
       setClaimTimeLeft(formatCountdown(claimRemaining));
     }
-  
+
     function formatCountdown(seconds: number): string {
-      if (seconds <= 0) return "00d:00h:00m:00s";
-  
+      if (seconds <= 0) return '00d:00h:00m:00s';
+
       const days = Math.floor(seconds / (60 * 60 * 24));
       const hours = Math.floor((seconds % (60 * 60 * 24)) / (60 * 60));
       const minutes = Math.floor((seconds % (60 * 60)) / 60);
       const secs = Math.floor(seconds % 60);
-  
+
       return `${days.toString().padStart(2, '0')}d:${hours.toString().padStart(2, '0')}h:${minutes.toString().padStart(2, '0')}m:${secs.toString().padStart(2, '0')}s`;
     }
-  
+
     fetchPeriod();
-  
+
     return () => {
       if (intervalId) clearInterval(intervalId);
     };
   }, [address, vault.proxyAddress, walletProvider, chainId, refresher]);
- 
+
   // useEffect(() => {
   //   function updateCountdowns() {
   //     const joinRemaining = getTimeRemaining(vault.joinInPeriod);
@@ -349,23 +346,6 @@ export function VaultActions({ index }: { index: number }) {
           ? 'VAULT CLOSED'
           : `Vault Closes In: ${joinTimeLeft}`}
       </p>
-      <div className="border-gunmetal flex items-center justify-between gap-2 rounded-xl border bg-white p-2">
-        <div className="flex items-center gap-2">
-          <img
-            width="30"
-            className="p-[1px] shadow"
-            src="/images/danceCat.webp"
-            alt="NFTs"
-          />
-          <div>
-            <p>Vault Info</p>
-            <p className="font-Teko text-xl font-semibold tracking-wider">
-              {vault.totalSupply} @ ${vault.price} in {vault.tokenSymbol}
-            </p>
-          </div>
-        </div>
-        <img width="30" src="/images/lightingBolt.webp" alt="points" />
-      </div>
       <div className="border-gunmetal bg-yellow flex justify-between rounded-lg border p-2 font-semibold">
         <span>Vault Supply:</span>
         <span className="font-Teko tracking-wider">

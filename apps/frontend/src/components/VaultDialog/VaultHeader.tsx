@@ -5,19 +5,15 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { LucideChevronLeft } from 'lucide-react';
-import {  useState } from 'react';
+import { useState } from 'react';
 import { IVault } from '../../../../backend/src/models/IVault';
 import { dataArr } from '@/lib/default';
 
 export function VaultHeader({ index }: { index: number }) {
   const [copied, setCopied] = useState(false);
   // const vaults: IVault[] = queryClient.getQueryData(['vaults'])!;
-  const vaults: IVault[] = dataArr
+  const vaults: IVault[] = dataArr;
   const vault = vaults[index];
-  
-
-
-
 
   const handleCopy = () => {
     navigator.clipboard.writeText(vault.proxyAddress);
@@ -54,7 +50,7 @@ export function VaultHeader({ index }: { index: number }) {
           </div>
         </div>
         <div>
-          <span className="bg-amber rounded-lg p-1 px-3">
+          <span className="bg-amber flex flex-wrap rounded-lg p-1 px-3">
             Limit per wallet:{vault.NFTLimit}
           </span>
         </div>
