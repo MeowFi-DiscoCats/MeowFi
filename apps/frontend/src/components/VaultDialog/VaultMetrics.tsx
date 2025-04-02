@@ -1,5 +1,5 @@
-import { LuZap, LuCheck } from 'react-icons/lu';
-import AirDrop from '../svg/AirDrop';
+import { LuZap } from 'react-icons/lu';
+// import AirDrop from '../svg/AirDrop';
 import HourGlass from '../svg/HourGlass';
 import Scale from '../svg/Scale';
 // import { useQueryClient } from '@tanstack/react-query';
@@ -7,14 +7,14 @@ import { IVault } from '../../../../backend/src/models/IVault';
 import { useEffect, useState } from 'react';
 import { Contract, ethers } from 'ethers';
 import { nativeTimeVaultAbi } from '@/lib/abi.data';
-import {  formatSmallNumber } from '@/lib/VaultHelper';
+import { formatSmallNumber } from '@/lib/VaultHelper';
 import Triangle from '../svg/Triangle';
 import { dataArr } from '@/lib/default';
 
 export function VaultMetrics({ index }: { index: number }) {
   // const queryClient = useQueryClient();
   // const vaults: IVault[] = queryClient.getQueryData(['vaults'])!;
-  const vaults: IVault[] = dataArr
+  const vaults: IVault[] = dataArr;
 
   const vault = vaults[index];
   // const [decimals, setdecimals] = useState(0);
@@ -24,7 +24,7 @@ export function VaultMetrics({ index }: { index: number }) {
     backingRatio: vault.backingRatio || vault.backingRatio,
     backingPercentage: vault.backingPercentage || vault.backingPercentage,
   });
-  
+
   useEffect(() => {
     if (!vault.proxyAddress) return;
 
@@ -85,7 +85,27 @@ export function VaultMetrics({ index }: { index: number }) {
   };
 
   return (
-    <div className="mt-9 flex flex-1 flex-col justify-end">
+    <div className="flex flex-1 flex-col justify-end">
+      <div className="border-gunmetal flex items-center justify-between gap-2 rounded-xl border bg-white p-2">
+        <div className="flex items-center gap-2">
+          <img
+            width="30"
+            className="p-[1px] shadow"
+            src="/images/sumerNFT.webp"
+            alt="NFTs"
+          />
+          <div>
+            <p>Vault Info</p>
+            <p className="font-Teko text-xl font-semibold tracking-wider">
+              {vault.totalSupply} @ {vault.price}
+              {vault.tokenSymbol}
+            </p>
+          </div>
+        </div>
+        <img width="30" src="/images/lightingBolt.webp" alt="points" />
+      </div>
+
+      {/* 
       <div className="from-crimson/50 to-crimson mx-4 flex items-center gap-2 rounded-xl bg-gradient-to-t p-2 text-white">
         <AirDrop />
         <div>
@@ -94,7 +114,8 @@ export function VaultMetrics({ index }: { index: number }) {
         </div>
         <LuCheck size="30px" className="ml-auto" />
       </div>
-      <div className="mt-4 flex min-h-72 w-full flex-1 gap-3">
+      */}
+      <div className="mt-4 flex max-h-[330px] min-h-72 w-full flex-1 gap-3">
         <div className="flex flex-1 flex-col gap-3">
           <div className="bg-gunmetal relative flex flex-1 flex-col items-center justify-end gap-2 rounded-xl p-4 text-white">
             <div className="absolute top-4 left-0 h-full w-full">
@@ -105,8 +126,8 @@ export function VaultMetrics({ index }: { index: number }) {
               <Scale />
             </div>
             <p className="font-Teko font-semibold">
-              <span className="mr-1 text- ">
-                ${(formatSmallNumber(vaultMetrics.yieldValue.toString()))}
+              <span className="text- mr-1">
+                ${formatSmallNumber(vaultMetrics.yieldValue.toString())}
               </span>
               {vault.tokenSymbol}
             </p>
