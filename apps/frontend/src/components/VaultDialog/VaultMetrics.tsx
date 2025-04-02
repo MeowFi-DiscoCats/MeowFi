@@ -98,7 +98,7 @@ export function VaultMetrics({ index }: { index: number }) {
             <p>Vault Info</p>
             <p className="font-Teko text-xl font-semibold tracking-wider">
               {vault.totalSupply} @ {vault.price}
-              {vault.tokenSymbol}
+              {''} {vault.tokenSymbol}
             </p>
           </div>
         </div>
