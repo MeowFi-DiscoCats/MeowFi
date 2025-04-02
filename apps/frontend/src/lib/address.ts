@@ -1,1 +1,2 @@
-export const nativetimelockVaultAddress='0x7b56Bf72700D05C61D25562b186b8f715b4256b5'
+export const nativetimelockVaultAddress='0x25D800b604f254D35C04B1C568f6078d46a84A6E'
+export const nativetimelockVaultAddressLogic='0x7e25B9E5fcd00734cfF8651B208eeEa041131b58'
