@@ -140,7 +140,7 @@ export default function VaultCard({
         </span>
       </div>
       <div className="border-gunmetal bg-cream mx-6 flex justify-between rounded-full border-1 px-2 py-1 text-sm">
-        <span>Locked-In Period:</span>
+        <span>Lock-in Period:</span>
         <span className="text-sienna font-bold">
           {vaultMetrics.locingPeriod}
         </span>
