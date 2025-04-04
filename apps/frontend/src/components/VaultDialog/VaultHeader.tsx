@@ -31,7 +31,7 @@ export function VaultHeader({ index }: { index: number }) {
             <DialogTitle className="font-Teko text-gunmetal text-start text-2xl font-semibold">
               {vault.title}
             </DialogTitle>
-            <DialogDescription className="flex max-md:hidden">
+            <DialogDescription className="flex items-center max-md:hidden">
               <span className="text-gunmetal/80 text-sm capitalize">
                 <strong>Type: </strong>
                 {vault.type}
@@ -55,13 +55,13 @@ export function VaultHeader({ index }: { index: number }) {
           </span>
         </div>
       </div>
-      <DialogDescription className="text-start md:hidden">
+      <DialogDescription className="flex items-center text-start md:hidden">
         <span className="text-gunmetal/80 text-sm">
-          <strong>Type: </strong>
+          <strong className="mr-1">Type: </strong>
           {vault.type}
         </span>
-        <span className="text-gunmetal/80 ml-2 text-sm">
-          <strong>Vault: </strong>
+        <span className="text-gunmetal/80 ml-2 flex items-center text-sm">
+          <strong className="mr-1">Vault: </strong>
           {vault.proxyAddress.slice(0, 10)}...
           <button
             onClick={handleCopy}
