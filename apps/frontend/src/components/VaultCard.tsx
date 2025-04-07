@@ -65,7 +65,7 @@ export default function VaultCard({
             ? yieldedFundsValue / (nftCountValue * activenftPrice)
             : 1;
         const backingPercentage = backingRatio * 100;
-        console.log(backingPercentage);
+        console.log(yieldValue);
 
         setVaultMetrics({
           yieldValue,

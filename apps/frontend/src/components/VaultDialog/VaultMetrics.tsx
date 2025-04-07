@@ -23,6 +23,7 @@ export function VaultMetrics({ index }: { index: number }) {
     yieldValue: vault.yieldValue || vault.yieldValue,
     backingRatio: vault.backingRatio || vault.backingRatio,
     backingPercentage: vault.backingPercentage || vault.backingPercentage,
+    lockin:0||0
   });
 
   useEffect(() => {
@@ -51,6 +52,12 @@ export function VaultMetrics({ index }: { index: number }) {
           proxyContract.getNftCount(),
           proxyContract.totalFunds(),
         ]);
+        const joiningPeriod = await proxyContract.joiningPeriod();
+        const claimingPeriod = await proxyContract.claimingPeriod();
+        const dayLocin = Math.floor(
+          (Number(claimingPeriod) - Number(joiningPeriod)) / 86400
+        );
+        
         const yieldedFunds = await proxyContract.yieldedFunds();
         const nftPrice = await proxyContract.nftPrice();
         console.log(nftCount);
@@ -71,6 +78,7 @@ export function VaultMetrics({ index }: { index: number }) {
           yieldValue,
           backingRatio,
           backingPercentage,
+          lockin:dayLocin
         });
       } catch (error) {
         console.error('Error fetching vault metrics:', error);
@@ -138,7 +146,7 @@ export function VaultMetrics({ index }: { index: number }) {
               <HourGlass />
               <div>
                 <p className="font-Teko text-3xl font-semibold">
-                  {vault.lockedInPeriod}D
+                  {vaultMetrics.lockin}D
                 </p>
                 <p className="font-thin">Remaining</p>
               </div>
