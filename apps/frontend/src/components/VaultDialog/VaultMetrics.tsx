@@ -24,7 +24,7 @@ export function VaultMetrics({ index }: { index: number }) {
     yieldValue: vault.yieldValue || 0,
     backingRatio: vault.backingRatio || 0,
     backingPercentage: vault.backingPercentage || 0,
-    lockin: 0
+    lockin: 0,
   });
 
   const formatToTwoDecimals = (value: number): string => {
@@ -46,49 +46,54 @@ export function VaultMetrics({ index }: { index: number }) {
         );
 
         // Fetch all contract data separately with individual error handling
-let nftCount, totalFunds, joiningPeriod, claimingPeriod, yieldedFunds, nftPrice;
+        let nftCount,
+          totalFunds,
+          joiningPeriod,
+          claimingPeriod,
+          yieldedFunds,
+          nftPrice;
 
-try {
-  nftCount = await proxyContract.getNftCount();
-} catch (error) {
-  console.error('Error fetching NFT count:', error);
-  nftCount = 0; // Default fallback value
-}
+        try {
+          nftCount = await proxyContract.getNftCount();
+        } catch (error) {
+          console.error('Error fetching NFT count:', error);
+          nftCount = 0; // Default fallback value
+        }
 
-try {
-  totalFunds = await proxyContract.totalFunds();
-} catch (error) {
-  console.error('Error fetching total funds:', error);
-  totalFunds = 0;
-}
+        try {
+          totalFunds = await proxyContract.totalFunds();
+        } catch (error) {
+          console.error('Error fetching total funds:', error);
+          totalFunds = 0;
+        }
 
-try {
-  joiningPeriod = await proxyContract.joiningPeriod();
-} catch (error) {
-  console.error('Error fetching joining period:', error);
-  joiningPeriod = 0;
-}
+        try {
+          joiningPeriod = await proxyContract.joiningPeriod();
+        } catch (error) {
+          console.error('Error fetching joining period:', error);
+          joiningPeriod = 0;
+        }
 
-try {
-  claimingPeriod = await proxyContract.claimingPeriod();
-} catch (error) {
-  console.error('Error fetching claiming period:', error);
-  claimingPeriod = 0;
-}
+        try {
+          claimingPeriod = await proxyContract.claimingPeriod();
+        } catch (error) {
+          console.error('Error fetching claiming period:', error);
+          claimingPeriod = 0;
+        }
 
-try {
-  yieldedFunds = await proxyContract.yieldedFunds();
-} catch (error) {
-  console.error('Error fetching yielded funds:', error);
-  yieldedFunds = 0;
-}
+        try {
+          yieldedFunds = await proxyContract.yieldedFunds();
+        } catch (error) {
+          console.error('Error fetching yielded funds:', error);
+          yieldedFunds = 0;
+        }
 
-try {
-  nftPrice = await proxyContract.nftPrice();
-} catch (error) {
-  console.error('Error fetching NFT price:', error);
-  nftPrice = 0;
-}
+        try {
+          nftPrice = await proxyContract.nftPrice();
+        } catch (error) {
+          console.error('Error fetching NFT price:', error);
+          nftPrice = 0;
+        }
 
         const lockinDays = Math.floor(
           (Number(claimingPeriod) - Number(joiningPeriod)) / 86400
@@ -99,23 +104,22 @@ try {
         const yieldedFundsValue = Number(yieldedFunds);
         const activeNftPrice = Number(nftPrice);
 
-        const yieldValue = yieldedFundsValue > 0 
-          ? yieldedFundsValue - totalFundsValue 
-          : 0;
-        
-        const backingRatio = yieldedFundsValue > 0
-          ? yieldedFundsValue / (nftCountValue * activeNftPrice)
-          : 1;
-        
+        const yieldValue =
+          yieldedFundsValue > 0 ? yieldedFundsValue - totalFundsValue : 0;
+
+        const backingRatio =
+          yieldedFundsValue > 0
+            ? yieldedFundsValue / (nftCountValue * activeNftPrice)
+            : 1;
+
         const backingPercentage = backingRatio * 100;
 
         setVaultMetrics({
           yieldValue,
           backingRatio,
           backingPercentage,
-          lockin: lockinDays
+          lockin: lockinDays,
         });
-
       } catch (error) {
         console.error('Error fetching vault metrics:', error);
       }
@@ -127,7 +131,7 @@ try {
   return (
     <div className="flex flex-1 flex-col justify-end">
       {/* Vault Info Header */}
-      <div className="flex items-center justify-between gap-2 rounded-xl border border-gunmetal bg-white p-2">
+      <div className="border-gunmetal flex items-center justify-between gap-2 rounded-xl border bg-white p-2">
         <div className="flex items-center gap-2">
           <img
             width={30}
@@ -142,11 +146,7 @@ try {
             </p>
           </div>
         </div>
-        <img 
-          width={30} 
-          src="/images/lightingBolt.webp" 
-          alt="points" 
-        />
+        <img width={30} src="/images/lightingBolt.webp" alt="points" />
       </div>
 
       {/* Metrics Grid */}
@@ -154,7 +154,7 @@ try {
         {/* Left Column */}
         <div className="flex flex-1 flex-col gap-3">
           {/* Yield Generated Card */}
-          <div className="relative flex flex-1 flex-col items-center justify-end gap-2 rounded-xl bg-gunmetal p-4 text-white">
+          <div className="bg-gunmetal relative flex flex-1 flex-col items-center justify-end gap-2 rounded-xl p-4 text-white">
             <div className="absolute top-4 left-0 h-full w-full">
               <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 transform drop-shadow-[0_0_6px_rgba(255,255,0,0.6)]">
                 <Triangle />
@@ -171,7 +171,7 @@ try {
           </div>
 
           {/* Lockin Period Card */}
-          <div className="flex flex-1 items-center justify-center rounded-xl bg-gunmetal p-4">
+          <div className="bg-gunmetal flex flex-1 items-center justify-center rounded-xl p-4">
             <div className="flex items-center justify-center gap-2 text-white">
               <HourGlass />
               <div>
@@ -185,21 +185,21 @@ try {
         </div>
 
         {/* Right Column - Backing Metrics */}
-        <div className="flex flex-1 flex-col rounded-xl bg-gunmetal p-3">
+        <div className="bg-gunmetal flex flex-1 flex-col rounded-xl p-3">
           <h5 className="text-center font-thin text-white">Backing</h5>
           <div className="mx-auto mt-4 mb-1 h-4 w-10 rounded-full border-2 border-white/12 bg-white/10" />
-          
+
           <div className="relative w-full flex-1">
             <div
-              className="absolute bottom-2 left-2 max-h-[calc(100%-16px)] w-[calc(100%-16px)] rounded-xl bg-amber"
+              className="bg-amber absolute bottom-2 left-2 max-h-[calc(100%-16px)] w-[calc(100%-16px)] rounded-xl"
               style={{
                 height: `${formatToTwoDecimals(vaultMetrics.backingPercentage)}%`,
               }}
             />
-            
+
             <div className="relative z-20 flex h-full flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-white/12 bg-white/10 backdrop-blur-sm">
               <p className="font-Teko flex items-center text-xl text-white">
-                <LuZap /> 
+                <LuZap />
                 <span className="font-Teko mr-1 text-xl">Ratio:</span>
                 {formatToTwoDecimals(vaultMetrics.backingRatio)}
               </p>

@@ -136,7 +136,10 @@ export default function VaultCard({
       <div className="border-gunmetal bg-cream mx-6 flex justify-between rounded-full border-x-1 px-2 py-1 text-sm">
         <span>Net APY:</span>
         <span className="text-sienna font-bold">
-          {(18.5+(vaultMetrics.backingPercentage-100)).toString().slice(0, 6)}% 
+          {(18.5 + (vaultMetrics.backingPercentage - 100))
+            .toString()
+            .slice(0, 6)}
+          %
         </span>
       </div>
       <div className="border-gunmetal bg-cream mx-6 flex justify-between rounded-full border-1 px-2 py-1 text-sm">

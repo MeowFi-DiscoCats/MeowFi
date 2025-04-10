@@ -24,7 +24,6 @@ import WaterTap from './svg/WaterTap';
 const navLinks = [
   { label: 'Time Vaults', to: '/' },
   { label: 'Liquid Launch', soon: true },
-  { label: 'PreSale Vaults', soon: true },
   { label: 'Bribe Wars', soon: true },
 ];
 const manualLinks: { key: string; value: string }[] = [
@@ -50,7 +49,7 @@ export default function NavBar() {
           >
             <img width="70px" src="/images/logo.webp" alt="logo" />
           </NavLink>
-          <div className="[&>a]:bg-cream [&>a]:text-chocolate [&>a]:border-orange [&>a]:font-Bubblegum flex items-center gap-2 text-sm max-[870px]:hidden max-lg:gap-1 [&>a]:relative [&>a]:flex [&>a]:items-center [&>a]:rounded-xl [&>a]:border-2 [&>a]:px-3 [&>a]:py-2 [&>a]:hover:hue-rotate-180">
+          <div className="[&>a]:bg-cream [&>a]:text-chocolate [&>a]:border-yellow [&>a]:font-Bubblegum flex items-center gap-2 text-sm max-[870px]:hidden max-lg:gap-1 [&>a]:relative [&>a]:flex [&>a]:items-center [&>a]:rounded-xl [&>a]:border-2 [&>a]:px-3 [&>a]:py-2 [&>a]:hover:hue-rotate-180">
             {navLinks.map(({ label, to }) =>
               to ? (
                 <NavLink key={label} to={to}>
@@ -111,7 +110,7 @@ export default function NavBar() {
           </div>
           <span className="flex items-center" onClick={() => open()}>
             {!isConnected ? (
-              <a className="font-Bubblegum hover:bg-yellow/95 shadow-inner-custom bg-yellow text-gunmetal flex items-center rounded-xl p-2 px-2 text-center text-sm leading-6 tracking-wider text-nowrap max-[550px]:order-1">
+              <a className="font-Bubblegum hover:bg-yellow/95 border-cream bg-yellow text-gunmetal flex items-center rounded-xl border p-2 px-2 text-center text-sm leading-6 tracking-wider text-nowrap max-[550px]:order-1">
                 Connect Wallet
               </a>
             ) : (
