@@ -138,7 +138,7 @@ export default function CurvanceXFastlaneCard({
       <div className="border-gunmetal bg-cream mx-6 flex justify-between rounded-full border-x-1 px-2 py-1 text-sm">
         <span>Net APY:</span>
         <span className="text-sienna font-bold">
-          {(18.5 + (vaultMetrics.backingPercentage - 100))
+          {(8.8 + (vaultMetrics.backingPercentage - 100))
             .toString()
             .slice(0, 6)}
           %

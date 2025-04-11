@@ -19,4 +19,6 @@ export interface IVault {
   tokenSymbol: string;
   NFTLimit: number;
   isErc20: boolean;
+  abi:any[];
+  tokenAbi:any[];
 }

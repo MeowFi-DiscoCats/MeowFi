@@ -1,5 +1,6 @@
 import { IVault } from '../../../backend/src/models/IVault';
-import { nativetimelockVaultAddress } from './address';
+import { erc20NftTimeVaultCurvance, nativeTimeVaultV2Abi, shMonadAbi } from './abi';
+import { curvancexFastLane, nativetimelockVaultAddress, shMonadErc20Addr } from './address';
 
 const nativeTimeVaultFormData: IVault = {
   title: 'Sumer Money',
@@ -22,6 +23,8 @@ const nativeTimeVaultFormData: IVault = {
   tokenSymbol: 'MON',
   NFTLimit: 10,
   isErc20: false,
+  abi:nativeTimeVaultV2Abi,
+  tokenAbi:[]
 };
 const CurvanceAndFastlane: IVault = {
   title: 'Curvance x Fastlane',
@@ -30,19 +33,21 @@ const CurvanceAndFastlane: IVault = {
   APR: 225,
   type: 'flexible',
   earnings: 0,
-  proxyAddress: nativetimelockVaultAddress,
-  tokenAddress: '0x24b3d12eb92304571e95A42B03d058d1e911aEAd',
+  proxyAddress: curvancexFastLane,
+  tokenAddress: shMonadErc20Addr,
   AirdropIncentivised: 0,
-  totalSupply: 1000,
+  totalSupply: 10000,
   availableSupply: 0,
   joinInPeriod: '2025-03-15T00:00',
   claimInPeriod: '2025-03-17T00:00',
-  price: 1,
+  price: 0.2,
   yieldValue: 0,
   backingRatio: 1,
   backingPercentage: 100,
-  tokenSymbol: 'MON',
-  NFTLimit: 10,
-  isErc20: false,
+  tokenSymbol: 'shMON',
+  NFTLimit: 1,
+  isErc20: true,
+  abi:erc20NftTimeVaultCurvance,
+  tokenAbi:shMonadAbi
 };
-export const dataArr: IVault[] = [nativeTimeVaultFormData, CurvanceAndFastlane];
+export const dataArr: IVault[] = [ CurvanceAndFastlane];
