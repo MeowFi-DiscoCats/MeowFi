@@ -66,7 +66,7 @@ export default function Bribe() {
             </HoverCard>
           </p>
 
-          <Select defaultValue={dataArr[0].tokenAddress}>
+          <Select defaultValue={dataArr[0].title}>
             <SelectTrigger className="[&_*]:font-Teko border-gunmetal !font-Teko [&_*]leading-loose w-full font-semibold shadow-none">
               <SelectValue />
             </SelectTrigger>
@@ -75,7 +75,7 @@ export default function Bribe() {
                 <SelectItem
                   className="[&_*]:font-Teko font-semibold"
                   key={vault.tokenAddress}
-                  value={vault.tokenAddress}
+                  value={vault.title}
                 >
                   <img
                     src={vault.img}
@@ -87,6 +87,25 @@ export default function Bribe() {
               ))}
             </SelectContent>
           </Select>
+          <div className="bg-yellow border-gunmetal mt-4 flex justify-around rounded-xl border p-2">
+            <div className="flex flex-col items-center">
+              <span className="text-sm">Vault liquidity</span>
+              <span className="font-Teko font-semibold">1M $MON</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <span className="text-sm">Bribe Lock</span>
+              <span className="font-Teko font-semibold">30 Days</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <span className="text-sm">Bribe APY</span>
+              <span className="font-Teko font-semibold">789.15%</span>
+            </div>
+          </div>
+
+          <p className="font-Teko my-2 flex items-center gap-2 leading-relaxed font-semibold">
+            Bribe in Tokens
+          </p>
+          <div className="border-gunmetal border bg-white p-4"></div>
         </TabsContent>
         <TabsContent value="track" className="min-h-[300px] w-full p-4 px-8">
           <p className="font-Teko mb-2 flex items-center gap-2 leading-relaxed font-semibold">
@@ -111,7 +130,7 @@ export default function Bribe() {
             </HoverCard>
           </p>
 
-          <Select defaultValue={dataArr[0].tokenAddress}>
+          <Select defaultValue={dataArr[0].title}>
             <SelectTrigger className="[&_*]:font-Teko border-gunmetal !font-Teko [&_*]leading-loose w-full font-semibold shadow-none">
               <SelectValue />
             </SelectTrigger>
@@ -120,7 +139,7 @@ export default function Bribe() {
                 <SelectItem
                   className="[&_*]:font-Teko font-semibold"
                   key={vault.tokenAddress}
-                  value={vault.tokenAddress}
+                  value={vault.title}
                 >
                   <img
                     src={vault.img}

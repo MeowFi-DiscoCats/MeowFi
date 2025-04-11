@@ -39,7 +39,7 @@ export default function NavBar() {
   const { open } = useAppKit();
   const { isConnected } = useAppKitAccount();
   return (
-    <nav className="px-[3vw]">
+    <nav className="relative z-[3] px-[3vw]">
       <div className="mx-auto flex max-w-7xl items-center justify-between py-6">
         {/* Logo and Desktop Navigation */}
         <div className="flex gap-4">

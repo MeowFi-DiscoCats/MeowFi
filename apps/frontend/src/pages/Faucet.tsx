@@ -2,13 +2,13 @@ import ReTwitte from '@/components/svg/ReTwitte';
 import CatEar from '../components/svg/CatEar';
 import { FaDiscord } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
-import Link from '@/components/svg/Link';
 import Triangle from '@/components/svg/Triangle';
 import Scale from '@/components/svg/Scale';
 import HourGlass from '@/components/svg/HourGlass';
 import { LuCheck, LuZap } from 'react-icons/lu';
 import AirDrop from '@/components/svg/AirDrop';
 import VaultYieldCard from '@/components/VaultYieldCard';
+import { Link } from 'react-router-dom';
 
 export default function Faucet() {
   const data = {
@@ -52,7 +52,37 @@ export default function Faucet() {
   const progressPercentage = (data.claimedNFTs / data.totalNFTs) * 100;
 
   return (
-    <section className="text-cream mt-4 px-[3vw] py-10 pt-20">
+    <section className="text-cream mt-4 overflow-hidden px-[3vw] py-10 pt-20">
+      <div className="fixed inset-0 z-[2] flex items-center justify-center bg-black/80 text-4xl text-white">
+        <div className="bg-cream mx-[5vw] max-w-md overflow-hidden rounded-xl">
+          <div className="bg-sky overflow-hidden">
+            <h1 className="font-Showcard -mb-8 px-4 pt-8 text-center text-3xl">
+              Opening Soon
+            </h1>
+            <img
+              src="/images/openingSoon.webp "
+              className="translate-y-12 px-8"
+            />
+          </div>
+          <div className="flex flex-col justify-center px-8 py-4">
+            <h2 className="text-2xl font-bold text-black">
+              Stay thirsty, the drips coming thooon!!
+            </h2>
+            <p className="text-normal text-sm text-black">
+              We’ll be opening the <strong>Liquid Faucet</strong> along with our
+              <strong> AI-Yield Aggregator</strong> very thoon 🐾—perfect time
+              to try our <strong>Time-Lock Vaults</strong>. The cats are ready
+              to flow the liquidity. 🐱💧
+            </p>
+            <Link
+              to="/"
+              className="bg-yellow mx-auto mt-3 rounded-md border border-black p-1 px-4 text-sm text-black shadow-[0_4px_4px_#BFBFBF]"
+            >
+              Show me around
+            </Link>
+          </div>
+        </div>
+      </div>
       <div className="border-cream relative mx-auto min-h-[500px] max-w-6xl rounded-xl border-3 bg-[#121212] py-6 max-sm:rounded-none">
         <img
           width="100"
@@ -143,9 +173,7 @@ export default function Faucet() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-cream rounded-full border-2 border-black p-1 text-sm text-black"
-                >
-                  <Link />
-                </a>
+                ></a>
               </div>
             ))}
           </div>
@@ -211,7 +239,7 @@ export default function Faucet() {
                       height: `${data.backingPercentage}%`,
                     }}
                   />
-                  <div className="relative z-20 flex h-full flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-white/12 bg-white/10 backdrop-blur-sm">
+                  <div className="relative z-[1] flex h-full flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-white/12 bg-white/10 backdrop-blur-sm">
                     <p className="font-Teko flex items-center text-xl text-white">
                       <LuZap />{' '}
                       <span className="font-Teko mr-1 text-xl">Ratio:</span>

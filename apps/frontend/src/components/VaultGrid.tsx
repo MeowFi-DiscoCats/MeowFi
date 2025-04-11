@@ -3,6 +3,7 @@ import VaultHeader from './VaultHeader';
 import VaultCard from './VaultCard';
 import { IVault } from '../../../backend/src/models/IVault';
 import { dataArr } from '@/lib/default';
+import CurvanceXFastlaneCard from './CurvanceXFastlaneCard';
 
 // const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -72,9 +73,17 @@ export default function VaultGrid() {
         ) : (
           <div className="flex flex-wrap justify-center gap-8 max-lg:gap-4">
             {data.length > 0 &&
-              data.map((card, index) => (
-                <VaultCard key={index} index={index} vault={card} />
-              ))}
+              data.map((card, index) =>
+                card.title === 'Curvance x Fastlane' ? (
+                  <CurvanceXFastlaneCard
+                    key={index}
+                    index={index}
+                    vault={card}
+                  />
+                ) : (
+                  <VaultCard key={index} index={index} vault={card} />
+                )
+              )}
           </div>
         )}
       </div>
