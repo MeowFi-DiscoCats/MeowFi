@@ -27,7 +27,7 @@ import { curvancexFastLane, shMonadErc20Addr } from './address';
 //   abi:nativeTimeVaultV2Abi,
 //   tokenAbi:[]
 // };
-const CurvanceAndFastlane: IVault = {
+export const CurvanceAndFastlane: IVault = {
   title: 'Curvance x Fastlane',
   img: 'https://plum-imaginative-guan-725.mypinata.cloud/ipfs/bafkreifkhhgyhv5f3bhbegnoc3shbmjoo72ngvqntadgyi7wcq2rbiyuxi',
   lockedInPeriod: 30,
@@ -51,7 +51,7 @@ const CurvanceAndFastlane: IVault = {
   abi:erc20NftTimeVaultCurvance,
   tokenAbi:shMonadAbi
 };
-export const CurvanceAndFastlane2: IVault = {
+export const CurvanceAndFastlane2: IVault = {//testing purpose
   title: 'Curvance x Fastlane2',
   img: 'https://plum-imaginative-guan-725.mypinata.cloud/ipfs/bafkreifkhhgyhv5f3bhbegnoc3shbmjoo72ngvqntadgyi7wcq2rbiyuxi',
   lockedInPeriod: 0,
@@ -75,13 +75,13 @@ export const CurvanceAndFastlane2: IVault = {
   abi:erc20NftTimeVaultCurvance,
   tokenAbi:shMonadAbi
 };
-const shMon:IErc20={
+export const shMon:IErc20={
   title: "shMon",
   img: "/images/monad.webp",
   tokenAddress: shMonadErc20Addr,
   tokenAbi:tokenAbi
 }
-const usdt:IErc20={
+export const usdt:IErc20={
   title: "USDT",
   img: "/images/usdt.webp",
   tokenAddress: '0x5b52Aa26838A1A25Bea959f420b6C1cF2Da7C7f3',

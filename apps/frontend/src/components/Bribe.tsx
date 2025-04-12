@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { dataArr, erc20Arr } from '@/lib/default';
+import { CurvanceAndFastlane, dataArr, erc20Arr, shMon } from '@/lib/default';
 import { AiFillInfoCircle } from 'react-icons/ai';
 import {
   HoverCard,
@@ -22,14 +22,112 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
 import { Button } from './ui/button';
+import { useEffect, useState } from 'react';
+import { IErc20, IVault } from '../../../backend/src/models/IVault';
+// import { shMonadErc20Addr } from '@/lib/address';
+// import { tokenAbi } from '@/lib/abi.data';
+// import { erc20NftTimeVaultCurvance, shMonadAbi } from '@/lib/abi';
+import { useAppKitAccount, useAppKitNetworkCore, useAppKitProvider } from '@reown/appkit/react';
+import { BrowserProvider, Contract, Eip1193Provider } from 'ethers';
+import { formatBalance } from '@/lib/VaultHelper';
+import { toast } from 'sonner';
 // import { useState } from 'react';
 
 export default function Bribe() {
 
-  // const [erc20,setErc20]=useState()
-  // const [vaultSelected,setVaultSelected]=useState()
-  // const [amnt,setAmnt]=useState()
+  const [erc20,setErc20]=useState<IErc20>(shMon)
+  const [vaultSelected,setVaultSelected]=useState<IVault>(CurvanceAndFastlane)
+  const [amnt,setAmnt]=useState(0)
+  const [userBalance,setuserBalance]=useState(0)
+  const [decimals, setdecimals] = useState(0);
 
+  const { isConnected, address } = useAppKitAccount();
+    const { walletProvider }: { walletProvider: Eip1193Provider } =
+      useAppKitProvider('eip155');
+    const { chainId } = useAppKitNetworkCore();
+  
+
+useEffect(() => {
+    async function fetchBalance() {
+      if (!address || !vaultSelected.tokenAddress || !walletProvider) return;
+
+      // setIsBalanceLoading(true);
+      try {
+        const provider = new BrowserProvider(walletProvider, chainId);
+        // console.log(vault.proxyAddress);
+        const tokenContract = new Contract(
+          vaultSelected.tokenAddress,
+          vaultSelected.tokenAbi,
+          provider
+        );
+        const decimal_ = await tokenContract.decimals();
+        setdecimals(decimal_);
+
+        const balance_ = await tokenContract.balanceOf(address);
+        console.log(balance_);
+        setuserBalance(balance_.toString());
+      } catch (error) {
+        console.error('Error fetching available supply:', error);
+      } finally {
+        // setIsBalanceLoading(false);
+      }
+    }
+    fetchBalance();
+  }, [address, vaultSelected, walletProvider, chainId,]);
+
+  async function handleDeposit() {
+      if (!isConnected) {
+        toast('Please connect your wallet.');
+        return;
+      }
+      // setDepositLoading(true);
+      try {
+        const provider = new BrowserProvider(walletProvider, chainId);
+        const signer = await provider.getSigner();
+  
+        
+          const tokenContract = new Contract(
+            erc20.tokenAddress,
+            erc20.tokenAbi,
+            signer
+          );
+          const approval = await tokenContract.approve(
+            vaultSelected.proxyAddress,
+            (amnt * 10 ** Number(decimals)).toString()
+          );
+  
+          const receiptApproval = await approval.wait();
+          if (receiptApproval) {
+            toast('Approval successful', {
+              description: 'You have successfully Approved',
+            });
+            // setRefresher((prev) => prev + 1);
+            //after approval
+            const proxyContract = new Contract(
+              vaultSelected.proxyAddress,
+              vaultSelected.abi,
+              signer
+            );
+            const depositTx = await proxyContract.bribe((amnt * 10 ** Number(decimals)).toString(),erc20.tokenAddress);
+  
+            const receipt = await depositTx.wait();
+            if (receipt) {
+              toast('Deposit successful', {
+                description: 'You have successfully deposited',
+              });
+              // setRefresher((prev) => prev + 1);
+            
+          }
+        } 
+      } catch (error) {
+        console.error('Error during deposit:', error);
+        toast('Deposit failed', {
+          description: 'Please try again',
+        });
+      } finally {
+        // setDepositLoading(false);
+      }
+    }
 
 
   return (
@@ -120,7 +218,9 @@ export default function Bribe() {
             Select token to bribe
           </p>
           <div className="border-gunmetal flex gap-1 rounded-xl border bg-white p-1">
-            <input type='number' className="bg-yellow border-gunmetal flex-1 rounded-xl border p-2 py-1">
+            <input onChange={(i)=>{
+              setAmnt(Number(i.target.value))
+            }} type='number' className="bg-yellow border-gunmetal flex-1 rounded-xl border p-2 py-1">
               
             </input>
             <Select defaultValue="MON">
@@ -151,13 +251,14 @@ export default function Bribe() {
               </SelectContent>
             </Select>
           </div>
-          <div className="text-end text-sm">Balance: 0.234</div>
+          <div className="text-end text-sm">Balance: { formatBalance(userBalance.toString(), decimals).slice(0, 7)} {vaultSelected.tokenSymbol}</div>
 
           <Dialog>
             <DialogTrigger>
               <Button
                 variant="outline"
                 className="bg-yellow hover:bg-amber border-gunmetal font-Teko mx-auto rounded-lg px-12 text-lg font-semibold text-black"
+                onClick={handleDeposit}
               >
                 Deposit Bribes
               </Button>
