@@ -28,7 +28,7 @@ import { curvancexFastLane, shMonadErc20Addr } from './address';
 // };
 const CurvanceAndFastlane: IVault = {
   title: 'Curvance x Fastlane',
-  img: 'https://plum-imaginative-guan-725.mypinata.cloud/ipfs/bafkreiaktn3yddbg444xfe5c43b5kh2r572xoddwenezk7cdccl45f4vfq',
+  img: 'https://plum-imaginative-guan-725.mypinata.cloud/ipfs/bafkreifkhhgyhv5f3bhbegnoc3shbmjoo72ngvqntadgyi7wcq2rbiyuxi',
   lockedInPeriod: 30,
   APR: 225,
   type: 'flexible',
@@ -50,4 +50,28 @@ const CurvanceAndFastlane: IVault = {
   abi:erc20NftTimeVaultCurvance,
   tokenAbi:shMonadAbi
 };
-export const dataArr: IVault[] = [ CurvanceAndFastlane];
+export const CurvanceAndFastlane2: IVault = {
+  title: 'Curvance x Fastlane',
+  img: 'https://plum-imaginative-guan-725.mypinata.cloud/ipfs/bafkreifkhhgyhv5f3bhbegnoc3shbmjoo72ngvqntadgyi7wcq2rbiyuxi',
+  lockedInPeriod: 0,
+  APR: 225,
+  type: 'flexible',
+  earnings: 0,
+  proxyAddress: '0x5b52Aa26838A1A25Bea959f420b6C1cF2Da7C7f3',
+  tokenAddress: shMonadErc20Addr,
+  AirdropIncentivised: 0,
+  totalSupply: 10000,
+  availableSupply: 0,
+  joinInPeriod: '2025-03-15T00:00',
+  claimInPeriod: '2025-03-17T00:00',
+  price: 0.2,
+  yieldValue: 0,
+  backingRatio: 1,
+  backingPercentage: 100,
+  tokenSymbol: 'shMON',
+  NFTLimit: 1,
+  isErc20: true,
+  abi:erc20NftTimeVaultCurvance,
+  tokenAbi:shMonadAbi
+};
+export const dataArr: IVault[] = [ CurvanceAndFastlane,];

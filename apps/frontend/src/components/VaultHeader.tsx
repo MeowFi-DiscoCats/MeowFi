@@ -26,7 +26,7 @@ export default function VaultHeader() {
           <Dialog>
             <DialogTrigger asChild>
               <button className="bg-yellow border-gunmetal hover:bg-yellow/90 text-gunmetal shadow-b-3 border font-semibold shadow-[0_4px_10px_rgba(0,0,0,0.25)]">
-                bribes
+                Bribes
               </button>
             </DialogTrigger>
             <Bribe />

@@ -112,9 +112,9 @@ export default function Bribe() {
             Select token to bribe
           </p>
           <div className="border-gunmetal flex gap-1 rounded-xl border bg-white p-1">
-            <div className="bg-yellow border-gunmetal flex-1 rounded-xl border p-2 py-1">
-              4112.23
-            </div>
+            <input type='number' className="bg-yellow border-gunmetal flex-1 rounded-xl border p-2 py-1">
+              
+            </input>
             <Select defaultValue="MON">
               <SelectTrigger className="[&_*]:font-Teko !font-Teko [&_*]leading-loose w-24 font-semibold shadow-none">
                 <SelectValue />
@@ -129,7 +129,7 @@ export default function Bribe() {
                     alt="vault logo"
                     className="mr-2 inline-block h-6 w-6 rounded-full"
                   />
-                  MON
+                  shMON
                 </SelectItem>
                 <SelectItem
                   className="[&_*]:font-Teko font-semibold"

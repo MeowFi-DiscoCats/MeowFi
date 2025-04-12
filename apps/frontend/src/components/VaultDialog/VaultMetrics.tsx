@@ -5,7 +5,7 @@ import Triangle from '../svg/Triangle';
 import { IVault } from '../../../../backend/src/models/IVault';
 import { useEffect, useState } from 'react';
 import { Contract, ethers } from 'ethers';
-import { nativeTimeVaultAbi } from '@/lib/abi.data';
+// import { nativeTimeVaultAbi } from '@/lib/abi.data';
 import { formatSmallNumber } from '@/lib/VaultHelper';
 import { dataArr } from '@/lib/default';
 
@@ -41,7 +41,7 @@ export function VaultMetrics({ index }: { index: number }) {
         );
         const proxyContract = new Contract(
           vault.proxyAddress,
-          nativeTimeVaultAbi,
+          vault.abi,
           provider
         );
 
@@ -113,6 +113,10 @@ export function VaultMetrics({ index }: { index: number }) {
             : 1;
 
         const backingPercentage = backingRatio * 100;
+        console.log(yieldValue,
+          backingRatio,
+          backingPercentage,
+           lockinDays)
 
         setVaultMetrics({
           yieldValue,
