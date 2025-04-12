@@ -22,3 +22,9 @@ export interface IVault {
   abi:any[];
   tokenAbi:any[];
 }
+export interface IErc20 {
+  title: string;
+  img: string;
+  tokenAddress: string;
+  tokenAbi:any[];
+}

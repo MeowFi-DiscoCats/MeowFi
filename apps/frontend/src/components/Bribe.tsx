@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { dataArr } from '@/lib/default';
+import { dataArr, erc20Arr } from '@/lib/default';
 import { AiFillInfoCircle } from 'react-icons/ai';
 import {
   HoverCard,
@@ -22,8 +22,16 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
 import { Button } from './ui/button';
+// import { useState } from 'react';
 
 export default function Bribe() {
+
+  // const [erc20,setErc20]=useState()
+  // const [vaultSelected,setVaultSelected]=useState()
+  // const [amnt,setAmnt]=useState()
+
+
+
   return (
     <DialogContent className="bg-cream border-gunmetal overflow-hidden rounded-2xl p-0 sm:max-w-[550px] [&>button]:hidden">
       <DialogHeader className="hidden">
@@ -119,40 +127,27 @@ export default function Bribe() {
               <SelectTrigger className="[&_*]:font-Teko !font-Teko [&_*]leading-loose w-24 font-semibold shadow-none">
                 <SelectValue />
               </SelectTrigger>
+              
               <SelectContent className="bordrer-2 border-gunmetal">
-                <SelectItem
+              {
+                erc20Arr.map((i)=>{
+                  return <SelectItem
+                  
                   className="[&_*]:font-Teko font-semibold"
-                  value="MON"
+                  value={i.title}
+                  
                 >
                   <img
-                    src="/images/monad.webp"
+                    src={i.img}
                     alt="vault logo"
                     className="mr-2 inline-block h-6 w-6 rounded-full"
                   />
-                  shMON
+                  {i.title}
                 </SelectItem>
-                <SelectItem
-                  className="[&_*]:font-Teko font-semibold"
-                  value="USDT"
-                >
-                  <img
-                    src="/images/usdt.webp"
-                    alt="vault logo"
-                    className="mr-2 inline-block h-6 w-6 rounded-full"
-                  />
-                  USDT
-                </SelectItem>
-                <SelectItem
-                  className="[&_*]:font-Teko font-semibold"
-                  value="USDC"
-                >
-                  <img
-                    src="/images/usdc.webp"
-                    alt="vault logo"
-                    className="mr-2 inline-block h-6 w-6 rounded-full"
-                  />
-                  USDC
-                </SelectItem>
+                  
+                })
+              }
+               
               </SelectContent>
             </Select>
           </div>

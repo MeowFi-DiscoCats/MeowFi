@@ -179,7 +179,7 @@ export default function CurvanceXFastlaneCard({
       <div className="flex justify-between px-2">
         <div className="border-gunmetal bg-cream flex w-full items-center justify-between rounded-xl border-1 px-3 py-1 text-sm font-bold max-sm:rounded-full">
           <img width="30" src="/images/monadCoin.webp" alt="coin" />
-          MON Vault: 0.2 MON x 10K NFTs
+          shMON Vault: 0.2 MON x 10K NFTs
           <img width="20" src="/images/danceCat.webp" alt="coin" />
         </div>
       </div>
