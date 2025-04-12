@@ -31,17 +31,21 @@ import {
   useAppKitNetworkCore,
   useAppKitProvider,
 } from '@reown/appkit/react';
-import { BrowserProvider, Contract, Eip1193Provider } from 'ethers';
+import { BrowserProvider, Contract, Eip1193Provider, ethers } from 'ethers';
 import { formatBalance } from '@/lib/VaultHelper';
 import { toast } from 'sonner';
+// import { Vault } from 'lucide-react';
+import { IVault } from '../../../backend/src/models/IVault';
 // import { useState } from 'react';
 
 export default function Bribe() {
   const [erc20Index, setErc20Index] = useState(0);
   const [selectedVaultIndex, setSelectedVaultIndex] = useState(0);
+  const [selectedVault, setSelectedVault] = useState<IVault>();
   const [amnt, setAmnt] = useState(500);
   const [userBalance, setuserBalance] = useState(0);
   const [decimals, setdecimals] = useState(0);
+  const [bribe, setbribe] = useState(0);
 
   const { isConnected, address } = useAppKitAccount();
   const { walletProvider }: { walletProvider: Eip1193Provider } =
@@ -49,8 +53,44 @@ export default function Bribe() {
   const { chainId } = useAppKitNetworkCore();
 
   useEffect(() => {
+    async function fetchBribeInfo() {
+      const vault:IVault = dataArr[selectedVaultIndex];
+      const erc20 = erc20Arr[erc20Index];
+      setSelectedVault(vault)
+      if (!address || !walletProvider) return;
+
+      // setIsBalanceLoading(true);
+      try {
+        const provider = new BrowserProvider(walletProvider, chainId);
+        // console.log(vault.proxyAddress);
+        const proxyContract = new Contract(
+          vault.proxyAddress,
+          vault.abi,
+          provider
+        );
+        const tokenContract = new Contract(
+          vault.tokenAddress,
+          vault.tokenAbi,
+          provider
+        );
+        const decimal_ = await tokenContract.decimals();
+        setdecimals(decimal_);
+        const bribeInfo_ = await proxyContract.briber(address,erc20.tokenAddress);
+        console.log(bribeInfo_);
+        setbribe(bribeInfo_)
+        // setuserBalance(bribeInfo_.toString());
+      } catch (error) {
+        console.error('Error fetching available supply:', error);
+      } finally {
+        // setIsBalanceLoading(false);
+      }
+    }
+    fetchBribeInfo();
+  }, [address, selectedVaultIndex, walletProvider, chainId,erc20Index]);
+  useEffect(() => {
     async function fetchBalance() {
-      const vault = dataArr[selectedVaultIndex];
+      const vault:IVault = dataArr[selectedVaultIndex];
+      setSelectedVault(vault)
       if (!address || !walletProvider) return;
 
       // setIsBalanceLoading(true);
@@ -209,15 +249,15 @@ export default function Bribe() {
           <div className="bg-yellow border-gunmetal mt-4 flex justify-around rounded-xl border p-2">
             <div className="flex flex-col items-center">
               <span className="text-sm">Vault liquidity</span>
-              <span className="font-Teko font-semibold">1M $MON</span>
+              <span className="font-Teko font-semibold"> {dataArr[selectedVaultIndex].price*dataArr[selectedVaultIndex].totalSupply} {dataArr[selectedVaultIndex].tokenSymbol} </span>
             </div>
             <div className="flex flex-col items-center">
               <span className="text-sm">Bribe Lock</span>
-              <span className="font-Teko font-semibold">30 Days</span>
+              <span className="font-Teko font-semibold"> {selectedVault&&selectedVault.lockedInPeriod} </span>
             </div>
             <div className="flex flex-col items-center">
               <span className="text-sm">You Bribed</span>
-              <span className="font-Teko font-semibold">0</span>
+              <span className="font-Teko font-semibold"> {ethers.formatUnits(bribe,decimals) } {erc20Arr[erc20Index].title} </span>
             </div>
           </div>
 
@@ -288,10 +328,12 @@ export default function Bribe() {
                       You are Bribing
                     </p>
                     <p className="font-Teko text-start text-lg leading-relaxed font-semibold text-black">
-                      500 MON
+                      {amnt}
                     </p>
                   </div>
-                  <p className="text-end">Balance: 23.34</p>
+                  <p className="text-end">Balance:{' '}
+            {formatBalance(userBalance.toString(), decimals).slice(0, 7)}{' '}
+            {dataArr[selectedVaultIndex].tokenSymbol}</p>
                   <div className="border-gunmetal flex-start flex w-full flex-col border bg-white p-1 px-4">
                     <p className="font-Teko text-start text-sm leading-relaxed font-semibold text-black/70">
                       For

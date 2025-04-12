@@ -53,7 +53,7 @@ export const CurvanceAndFastlane: IVault = {
 };
 export const CurvanceAndFastlane2: IVault = {
   //testing purpose
-  title: 'Curvance x Fastlane2',
+  title: 'Curvance x Fastlane',
   img: 'https://plum-imaginative-guan-725.mypinata.cloud/ipfs/bafkreifkhhgyhv5f3bhbegnoc3shbmjoo72ngvqntadgyi7wcq2rbiyuxi',
   lockedInPeriod: 0,
   APR: 225,
