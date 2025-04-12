@@ -85,9 +85,9 @@ export const shMon: IErc20 = {
 export const usdt: IErc20 = {
   title: 'USDT',
   img: '/images/usdt.webp',
-  tokenAddress: '0x5b52Aa26838A1A25Bea959f420b6C1cF2Da7C7f3',
+  tokenAddress: '0x88b8E2161DEDC77EF4ab7585569D2415a1C1055D',
   tokenAbi: tokenAbi,
 };
 
-export const dataArr: IVault[] = [CurvanceAndFastlane];
+export const dataArr: IVault[] = [CurvanceAndFastlane,CurvanceAndFastlane2];
 export const erc20Arr: IErc20[] = [shMon, usdt];

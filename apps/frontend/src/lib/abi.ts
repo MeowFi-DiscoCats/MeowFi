@@ -678,6 +678,19 @@ export const erc20NftTimeVaultCurvance = [
 		"inputs": [
 			{
 				"internalType": "uint256",
+				"name": "_nftAmount",
+				"type": "uint256"
+			}
+		],
+		"name": "joinVault",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
 				"name": "_nftPrice",
 				"type": "uint256"
 			},
@@ -805,19 +818,6 @@ export const erc20NftTimeVaultCurvance = [
 		"type": "event"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_nftAmount",
-				"type": "uint256"
-			}
-		],
-		"name": "joinVault",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"anonymous": false,
 		"inputs": [
 			{
@@ -913,6 +913,19 @@ export const erc20NftTimeVaultCurvance = [
 		"type": "function"
 	},
 	{
+		"inputs": [],
+		"name": "bribeCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "address",
@@ -939,22 +952,36 @@ export const erc20NftTimeVaultCurvance = [
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
+				"internalType": "address",
 				"name": "",
-				"type": "uint256"
+				"type": "address"
 			}
 		],
 		"name": "bribes",
 		"outputs": [
 			{
-				"internalType": "address",
-				"name": "tokenAddress",
-				"type": "address"
-			},
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "value",
+				"name": "",
 				"type": "uint256"
+			}
+		],
+		"name": "bribeTokenAddr",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
 			}
 		],
 		"stateMutability": "view",

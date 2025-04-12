@@ -35,16 +35,20 @@ import { BrowserProvider, Contract, Eip1193Provider, ethers } from 'ethers';
 import { formatBalance } from '@/lib/VaultHelper';
 import { toast } from 'sonner';
 // import { Vault } from 'lucide-react';
-import { IVault } from '../../../backend/src/models/IVault';
+import {  IVault } from '../../../backend/src/models/IVault';
+import { tokenAbi } from '@/lib/abi.data';
 // import { useState } from 'react';
 
 export default function Bribe() {
   const [erc20Index, setErc20Index] = useState(0);
+  const [erc20TokenBalance, seterc20TokenBalance] = useState<number[]>([]);
+  const [erc20Decimal, seterc20Decimal] = useState<number[]>([]);
   const [selectedVaultIndex, setSelectedVaultIndex] = useState(0);
   const [selectedVault, setSelectedVault] = useState<IVault>();
   const [amnt, setAmnt] = useState(500);
   const [userBalance, setuserBalance] = useState(0);
   const [decimals, setdecimals] = useState(0);
+  // const [decimalsV2, setdecimalsV2] = useState(0);
   const [bribe, setbribe] = useState(0);
 
   const { isConnected, address } = useAppKitAccount();
@@ -116,6 +120,53 @@ export default function Bribe() {
     }
     fetchBalance();
   }, [address, selectedVaultIndex, walletProvider, chainId]);
+  useEffect(() => {
+    async function fetchTokenBalance() {
+      const vault = dataArr[selectedVaultIndex];
+      // const erc20 = erc20Arr[erc20Index];
+      if (!isConnected) {
+        toast('Please connect your wallet.');
+        return;
+      }
+      // setDepositLoading(true);
+      try {
+        const provider = new BrowserProvider(walletProvider, chainId);
+        const signer = await provider.getSigner();
+  
+        const proxyContract = new Contract(
+          vault.proxyAddress,
+          vault.abi,
+          signer
+        );
+        
+        let tempArr:any=[]
+        let tempArr2:any=[]
+        erc20Arr.map(async (i)=>{
+
+          const bal=await proxyContract.bribes(i.tokenAddress)
+          console.log(bal)
+          tempArr.push(Number(bal))
+
+
+          const tokenContract = new Contract(
+            i.tokenAddress,
+            tokenAbi,
+            signer
+          );
+          
+            const dec=await tokenContract.decimals()
+            console.log(dec)
+            tempArr2.push(dec)
+        })
+        seterc20TokenBalance(tempArr)
+        seterc20Decimal(tempArr2)
+      
+      }catch(e){
+  
+        }
+    }
+    fetchTokenBalance();
+  }, [address, selectedVaultIndex, walletProvider, chainId]);
 
   async function handleDeposit() {
     const vault = dataArr[selectedVaultIndex];
@@ -173,6 +224,10 @@ export default function Bribe() {
       // setDepositLoading(false);
     }
   }
+
+
+  
+  
 
   return (
     <DialogContent className="bg-cream border-gunmetal overflow-hidden rounded-2xl p-0 sm:max-w-[550px] [&>button]:hidden">
@@ -379,16 +434,19 @@ export default function Bribe() {
             </HoverCard>
           </p>
 
-          <Select defaultValue={dataArr[0].title}>
+          <Select
+            onValueChange={(value) => setSelectedVaultIndex(parseFloat(value))}
+            defaultValue={`${selectedVaultIndex}`}
+          >
             <SelectTrigger className="[&_*]:font-Teko border-gunmetal !font-Teko [&_*]leading-loose w-full font-semibold shadow-none">
               <SelectValue />
             </SelectTrigger>
             <SelectContent className="bordrer-2 border-gunmetal">
-              {dataArr.map((vault) => (
+              {dataArr.map((vault, i) => (
                 <SelectItem
                   className="[&_*]:font-Teko font-semibold"
-                  key={vault.tokenAddress}
-                  value={vault.title}
+                  key={vault.proxyAddress}
+                  value={`${i}`}
                 >
                   <img
                     src={vault.img}
@@ -401,17 +459,17 @@ export default function Bribe() {
             </SelectContent>
           </Select>
           <div className="bg-yellow border-gunmetal mt-4 flex justify-around rounded-xl border p-2">
-            <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center">
               <span className="text-sm">Vault liquidity</span>
-              <span className="font-Teko font-semibold">1M $MON</span>
+              <span className="font-Teko font-semibold"> {dataArr[selectedVaultIndex].price*dataArr[selectedVaultIndex].totalSupply} {dataArr[selectedVaultIndex].tokenSymbol} </span>
             </div>
             <div className="flex flex-col items-center">
               <span className="text-sm">Bribe Lock</span>
-              <span className="font-Teko font-semibold">30 Days</span>
+              <span className="font-Teko font-semibold"> {selectedVault&&selectedVault.lockedInPeriod} </span>
             </div>
             <div className="flex flex-col items-center">
               <span className="text-sm">Bribe APY</span>
-              <span className="font-Teko font-semibold">789.15%</span>
+              <span className="font-Teko font-semibold">100%</span>
             </div>
           </div>
 
@@ -419,7 +477,8 @@ export default function Bribe() {
             Bribe in Tokens
           </p>
           <div className="border-gunmetal mb-4 flex justify-around gap-2 border bg-white p-4">
-            <div className="flex gap-2">
+            {erc20Arr.map((i,index)=>{
+              return <div className="flex gap-2">
               <div>
                 <img
                   width={20}
@@ -428,36 +487,13 @@ export default function Bribe() {
                 />
               </div>
               <div className="flex flex-col">
-                <span className="font-Teko font-semibold">MON</span>
-                <span>3824.3</span>
+                <span className="font-Teko font-semibold">{i.title}</span>
+                <span>{erc20TokenBalance.length>0 ?(ethers.formatUnits((erc20TokenBalance[index]).toString(),erc20Decimal[index])):'0' }</span>
               </div>
             </div>
-            <div className="flex gap-2">
-              <div>
-                <img
-                  width={20}
-                  className="mt-1 rounded-full"
-                  src="/images/usdt.webp"
-                />
-              </div>
-              <div className="flex flex-col">
-                <span className="font-Teko font-semibold">USDT</span>
-                <span>3824.3</span>
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <div>
-                <img
-                  width={20}
-                  className="mt-1 rounded-full"
-                  src="/images/usdc.webp"
-                />
-              </div>
-              <div className="flex flex-col">
-                <span className="font-Teko font-semibold">USDC</span>
-                <span>3824.3</span>
-              </div>
-            </div>
+            })}  
+
+            
           </div>
         </TabsContent>
       </Tabs>
