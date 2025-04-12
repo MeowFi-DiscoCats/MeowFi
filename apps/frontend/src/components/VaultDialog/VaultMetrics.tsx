@@ -113,10 +113,7 @@ export function VaultMetrics({ index }: { index: number }) {
             : 1;
 
         const backingPercentage = backingRatio * 100;
-        console.log(yieldValue,
-          backingRatio,
-          backingPercentage,
-           lockinDays)
+        console.log(yieldValue, backingRatio, backingPercentage, lockinDays);
 
         setVaultMetrics({
           yieldValue,

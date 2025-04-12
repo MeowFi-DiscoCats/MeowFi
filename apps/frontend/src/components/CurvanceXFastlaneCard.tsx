@@ -8,7 +8,11 @@ import {
 import { IVault } from '../../../backend/src/models/IVault';
 import { useEffect, useState, useMemo } from 'react';
 import { BrowserProvider, Contract, Eip1193Provider, ethers } from 'ethers';
-import { useAppKitAccount, useAppKitNetworkCore, useAppKitProvider } from '@reown/appkit/react';
+import {
+  useAppKitAccount,
+  useAppKitNetworkCore,
+  useAppKitProvider,
+} from '@reown/appkit/react';
 import { toast } from 'sonner';
 
 interface VaultMetrics {
@@ -46,7 +50,8 @@ export default function CurvanceXFastlaneCard({
   });
 
   const { address } = useAppKitAccount();
-  const { walletProvider }: { walletProvider: Eip1193Provider } = useAppKitProvider('eip155');
+  const { walletProvider }: { walletProvider: Eip1193Provider } =
+    useAppKitProvider('eip155');
   const { chainId } = useAppKitNetworkCore();
 
   useEffect(() => {
@@ -77,20 +82,26 @@ export default function CurvanceXFastlaneCard({
         }
 
         // Fetch vault metrics
-        setVaultMetrics(prev => ({ ...prev, isLoading: true }));
-        const [nftCount, totalFunds, yieldedFunds, nftPrice, joiningPeriod, claimingPeriod] = 
-          await Promise.all([
-            proxyContract.getNftCount(),
-            proxyContract.totalFunds(),
-            proxyContract.yieldedFunds(),
-            proxyContract.nftPrice(),
-            proxyContract.joiningPeriod(),
-            proxyContract.claimingPeriod(),
-          ]);
+        setVaultMetrics((prev) => ({ ...prev, isLoading: true }));
+        const [
+          nftCount,
+          totalFunds,
+          yieldedFunds,
+          nftPrice,
+          joiningPeriod,
+          claimingPeriod,
+        ] = await Promise.all([
+          proxyContract.getNftCount(),
+          proxyContract.totalFunds(),
+          proxyContract.yieldedFunds(),
+          proxyContract.nftPrice(),
+          proxyContract.joiningPeriod(),
+          proxyContract.claimingPeriod(),
+        ]);
 
         const nftCountValue = Number(nftCount);
         setNftTotal(nftCountValue);
-        
+
         const totalFundsValue = Number(totalFunds);
         const yieldedFundsValue = Number(yieldedFunds);
         const activenftPrice = Number(nftPrice);
@@ -101,18 +112,19 @@ export default function CurvanceXFastlaneCard({
         setVaultMetrics({
           yieldValue: Math.max(0, yieldedFundsValue - totalFundsValue),
           lockingPeriod: dayLockin,
-          backingPercentage: (yieldedFundsValue > 0 
-            ? yieldedFundsValue / (nftCountValue * activenftPrice)
-            : 1) * 100,
+          backingPercentage:
+            (yieldedFundsValue > 0
+              ? yieldedFundsValue / (nftCountValue * activenftPrice)
+              : 1) * 100,
           isLoading: false,
         });
-
       } catch (err) {
         console.error('Error fetching vault metrics:', err);
         toast.error('Failed to fetch vault data', {
-          description: err instanceof Error ? err.message : 'Unknown error occurred'
+          description:
+            err instanceof Error ? err.message : 'Unknown error occurred',
         });
-        setVaultMetrics(prev => ({ ...prev, isLoading: false }));
+        setVaultMetrics((prev) => ({ ...prev, isLoading: false }));
       }
     };
 
@@ -123,7 +135,7 @@ export default function CurvanceXFastlaneCard({
       }
 
       try {
-        setHoldings(prev => ({ ...prev, isLoading: true }));
+        setHoldings((prev) => ({ ...prev, isLoading: true }));
         const userProvider = new BrowserProvider(walletProvider, chainId);
         const userProxyContract = new Contract(
           vault.proxyAddress,
@@ -147,7 +159,8 @@ export default function CurvanceXFastlaneCard({
   }, [vault.proxyAddress, address, walletProvider, chainId]);
 
   const formattedBalance = useMemo(() => {
-    if (holdings.isLoading || vaultMetrics.isLoading || !nftTotal || !decimals) return '...';
+    if (holdings.isLoading || vaultMetrics.isLoading || !nftTotal || !decimals)
+      return '...';
     const totalValue = holdings.tokenAmount + vaultMetrics.yieldValue;
     return ethers.formatUnits((totalValue / nftTotal).toString(), decimals);
   }, [holdings, vaultMetrics, nftTotal, decimals]);
@@ -187,8 +200,8 @@ export default function CurvanceXFastlaneCard({
       <div className="flex items-center justify-center gap-2 px-1 py-4">
         <div
           style={{
-            background: vaultMetrics.isLoading 
-              ? 'conic-gradient(#ccc 0% 100%)' 
+            background: vaultMetrics.isLoading
+              ? 'conic-gradient(#ccc 0% 100%)'
               : `conic-gradient(#EC4444 0% ${vaultMetrics.backingPercentage}%, transparent ${vaultMetrics.backingPercentage}% 100%)`,
           }}
           className="relative aspect-square w-[96px] rounded-full"
@@ -221,16 +234,12 @@ export default function CurvanceXFastlaneCard({
 
       <div className="border-gunmetal bg-cream mx-6 flex justify-between rounded-full border-1 px-2 py-1 text-sm">
         <span>Balance:</span>
-        <span className="text-sienna mr-2 font-bold">
-          {formattedBalance}
-        </span>
+        <span className="text-sienna mr-2 font-bold">{formattedBalance}</span>
       </div>
 
       <div className="border-gunmetal bg-cream mx-6 flex justify-between rounded-full border-x-1 px-2 py-1 text-sm">
         <span>Net APY:</span>
-        <span className="text-sienna font-bold">
-          {calculatedAPY}%
-        </span>
+        <span className="text-sienna font-bold">{calculatedAPY}%</span>
       </div>
 
       <div className="border-gunmetal bg-cream mx-6 flex justify-between rounded-full border-1 px-2 py-1 text-sm">
