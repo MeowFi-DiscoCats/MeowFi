@@ -89,5 +89,5 @@ export const usdt: IErc20 = {
   tokenAbi: tokenAbi,
 };
 
-export const dataArr: IVault[] = [CurvanceAndFastlane,CurvanceAndFastlane2];
+export const dataArr: IVault[] = [CurvanceAndFastlane];
 export const erc20Arr: IErc20[] = [shMon, usdt];
