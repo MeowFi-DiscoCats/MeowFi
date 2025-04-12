@@ -27,7 +27,7 @@ const GradientOverlay = () => (
 );
 
 const FeatureItem = ({ feature }: { feature: Feature }) => (
-  <div className="bg-cream relative z-10 flex items-center justify-between gap-2 rounded-xl p-3 text-nowrap">
+  <div className="bg-cream relative z-[1] flex items-center justify-between gap-2 rounded-xl p-3 text-nowrap">
     {feature.icon}
     <div className="mr-auto">
       <p>{feature.title}</p>
