@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   DialogContent,
   DialogHeader,
@@ -22,10 +23,6 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
 import { Button } from './ui/button';
-import { useEffect, useState } from 'react';
-// import { shMonadErc20Addr } from '@/lib/address';
-// import { tokenAbi } from '@/lib/abi.data';
-// import { erc20NftTimeVaultCurvance, shMonadAbi } from '@/lib/abi';
 import {
   useAppKitAccount,
   useAppKitNetworkCore,
@@ -34,201 +31,182 @@ import {
 import { BrowserProvider, Contract, Eip1193Provider, ethers } from 'ethers';
 import { formatBalance } from '@/lib/VaultHelper';
 import { toast } from 'sonner';
-// import { Vault } from 'lucide-react';
-import {  IVault } from '../../../backend/src/models/IVault';
+import { IVault } from '../../../backend/src/models/IVault';
 import { tokenAbi } from '@/lib/abi.data';
-// import { useState } from 'react';
 
 export default function Bribe() {
   const [erc20Index, setErc20Index] = useState(0);
-  const [erc20TokenBalance, seterc20TokenBalance] = useState<number[]>([]);
-  const [erc20Decimal, seterc20Decimal] = useState<number[]>([]);
+  const [erc20TokenBalance, setErc20TokenBalance] = useState<number[]>([]);
+  const [erc20Decimal, setErc20Decimal] = useState<number[]>([]);
   const [selectedVaultIndex, setSelectedVaultIndex] = useState(0);
   const [selectedVault, setSelectedVault] = useState<IVault>();
   const [amnt, setAmnt] = useState(500);
-  const [userBalance, setuserBalance] = useState(0);
-  const [decimals, setdecimals] = useState(0);
-  // const [decimalsV2, setdecimalsV2] = useState(0);
-  const [bribe, setbribe] = useState(0);
+  const [userBalance, setUserBalance] = useState(0);
+  const [decimals, setDecimals] = useState(0);
+  const [bribe, setBribe] = useState(0);
 
   const { isConnected, address } = useAppKitAccount();
-  const { walletProvider }: { walletProvider: Eip1193Provider } =
-    useAppKitProvider('eip155');
+  const { walletProvider } = useAppKitProvider('eip155') as { walletProvider: Eip1193Provider };
   const { chainId } = useAppKitNetworkCore();
 
-  useEffect(() => {
-    async function fetchBribeInfo() {
-      const vault:IVault = dataArr[selectedVaultIndex];
-      const erc20 = erc20Arr[erc20Index];
-      setSelectedVault(vault)
-      if (!address || !walletProvider) return;
+  // Memoize frequently used values
+  const currentErc20 = useMemo(() => erc20Arr[erc20Index], [erc20Index]);
+  const currentVault = useMemo(() => dataArr[selectedVaultIndex], [selectedVaultIndex]);
 
-      // setIsBalanceLoading(true);
-      try {
-        const provider = new BrowserProvider(walletProvider, chainId);
-        // console.log(vault.proxyAddress);
-        const proxyContract = new Contract(
-          vault.proxyAddress,
-          vault.abi,
-          provider
-        );
-        const tokenContract = new Contract(
-          vault.tokenAddress,
-          vault.tokenAbi,
-          provider
-        );
-        const decimal_ = await tokenContract.decimals();
-        setdecimals(decimal_);
-        const bribeInfo_ = await proxyContract.briber(address,erc20.tokenAddress);
-        // console.log(bribeInfo_);
-        setbribe(bribeInfo_)
-        // setuserBalance(bribeInfo_.toString());
-      } catch (error) {
-        console.error('Error fetching available supply:', error);
-      } finally {
-        // setIsBalanceLoading(false);
-      }
+  // Fetch bribe info
+  const fetchBribeInfo = useCallback(async () => {
+    if (!address || !walletProvider) return;
+
+    try {
+      const provider = new BrowserProvider(walletProvider, chainId);
+      const proxyContract = new Contract(
+        currentVault.proxyAddress,
+        currentVault.abi,
+        provider
+      );
+      const tokenContract = new Contract(
+        currentVault.tokenAddress,
+        currentVault.tokenAbi,
+        provider
+      );
+      const decimal_ = await tokenContract.decimals();
+      setDecimals(decimal_);
+      const bribeInfo_ = await proxyContract.briber(address, currentErc20.tokenAddress);
+      setBribe(bribeInfo_);
+    } catch (error) {
+      console.error('Error fetching bribe info:', error);
     }
-    fetchBribeInfo();
-  }, [address, selectedVaultIndex, walletProvider, chainId,erc20Index]);
-  useEffect(() => {
-    async function fetchBalance() {
-      const vault:IVault = dataArr[selectedVaultIndex];
-      const erc20 = erc20Arr[erc20Index];
-      setSelectedVault(vault)
-      if (!address || !walletProvider) return;
+  }, [address, walletProvider, chainId, currentVault, currentErc20.tokenAddress]);
 
-      // setIsBalanceLoading(true);
-      try {
-        const provider = new BrowserProvider(walletProvider, chainId);
-        // console.log(vault.proxyAddress);
-        const tokenContract = new Contract(
-          erc20.tokenAddress,
-          erc20.tokenAbi,
-          provider
-        );
-        const decimal_ = await tokenContract.decimals();
-        setdecimals(decimal_);
+  // Fetch user balance
+  const fetchBalance = useCallback(async () => {
+    if (!address || !walletProvider) return;
 
-        const balance_ = await tokenContract.balanceOf(address);
-        console.log(balance_);
-        setuserBalance(balance_.toString());
-      } catch (error) {
-        console.error('Error fetching available supply:', error);
-      } finally {
-        // setIsBalanceLoading(false);
-      }
+    try {
+      const provider = new BrowserProvider(walletProvider, chainId);
+      const tokenContract = new Contract(
+        currentErc20.tokenAddress,
+        currentErc20.tokenAbi,
+        provider
+      );
+      const decimal_ = await tokenContract.decimals();
+      setDecimals(decimal_);
+      const balance_ = await tokenContract.balanceOf(address);
+      setUserBalance(Number(balance_));
+    } catch (error) {
+      console.error('Error fetching balance:', error);
     }
-    fetchBalance();
-  }, [address, selectedVaultIndex, walletProvider, chainId,erc20Index]);
-  useEffect(() => {
-    async function fetchTokenBalance() {
-      const vault = dataArr[selectedVaultIndex];
-      // const erc20 = erc20Arr[erc20Index];
-      if (!isConnected) {
-        toast('Please connect your wallet.');
-        return;
-      }
-      // setDepositLoading(true);
-      try {
-        const provider = new BrowserProvider(walletProvider, chainId);
-        const signer = await provider.getSigner();
-  
-        const proxyContract = new Contract(
-          vault.proxyAddress,
-          vault.abi,
-          signer
-        );
-        
-        let tempArr:any=[]
-        let tempArr2:any=[]
-        erc20Arr.map(async (i)=>{
+  }, [address, walletProvider, chainId, currentErc20]);
 
-          const bal=await proxyContract.bribes(i.tokenAddress)
-          // console.log(bal)
-          tempArr.push(Number(bal))
-
-
-          const tokenContract = new Contract(
-            i.tokenAddress,
-            tokenAbi,
-            signer
-          );
-          
-            const dec=await tokenContract.decimals()
-            // console.log(dec)
-            tempArr2.push(dec)
-        })
-        seterc20TokenBalance(tempArr)
-        seterc20Decimal(tempArr2)
-      
-      }catch(e){
-  
-        }
-    }
-    fetchTokenBalance();
-  }, [address, selectedVaultIndex, walletProvider, chainId]);
-
-  async function handleDeposit() {
-    const vault = dataArr[selectedVaultIndex];
-    const erc20 = erc20Arr[erc20Index];
+  // Fetch token balances
+  const fetchTokenBalance = useCallback(async () => {
     if (!isConnected) {
       toast('Please connect your wallet.');
       return;
     }
-    // setDepositLoading(true);
+
     try {
       const provider = new BrowserProvider(walletProvider, chainId);
       const signer = await provider.getSigner();
-
-      const tokenContract = new Contract(
-        erc20.tokenAddress,
-        erc20.tokenAbi,
+      const proxyContract = new Contract(
+        currentVault.proxyAddress,
+        currentVault.abi,
         signer
       );
-      const approval = await tokenContract.approve(
-        vault.proxyAddress,
-        (amnt * 10 ** Number(decimals)).toString()
+
+      const balancePromises = erc20Arr.map(async (i) => {
+        const bal = await proxyContract.bribes(i.tokenAddress);
+        return bal ? Number(bal) : 0;
+      });
+
+      const decimalPromises = erc20Arr.map(async (i) => {
+        const tokenContract = new Contract(i.tokenAddress, tokenAbi, signer);
+        return await tokenContract.decimals();
+      });
+
+      const [balances, decimals] = await Promise.all([
+        Promise.all(balancePromises),
+        Promise.all(decimalPromises)
+      ]);
+
+      setErc20TokenBalance(balances);
+      setErc20Decimal(decimals);
+    } catch (error) {
+      console.error('Error fetching token balances:', error);
+    }
+  }, [isConnected, walletProvider, chainId, currentVault]);
+
+  // Combined effect for data that needs to refresh when vault or token changes
+  useEffect(() => {
+    setSelectedVault(currentVault);
+    const fetchData = async () => {
+      await Promise.all([
+        fetchBribeInfo(),
+        fetchBalance(),
+        fetchTokenBalance()
+      ]);
+    };
+    fetchData();
+  }, [currentVault, fetchBribeInfo, fetchBalance, fetchTokenBalance]);
+
+  // Handle deposit with optimized error handling
+  const handleDeposit = useCallback(async () => {
+    if (!isConnected) {
+      toast('Please connect your wallet.');
+      return;
+    }
+
+    try {
+      const provider = new BrowserProvider(walletProvider, chainId);
+      const signer = await provider.getSigner();
+      const amountInWei = (amnt * 10 ** decimals).toString();
+
+      const tokenContract = new Contract(
+        currentErc20.tokenAddress,
+        currentErc20.tokenAbi,
+        signer
       );
 
-      const receiptApproval = await approval.wait();
-      if (receiptApproval) {
-        toast('Approval successful', {
-          description: 'You have successfully Approved',
-        });
-        // setRefresher((prev) => prev + 1);
-        //after approval
-        const proxyContract = new Contract(
-          vault.proxyAddress,
-          vault.abi,
-          signer
-        );
-        const depositTx = await proxyContract.bribe(
-          (amnt * 10 ** Number(decimals)).toString(),
-          erc20.tokenAddress
-        );
+      // First approval
+      const approval = await tokenContract.approve(
+        currentVault.proxyAddress,
+        amountInWei
+      );
+      await approval.wait();
 
-        const receipt = await depositTx.wait();
-        if (receipt) {
-          toast('Deposit successful', {
-            description: 'You have successfully deposited',
-          });
-          // setRefresher((prev) => prev + 1);
-        }
-      }
+      // Then bribe
+      const proxyContract = new Contract(
+        currentVault.proxyAddress,
+        currentVault.abi,
+        signer
+      );
+      const depositTx = await proxyContract.bribe(
+        amountInWei,
+        currentErc20.tokenAddress
+      );
+      await depositTx.wait();
+
+      // Refresh data
+      await Promise.all([fetchBribeInfo(), fetchBalance(), fetchTokenBalance()]);
+      toast.success('Deposit successful');
     } catch (error) {
-      console.error('Error during deposit:', error);
-      toast('Deposit failed', {
-        description: 'Please try again',
-      });
-    } finally {
-      // setDepositLoading(false);
+      console.error('Deposit failed:', error);
+      toast.error('Deposit failed. Please try again.');
     }
-  }
+  }, [
+    isConnected,
+    walletProvider,
+    chainId,
+    amnt,
+    decimals,
+    currentErc20,
+    currentVault,
+    fetchBribeInfo,
+    fetchBalance,
+    fetchTokenBalance
+  ]);
 
-
-  
-  
+ 
 
   return (
     <DialogContent className="bg-cream border-gunmetal overflow-hidden rounded-2xl p-0 sm:max-w-[550px] [&>button]:hidden">
