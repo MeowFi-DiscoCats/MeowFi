@@ -598,145 +598,48 @@ export const nativeTimeVaultV2Abi = [
   },
 ];
 
-export const erc20NftTimeVaultCurvance = [
-	{
-		"inputs": [],
-		"name": "automateCoumpounding",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
+export const erc20NftTimeVaultCurvance =[
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "_amnt",
-				"type": "uint256"
-			},
-			{
 				"internalType": "address",
-				"name": "_tknAddress",
+				"name": "target",
 				"type": "address"
 			}
 		],
-		"name": "bribe",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
+		"name": "AddressEmptyCode",
+		"type": "error"
 	},
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "_fee",
-				"type": "uint256"
+				"internalType": "address",
+				"name": "implementation",
+				"type": "address"
 			}
 		],
-		"name": "changeFees",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_joiningPeriod",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_claimingPeriod",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_prejoinPeriod",
-				"type": "uint256"
-			}
-		],
-		"name": "changeTimePeriod",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
+		"name": "ERC1967InvalidImplementation",
+		"type": "error"
 	},
 	{
 		"inputs": [],
-		"name": "claimBack",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
+		"name": "ERC1967NonPayable",
+		"type": "error"
 	},
 	{
 		"inputs": [],
-		"name": "collectFee",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
+		"name": "FailedCall",
+		"type": "error"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_nftAmount",
-				"type": "uint256"
-			}
-		],
-		"name": "joinVault",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
+		"inputs": [],
+		"name": "InvalidInitialization",
+		"type": "error"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_nftPrice",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_nftLimitPerAddress",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "initialOwner",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_nftLimit",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_joiningPeriod",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_claimingPeriod",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "_PartnerContract",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "_erc20Address",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_prejoinPeriod",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
+		"inputs": [],
+		"name": "NotInitializing",
+		"type": "error"
 	},
 	{
 		"inputs": [
@@ -762,7 +665,18 @@ export const erc20NftTimeVaultCurvance = [
 	},
 	{
 		"inputs": [],
-		"name": "ReentrancyGuardReentrantCall",
+		"name": "UUPSUnauthorizedCallContext",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "slot",
+				"type": "bytes32"
+			}
+		],
+		"name": "UUPSUnsupportedProxiableUUID",
 		"type": "error"
 	},
 	{
@@ -821,6 +735,19 @@ export const erc20NftTimeVaultCurvance = [
 		"anonymous": false,
 		"inputs": [
 			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "version",
+				"type": "uint64"
+			}
+		],
+		"name": "Initialized",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
 				"indexed": true,
 				"internalType": "address",
 				"name": "previousOwner",
@@ -837,31 +764,17 @@ export const erc20NftTimeVaultCurvance = [
 		"type": "event"
 	},
 	{
-		"inputs": [],
-		"name": "pauseNft",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "renounceOwnership",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
+		"anonymous": false,
 		"inputs": [
 			{
+				"indexed": true,
 				"internalType": "address",
-				"name": "newOwner",
+				"name": "implementation",
 				"type": "address"
 			}
 		],
-		"name": "transferOwnership",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
+		"name": "Upgraded",
+		"type": "event"
 	},
 	{
 		"anonymous": false,
@@ -883,8 +796,43 @@ export const erc20NftTimeVaultCurvance = [
 		"type": "event"
 	},
 	{
-		"stateMutability": "payable",
-		"type": "receive"
+		"inputs": [],
+		"name": "CompoundCounter",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "PartnerContract",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "UPGRADE_INTERFACE_VERSION",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
 	},
 	{
 		"inputs": [],
@@ -914,12 +862,56 @@ export const erc20NftTimeVaultCurvance = [
 	},
 	{
 		"inputs": [],
+		"name": "automateCoumpounding",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_amnt",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "_tknAddress",
+				"type": "address"
+			}
+		],
+		"name": "bribe",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "bribeCount",
 		"outputs": [
 			{
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "bribeTokenAddr",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
 			}
 		],
 		"stateMutability": "view",
@@ -969,25 +961,6 @@ export const erc20NftTimeVaultCurvance = [
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "bribeTokenAddr",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"inputs": [],
 		"name": "canCompound",
 		"outputs": [
@@ -1006,6 +979,49 @@ export const erc20NftTimeVaultCurvance = [
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_fee",
+				"type": "uint256"
+			}
+		],
+		"name": "changeFees",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_joiningPeriod",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_claimingPeriod",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_prejoinPeriod",
+				"type": "uint256"
+			}
+		],
+		"name": "changeTimePeriod",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "claimBack",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "claimingPeriod",
 		"outputs": [
@@ -1020,15 +1036,9 @@ export const erc20NftTimeVaultCurvance = [
 	},
 	{
 		"inputs": [],
-		"name": "CompoundCounter",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
+		"name": "collectFee",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -1068,6 +1078,72 @@ export const erc20NftTimeVaultCurvance = [
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_nftPrice",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_nftLimitPerAddress",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "initialOwner",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_nftLimit",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_joiningPeriod",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_claimingPeriod",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "_PartnerContract",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_erc20Address",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_prejoinPeriod",
+				"type": "uint256"
+			}
+		],
+		"name": "initialize",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_nftAmount",
+				"type": "uint256"
+			}
+		],
+		"name": "joinVault",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -1156,15 +1232,9 @@ export const erc20NftTimeVaultCurvance = [
 	},
 	{
 		"inputs": [],
-		"name": "PartnerContract",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
+		"name": "pauseNft",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -1195,6 +1265,26 @@ export const erc20NftTimeVaultCurvance = [
 	},
 	{
 		"inputs": [],
+		"name": "proxiableUUID",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "renounceOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "totalFeeCollected",
 		"outputs": [
 			{
@@ -1217,6 +1307,37 @@ export const erc20NftTimeVaultCurvance = [
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newImplementation",
+				"type": "address"
+			},
+			{
+				"internalType": "bytes",
+				"name": "data",
+				"type": "bytes"
+			}
+		],
+		"name": "upgradeToAndCall",
+		"outputs": [],
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -1255,6 +1376,10 @@ export const erc20NftTimeVaultCurvance = [
 		],
 		"stateMutability": "view",
 		"type": "function"
+	},
+	{
+		"stateMutability": "payable",
+		"type": "receive"
 	}
 ]
 export const timeVaultNftAbi = [

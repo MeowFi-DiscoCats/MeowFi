@@ -21,6 +21,7 @@ export interface IVault {
   isErc20: boolean;
   abi:any[];
   tokenAbi:any[];
+  nftImage:string;
 }
 export interface IErc20 {
   title: string;

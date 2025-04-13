@@ -80,7 +80,7 @@ export default function Bribe() {
         const decimal_ = await tokenContract.decimals();
         setdecimals(decimal_);
         const bribeInfo_ = await proxyContract.briber(address,erc20.tokenAddress);
-        console.log(bribeInfo_);
+        // console.log(bribeInfo_);
         setbribe(bribeInfo_)
         // setuserBalance(bribeInfo_.toString());
       } catch (error) {
@@ -94,6 +94,7 @@ export default function Bribe() {
   useEffect(() => {
     async function fetchBalance() {
       const vault:IVault = dataArr[selectedVaultIndex];
+      const erc20 = erc20Arr[erc20Index];
       setSelectedVault(vault)
       if (!address || !walletProvider) return;
 
@@ -102,8 +103,8 @@ export default function Bribe() {
         const provider = new BrowserProvider(walletProvider, chainId);
         // console.log(vault.proxyAddress);
         const tokenContract = new Contract(
-          vault.tokenAddress,
-          vault.tokenAbi,
+          erc20.tokenAddress,
+          erc20.tokenAbi,
           provider
         );
         const decimal_ = await tokenContract.decimals();
@@ -119,7 +120,7 @@ export default function Bribe() {
       }
     }
     fetchBalance();
-  }, [address, selectedVaultIndex, walletProvider, chainId]);
+  }, [address, selectedVaultIndex, walletProvider, chainId,erc20Index]);
   useEffect(() => {
     async function fetchTokenBalance() {
       const vault = dataArr[selectedVaultIndex];
@@ -144,7 +145,7 @@ export default function Bribe() {
         erc20Arr.map(async (i)=>{
 
           const bal=await proxyContract.bribes(i.tokenAddress)
-          console.log(bal)
+          // console.log(bal)
           tempArr.push(Number(bal))
 
 
@@ -155,7 +156,7 @@ export default function Bribe() {
           );
           
             const dec=await tokenContract.decimals()
-            console.log(dec)
+            // console.log(dec)
             tempArr2.push(dec)
         })
         seterc20TokenBalance(tempArr)
@@ -357,9 +358,9 @@ export default function Bribe() {
             </Select>
           </div>
           <div className="text-end text-sm">
-            Balance:{' '}
+          Balance:{' '}
             {formatBalance(userBalance.toString(), decimals).slice(0, 7)}{' '}
-            {dataArr[selectedVaultIndex].tokenSymbol}
+            {erc20Arr[erc20Index].title}
           </div>
 
           <Dialog>
@@ -386,9 +387,9 @@ export default function Bribe() {
                       {amnt}
                     </p>
                   </div>
-                  <p className="text-end">Balance:{' '}
+                  <p className="text-end"> Balance:{' '}
             {formatBalance(userBalance.toString(), decimals).slice(0, 7)}{' '}
-            {dataArr[selectedVaultIndex].tokenSymbol}</p>
+            {erc20Arr[erc20Index].title}</p>
                   <div className="border-gunmetal flex-start flex w-full flex-col border bg-white p-1 px-4">
                     <p className="font-Teko text-start text-sm leading-relaxed font-semibold text-black/70">
                       For
@@ -483,7 +484,7 @@ export default function Bribe() {
                 <img
                   width={20}
                   className="mt-1 rounded-full"
-                  src="/images/monad.webp"
+                  src={i.img}
                 />
               </div>
               <div className="flex flex-col">

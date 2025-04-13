@@ -17,6 +17,7 @@ export function VaultActions({ index }: { index: number }) {
   const vault = vaults[index];
 
   const [quantity, setQuantity] = useState<number>(1);
+  const [state, setState] = useState<number>(0);
   const [holdings, setHoldings] = useState<{
     tokenAmount: number;
     nftAmount: number;
@@ -27,6 +28,7 @@ export function VaultActions({ index }: { index: number }) {
 
   const [joinTimeLeft, setJoinTimeLeft] = useState<string>('0d:0h:0m:0s');
   const [claimTimeLeft, setClaimTimeLeft] = useState<string>('0d:0h:0m:0s');
+  const [prejoinTime, setprejoinTime] = useState<string>('0d:0h:0m:0s');
 
   const [userBalance, setUserBalance] = useState<string>('0');
   const [decimals, setdecimals] = useState(0);
@@ -58,6 +60,8 @@ export function VaultActions({ index }: { index: number }) {
           provider
         );
         const availableSupply = await proxyContract.getNftCount();
+        const _state = await proxyContract.getState();
+        setState(_state)
         console.log(availableSupply);
         setAvailableSupply(Number(availableSupply));
       } catch (error) {
@@ -133,22 +137,25 @@ export function VaultActions({ index }: { index: number }) {
         );
 
         // Fetch periods from contract
-        const [_joiningPeriod, _claimingPeriod] = await Promise.all([
+        const [_joiningPeriod, _claimingPeriod,_prejoinPeriod] = await Promise.all([
           proxyContract.joiningPeriod(),
           proxyContract.claimingPeriod(),
+          proxyContract.prejoinPeriod(),
+
         ]);
 
         // Convert BigNumber to number
         const joiningPeriod = Number(_joiningPeriod);
         const claimingPeriod = Number(_claimingPeriod);
+        const prejoinPeriod = Number(_prejoinPeriod);
 
         if (joiningPeriod > 0 && claimingPeriod > 0) {
           // Immediate update
-          updateCountdowns(joiningPeriod, claimingPeriod);
+          updateCountdowns(joiningPeriod, claimingPeriod,prejoinPeriod);
 
           // Set up interval for updates
           intervalId = setInterval(
-            () => updateCountdowns(joiningPeriod, claimingPeriod),
+            () => updateCountdowns(joiningPeriod, claimingPeriod,prejoinPeriod),
             1000
           );
         }
@@ -158,16 +165,18 @@ export function VaultActions({ index }: { index: number }) {
       }
     }
 
-    function updateCountdowns(joiningPeriod: number, claimingPeriod: number) {
+    function updateCountdowns(joiningPeriod: number, claimingPeriod: number,prejoiningPeriod:number) {
       const now = Math.floor(Date.now() / 1000); // Current time in seconds
 
       // Calculate remaining time
       const joinRemaining = joiningPeriod - now;
       const claimRemaining = claimingPeriod - now;
+      const prejoinPeriod = prejoiningPeriod - now;
 
       // Format and update state
       setJoinTimeLeft(formatCountdown(joinRemaining));
       setClaimTimeLeft(formatCountdown(claimRemaining));
+      setprejoinTime(formatCountdown(prejoinPeriod));
     }
 
     function formatCountdown(seconds: number): string {
@@ -321,9 +330,9 @@ export function VaultActions({ index }: { index: number }) {
   return (
     <div className="flex flex-1 flex-col gap-3">
       <p className="border-crimson border-y p-1 text-center font-semibold">
-        {joinTimeLeft === '00d:00h:00m:00s'
+        {state==3? `Vault opens In: ${prejoinTime}`:( joinTimeLeft === '00d:00h:00m:00s'
           ? 'VAULT CLOSED'
-          : `Vault Closes In: ${joinTimeLeft}`}
+          : `Vault Closes In: ${joinTimeLeft}`)}
       </p>
       <div className="border-gunmetal bg-yellow flex justify-between rounded-lg border p-2 font-semibold">
         <span>Vault Supply:</span>

@@ -137,7 +137,7 @@ export function VaultMetrics({ index }: { index: number }) {
           <img
             width={30}
             className="p-[1px] shadow"
-            src="/images/sumerNFT.webp"
+            src={vault.nftImage}
             alt="NFTs"
           />
           <div>

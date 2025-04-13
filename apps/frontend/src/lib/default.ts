@@ -1,7 +1,7 @@
 import { IErc20, IVault } from '../../../backend/src/models/IVault';
 import { erc20NftTimeVaultCurvance, shMonadAbi } from './abi';
 import { tokenAbi } from './abi.data';
-import { curvancexFastLane, shMonadErc20Addr } from './address';
+import { curvancexFastLane, shMonadErc20Addr, usdtMonadErc20Addr } from './address';
 
 // const nativeTimeVaultFormData: IVault = {
 //   title: 'Sumer Money',
@@ -50,32 +50,33 @@ export const CurvanceAndFastlane: IVault = {
   isErc20: true,
   abi: erc20NftTimeVaultCurvance,
   tokenAbi: shMonadAbi,
+  nftImage:'/images/hello.png'
 };
-export const CurvanceAndFastlane2: IVault = {
-  //testing purpose
-  title: 'Curvance x Fastlane',
-  img: 'https://plum-imaginative-guan-725.mypinata.cloud/ipfs/bafkreifkhhgyhv5f3bhbegnoc3shbmjoo72ngvqntadgyi7wcq2rbiyuxi',
-  lockedInPeriod: 0,
-  APR: 225,
-  type: 'flexible',
-  earnings: 0,
-  proxyAddress: '0x5b52Aa26838A1A25Bea959f420b6C1cF2Da7C7f3',
-  tokenAddress: shMonadErc20Addr,
-  AirdropIncentivised: 0,
-  totalSupply: 10000,
-  availableSupply: 0,
-  joinInPeriod: '2025-03-15T00:00',
-  claimInPeriod: '2025-03-17T00:00',
-  price: 0.2,
-  yieldValue: 0,
-  backingRatio: 1,
-  backingPercentage: 100,
-  tokenSymbol: 'shMON',
-  NFTLimit: 1,
-  isErc20: true,
-  abi: erc20NftTimeVaultCurvance,
-  tokenAbi: shMonadAbi,
-};
+// export const CurvanceAndFastlane2: IVault = {
+//   //testing purpose
+//   title: 'Curvance x Fastlane',
+//   img: 'https://plum-imaginative-guan-725.mypinata.cloud/ipfs/bafkreifkhhgyhv5f3bhbegnoc3shbmjoo72ngvqntadgyi7wcq2rbiyuxi',
+//   lockedInPeriod: 0,
+//   APR: 225,
+//   type: 'flexible',
+//   earnings: 0,
+//   proxyAddress: '0x5b52Aa26838A1A25Bea959f420b6C1cF2Da7C7f3',
+//   tokenAddress: shMonadErc20Addr,
+//   AirdropIncentivised: 0,
+//   totalSupply: 10000,
+//   availableSupply: 0,
+//   joinInPeriod: '2025-03-15T00:00',
+//   claimInPeriod: '2025-03-17T00:00',
+//   price: 0.2,
+//   yieldValue: 0,
+//   backingRatio: 1,
+//   backingPercentage: 100,
+//   tokenSymbol: 'shMON',
+//   NFTLimit: 1,
+//   isErc20: true,
+//   abi: erc20NftTimeVaultCurvance,
+//   tokenAbi: shMonadAbi,
+// };
 export const shMon: IErc20 = {
   title: 'shMon',
   img: '/images/monad.webp',
@@ -85,7 +86,7 @@ export const shMon: IErc20 = {
 export const usdt: IErc20 = {
   title: 'USDT',
   img: '/images/usdt.webp',
-  tokenAddress: '0x88b8E2161DEDC77EF4ab7585569D2415a1C1055D',
+  tokenAddress: usdtMonadErc20Addr,
   tokenAbi: tokenAbi,
 };
 
