@@ -489,7 +489,7 @@ export default function Bribe() {
               </div>
               <div className="flex flex-col">
                 <span className="font-Teko font-semibold">{i.title}</span>
-                <span>{erc20TokenBalance.length>0 ?(ethers.formatUnits((erc20TokenBalance[index]).toString(),erc20Decimal[index])):'0' }</span>
+                <span>{erc20TokenBalance[index] ?(ethers.formatUnits((erc20TokenBalance[index]).toString(),erc20Decimal[index])):'0' }</span>
               </div>
             </div>
             })}  
