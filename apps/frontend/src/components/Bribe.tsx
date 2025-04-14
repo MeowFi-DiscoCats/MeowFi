@@ -76,7 +76,7 @@ export default function Bribe() {
     } catch (error) {
       console.error('Error fetching bribe info:', error);
     }
-  }, [address, walletProvider, chainId, currentVault, currentErc20.tokenAddress]);
+  }, [address, walletProvider, chainId, currentVault, currentErc20.tokenAddress,erc20Index,selectedVaultIndex]);
 
   // Fetch user balance
   const fetchBalance = useCallback(async () => {
@@ -96,7 +96,7 @@ export default function Bribe() {
     } catch (error) {
       console.error('Error fetching balance:', error);
     }
-  }, [address, walletProvider, chainId, currentErc20]);
+  }, [address, walletProvider, chainId, currentErc20,erc20Index,selectedVaultIndex]);
 
   // Fetch token balances
   const fetchTokenBalance = useCallback(async () => {
@@ -134,7 +134,7 @@ export default function Bribe() {
     } catch (error) {
       console.error('Error fetching token balances:', error);
     }
-  }, [isConnected, walletProvider, chainId, currentVault]);
+  }, [isConnected, walletProvider, chainId, currentVault,erc20Index,selectedVaultIndex]);
 
   // Combined effect for data that needs to refresh when vault or token changes
   useEffect(() => {
@@ -159,7 +159,7 @@ export default function Bribe() {
     try {
       const provider = new BrowserProvider(walletProvider, chainId);
       const signer = await provider.getSigner();
-      const amountInWei = (amnt * 10 ** decimals).toString();
+      const amountInWei = (Number(amnt) * 10 ** Number(decimals)).toString();
 
       const tokenContract = new Contract(
         currentErc20.tokenAddress,
