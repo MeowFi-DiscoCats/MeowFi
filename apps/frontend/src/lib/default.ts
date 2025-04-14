@@ -1,7 +1,7 @@
 import { IErc20, IVault } from '../../../backend/src/models/IVault';
 import { erc20NftTimeVaultCurvance, shMonadAbi } from './abi';
 import { tokenAbi } from './abi.data';
-import { curvancexFastLane, shMonadErc20Addr, usdtMonadErc20Addr } from './address';
+import { curvancexFastLane, shMonadErc20Addr, usdcMonadErc20Addr, usdtMonadErc20Addr } from './address';
 
 // const nativeTimeVaultFormData: IVault = {
 //   title: 'Sumer Money',
@@ -89,6 +89,12 @@ export const usdt: IErc20 = {
   tokenAddress: usdtMonadErc20Addr,
   tokenAbi: tokenAbi,
 };
+export const usdc: IErc20 = {
+  title: 'USDC',
+  img: '/images/usdc.webp',
+  tokenAddress: usdcMonadErc20Addr,
+  tokenAbi: tokenAbi,
+};
 
 export const dataArr: IVault[] = [CurvanceAndFastlane];
-export const erc20Arr: IErc20[] = [shMon, usdt];
+export const erc20Arr: IErc20[] = [shMon, usdt,usdc];
