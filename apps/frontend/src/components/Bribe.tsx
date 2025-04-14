@@ -134,7 +134,7 @@ export default function Bribe() {
     } catch (error) {
       console.error('Error fetching token balances:', error);
     }
-  }, [isConnected, walletProvider, chainId, currentVault,erc20Index,selectedVaultIndex]);
+  }, [isConnected, walletProvider, chainId, currentVault]);
 
   // Combined effect for data that needs to refresh when vault or token changes
   useEffect(() => {
