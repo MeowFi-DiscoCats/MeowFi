@@ -162,7 +162,7 @@ export default function CurvanceXFastlaneCard({
     if (holdings.isLoading || vaultMetrics.isLoading || !nftTotal || !decimals)
       return '...';
     const totalValue = holdings.tokenAmount + vaultMetrics.yieldValue;
-    return ethers.formatUnits((totalValue / nftTotal).toString(), decimals);
+    return ethers.formatUnits((totalValue).toString(), decimals);
   }, [holdings, vaultMetrics, nftTotal, decimals]);
 
   const calculatedAPY = useMemo(() => {
