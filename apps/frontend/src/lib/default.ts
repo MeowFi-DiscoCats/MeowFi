@@ -52,32 +52,32 @@ export const CurvanceAndFastlane: IVault = {
   tokenAbi: shMonadAbi,
   nftImage:'/images/hello.png'
 };
-export const CurvanceAndFastlane2: IVault = {
-  //testing purpose
-  title: 'Curvance x Fastlane',
-  img: 'https://plum-imaginative-guan-725.mypinata.cloud/ipfs/bafkreifkhhgyhv5f3bhbegnoc3shbmjoo72ngvqntadgyi7wcq2rbiyuxi',
-  lockedInPeriod: 0,
-  APR: 225,
-  type: 'flexible',
-  earnings: 0,
-  proxyAddress: '0x1A36b35bDB43cDc189345999B5677342580aa509',
-  tokenAddress: shMonadErc20Addr,
-  AirdropIncentivised: 0,
-  totalSupply: 10000,
-  availableSupply: 0,
-  joinInPeriod: '2025-03-15T00:00',
-  claimInPeriod: '2025-03-17T00:00',
-  price: 0.2,
-  yieldValue: 0,
-  backingRatio: 1,
-  backingPercentage: 100,
-  tokenSymbol: 'shMON',
-  NFTLimit: 10,
-  isErc20: true,
-  abi: erc20NftTimeVaultCurvance,
-  tokenAbi: shMonadAbi,
-  nftImage:'/images/hello.png'
-};
+// export const CurvanceAndFastlane2: IVault = {
+//   //testing purpose
+//   title: 'Curvance x Fastlane',
+//   img: 'https://plum-imaginative-guan-725.mypinata.cloud/ipfs/bafkreifkhhgyhv5f3bhbegnoc3shbmjoo72ngvqntadgyi7wcq2rbiyuxi',
+//   lockedInPeriod: 0,
+//   APR: 225,
+//   type: 'flexible',
+//   earnings: 0,
+//   proxyAddress: '0x1A36b35bDB43cDc189345999B5677342580aa509',
+//   tokenAddress: shMonadErc20Addr,
+//   AirdropIncentivised: 0,
+//   totalSupply: 10000,
+//   availableSupply: 0,
+//   joinInPeriod: '2025-03-15T00:00',
+//   claimInPeriod: '2025-03-17T00:00',
+//   price: 0.2,
+//   yieldValue: 0,
+//   backingRatio: 1,
+//   backingPercentage: 100,
+//   tokenSymbol: 'shMON',
+//   NFTLimit: 10,
+//   isErc20: true,
+//   abi: erc20NftTimeVaultCurvance,
+//   tokenAbi: shMonadAbi,
+//   nftImage:'/images/hello.png'
+// };
 export const shMon: IErc20 = {
   title: 'shMon',
   img: '/images/monad.webp',
@@ -97,5 +97,5 @@ export const usdc: IErc20 = {
   tokenAbi: tokenAbi,
 };
 
-export const dataArr: IVault[] = [CurvanceAndFastlane,CurvanceAndFastlane2];
+export const dataArr: IVault[] = [CurvanceAndFastlane];
 export const erc20Arr: IErc20[] = [shMon, usdt,usdc];
