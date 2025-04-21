@@ -1,6 +1,6 @@
 // import abi from './abi';
 import address from './address';
-import { Itoken, monToken, shMonToken } from './tokens';
+import { Itoken, shMonToken } from './tokens';
 
 export interface IVault {
   title: string;
@@ -23,27 +23,27 @@ export interface IVault {
   token: Itoken;
 }
 
-const _nativeTimeVault: IVault = {
-  title: 'Sumer Money',
-  img: '/images/whiteCard.webp',
-  lockedInPeriod: 10,
-  apy: 20,
-  type: 'flexible',
-  proxyAddress: address.nativetimelockVault,
-  airdropIncentivised: 0,
-  totalSupply: 1000,
-  availableSupply: 0,
-  joinInPeriod: '2025-03-15T00:00',
-  claimInPeriod: '2025-03-17T00:00',
-  nftPrice: 1,
-  backingRatio: 1,
-  backingPercentage: 100,
-  nftImage: '/images/sumerNft.webp',
-  token: monToken,
-  nftLimit: 10,
-  // abi: abi.proxy,
-};
-
+// const _nativeTimeVault: IVault = {
+//   title: 'Sumer Money',
+//   img: '/images/whiteCard.webp',
+//   lockedInPeriod: 10,
+//   apy: 20,
+//   type: 'flexible',
+//   proxyAddress: address.nativetimelockVault,
+//   airdropIncentivised: 0,
+//   totalSupply: 1000,
+//   availableSupply: 0,
+//   joinInPeriod: '2025-03-15T00:00',
+//   claimInPeriod: '2025-03-17T00:00',
+//   nftPrice: 1,
+//   backingRatio: 1,
+//   backingPercentage: 100,
+//   nftImage: '/images/sumerNft.webp',
+//   token: monToken,
+//   nftLimit: 10,
+//   // abi: abi.proxy,
+// };
+//
 const curvanceFastlaneVault: IVault = {
   title: 'Curvance x Fastlane',
   img: '/images/cfCard1.webp',

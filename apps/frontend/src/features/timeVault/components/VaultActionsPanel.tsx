@@ -7,11 +7,11 @@ import {
   useAppKitNetworkCore,
   useAppKitProvider,
 } from '@reown/appkit/react';
-import { useUserLiveFetch } from '../hooks/useUserFetch';
 import { toast } from 'sonner';
 import DepositDialog from './DepositDialog';
 import ClaimDialog from './ClaimDialog';
-import { useLiveFetch } from '../hooks/useFetch';
+import { useLiveFetch } from '@/lib/hooks/useFetch';
+import { useUserLiveFetch } from '@/lib/hooks/useUserFetch';
 
 export function VaultActions({ index }: { index: number }) {
   const vault = vaults[index];
@@ -30,6 +30,9 @@ export function VaultActions({ index }: { index: number }) {
   );
 
   const { data: liveVaultsData } = useLiveFetch();
+  const joinInPeriod = liveVaultsData
+    ? liveVaultsData[index].joinInPeriod
+    : vault.joinInPeriod;
 
   const handleQuantity = () => {
     const userAmount = liveUserVaultsData?.nftAmount;
@@ -50,7 +53,7 @@ export function VaultActions({ index }: { index: number }) {
   return (
     <div className="mt-auto flex flex-1 flex-col gap-3">
       <p className="border-crimson border-y p-1 text-center font-semibold">
-        <Countdown targetDate={vault.joinInPeriod} />
+        <Countdown targetDate={joinInPeriod} />
       </p>
       <div className="border-gunmetal bg-yellow flex justify-between rounded-lg border p-2 font-semibold">
         <span>Vault Supply:</span>

@@ -22,10 +22,12 @@ export default function DepositBribeDialog({
   amount,
   selectedVaultIndex,
   selectedTokenIndex,
+  userBalance,
 }: {
   amount: number;
   selectedVaultIndex: number;
   selectedTokenIndex: number;
+  userBalance: number;
 }) {
   const [status, setStatus] = useState('Deposit');
   const [open, setOpen] = useState(false);
@@ -109,7 +111,12 @@ export default function DepositBribeDialog({
                 {amount} {tokens[selectedTokenIndex].symbol}
               </p>
             </div>
-            <p className="mb-2 text-end">Balance: 23.34</p>
+
+            <div className="pr-2 text-end text-sm">
+              <strong>Balance :</strong>
+              <span className="mx-1"> {userBalance}</span>
+              <span>{token.symbol}</span>
+            </div>
             <div className="border-gunmetal flex-start flex w-full flex-col border bg-white p-1 px-4">
               <p className="font-Teko text-start text-sm leading-relaxed font-semibold text-black/70">
                 For

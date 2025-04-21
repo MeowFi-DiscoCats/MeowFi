@@ -13,6 +13,7 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
 import { vaults } from '@/data/vaults';
+import { tokens } from '@/data/tokens';
 
 export default function TrackBribe() {
   return (
@@ -81,46 +82,23 @@ export default function TrackBribe() {
       <p className="font-Teko my-2 flex items-center gap-2 leading-relaxed font-semibold">
         Bribe in Tokens
       </p>
-      <div className="border-gunmetal mb-4 flex justify-around gap-2 border bg-white p-4">
-        <div className="flex gap-2">
-          <div>
-            <img
-              width={20}
-              className="mt-1 rounded-full"
-              src="/images/monad.webp"
-            />
+      <div className="border-gunmetal mb-4 flex flex-wrap justify-around gap-2 border bg-white p-4">
+        {tokens.map((token, index) => (
+          <div className="flex gap-2" key={index}>
+            <div>
+              <img
+                width={20}
+                className="mt-1 rounded-full"
+                src={token.img}
+                alt={token.symbol}
+              />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-Teko font-semibold">{token.symbol}</span>
+              <span>0</span>
+            </div>
           </div>
-          <div className="flex flex-col">
-            <span className="font-Teko font-semibold">MON</span>
-            <span>3824.3</span>
-          </div>
-        </div>
-        <div className="flex gap-2">
-          <div>
-            <img
-              width={20}
-              className="mt-1 rounded-full"
-              src="/images/usdt.webp"
-            />
-          </div>
-          <div className="flex flex-col">
-            <span className="font-Teko font-semibold">USDT</span>
-            <span>3824.3</span>
-          </div>
-        </div>
-        <div className="flex gap-2">
-          <div>
-            <img
-              width={20}
-              className="mt-1 rounded-full"
-              src="/images/usdc.webp"
-            />
-          </div>
-          <div className="flex flex-col">
-            <span className="font-Teko font-semibold">USDC</span>
-            <span>3824.3</span>
-          </div>
-        </div>
+        ))}
       </div>
     </TabsContent>
   );

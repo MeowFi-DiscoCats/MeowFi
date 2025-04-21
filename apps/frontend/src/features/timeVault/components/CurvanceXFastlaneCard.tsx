@@ -6,8 +6,8 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
 import { vaults } from '@/data/vaults';
-import { useLiveFetch } from '@/features/timeVault/hooks/useFetch';
-import { useUserLiveFetch } from '../hooks/useUserFetch';
+import { useLiveFetch } from '@/lib/hooks/useFetch';
+import { useUserLiveFetch } from '@/lib/hooks/useUserFetch';
 import {
   useAppKitAccount,
   useAppKitNetworkCore,

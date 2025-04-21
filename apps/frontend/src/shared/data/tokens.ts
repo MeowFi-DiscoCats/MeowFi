@@ -40,4 +40,4 @@ export const usdcToken: Itoken = {
   decimals: 18,
 };
 
-export const tokens: Itoken[] = [shMonToken, usdtToken, monToken, usdcToken];
+export const tokens: Itoken[] = [shMonToken, monToken, usdtToken, usdcToken];

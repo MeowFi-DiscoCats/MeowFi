@@ -12,19 +12,24 @@ import {
   useAppKitProvider,
 } from '@reown/appkit/react';
 import { BrowserProvider, Contract, Eip1193Provider } from 'ethers';
-import { useUserLiveFetch } from '../hooks/useUserFetch';
+import { useUserLiveFetch } from '@/lib/hooks/useUserFetch';
 import { vaults } from '@/data/vaults';
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
 import ClaimCountDown from './ClaimCountdown';
+import { useLiveFetch } from '@/lib/hooks/useFetch';
 
 export default function ClaimDialog({ index }: { index: number }) {
   const vault = vaults[index];
-  const targetDate = new Date(vault.joinInPeriod).getTime();
+  const { data: liveVaultsData } = useLiveFetch();
+  const claimInPeriod = liveVaultsData
+    ? liveVaultsData[index].claimInPeriod
+    : vault.claimInPeriod;
+  const targetDate = new Date(claimInPeriod).getTime();
   const [isClaimPeriodStart, setIsClaimPeriodStart] = useState(
-    targetDate > Date.now()
+    targetDate < Date.now()
   );
   const [status, setStatus] = useState('Claim');
   const [open, setOpen] = useState(false);
@@ -123,13 +128,13 @@ export default function ClaimDialog({ index }: { index: number }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
-        disabled={isClaimPeriodStart}
+        disabled={!isClaimPeriodStart}
         onClick={validate}
         className={`${
           !isClaimPeriodStart ? 'cursor-not-allowed' : 'hover:bg-amber-400'
         } bg-amber mx-auto w-full py-1 text-black`}
       >
-        <ClaimCountDown targetDate={vault.claimInPeriod} />
+        <ClaimCountDown targetDate={claimInPeriod} />
       </DialogTrigger>
       <DialogContent className="bg-cream border-gunmetal rounded-3xl">
         <DialogHeader>

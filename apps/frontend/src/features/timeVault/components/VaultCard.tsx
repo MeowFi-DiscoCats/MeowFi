@@ -6,7 +6,7 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
 import { vaults } from '@/data/vaults';
-import { useLiveFetch } from '../hooks/useFetch';
+import { useLiveFetch } from '@/lib/hooks/useFetch';
 
 export default function VaultCard({ index }: { index: number }) {
   const vault = vaults[index];

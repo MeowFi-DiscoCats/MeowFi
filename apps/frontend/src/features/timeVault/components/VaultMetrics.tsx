@@ -3,11 +3,26 @@ import HourGlass from '@/components/svg/HourGlass';
 import Scale from '@/components/svg/Scale';
 import Triangle from '@/components/svg/Triangle';
 import { vaults } from '@/data/vaults';
-import { useLiveFetch } from '../hooks/useFetch';
+import { useLiveFetch } from '@/lib/hooks/useFetch';
 
 export function VaultMetrics({ index }: { index: number }) {
   const vault = vaults[index];
   const { data: liveVaultsData } = useLiveFetch();
+  const claimInPeriod = liveVaultsData
+    ? liveVaultsData[index].claimInPeriod
+    : vault.claimInPeriod;
+
+  function daysUntil(dateTimeStr: string): number {
+    const targetDate = new Date(dateTimeStr);
+    const now = new Date();
+
+    const diffMs = targetDate.getTime() - now.getTime();
+
+    if (diffMs <= 0) return 0;
+
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    return diffDays;
+  }
 
   return (
     <div className="flex flex-1 flex-col justify-end">
@@ -56,7 +71,7 @@ export function VaultMetrics({ index }: { index: number }) {
               <HourGlass />
               <div>
                 <p className="font-Teko text-3xl font-semibold">
-                  {vault.lockedInPeriod}D
+                  {daysUntil(claimInPeriod)}D
                 </p>
                 <p className="font-thin">Remaining</p>
               </div>
