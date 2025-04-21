@@ -235,14 +235,12 @@ export default function DepositDialog({
     if (!isConnected) {
       toast('Please connect your wallet.');
     }
-    if (!isJoinClosed) {
+    if (isJoinClosed) {
       toast('Join period has ended.');
     }
   }
 
   useEffect(() => {
-    if (!tokenIndex) return;
-
     const fetchSwapEstimate = async () => {
       try {
         const provider = new ethers.JsonRpcProvider(
