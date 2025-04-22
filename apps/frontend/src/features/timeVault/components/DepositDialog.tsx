@@ -2,7 +2,6 @@ import YellowBolt from '@/components/svg/YellowBolt';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -38,11 +37,19 @@ export default function DepositDialog({
 }) {
   const vault = vaults[index];
   const { data: liveVaultsData } = useLiveFetch();
+  const prejoinPeriod = liveVaultsData
+    ? liveVaultsData[index].prejoinPeriod
+    : vault.prejoinPeriod;
   const joinInPeriod = liveVaultsData
     ? liveVaultsData[index].joinInPeriod
     : vault.joinInPeriod;
 
+  const prejoinDeadline = new Date(prejoinPeriod).getTime();
   const joinDeadline = new Date(joinInPeriod).getTime();
+
+  const [isPrejoinOpen, setIsPrejoinOpen] = useState(
+    Date.now() >= prejoinDeadline
+  );
   const [isJoinClosed, setIsJoinClosed] = useState(Date.now() > joinDeadline);
   const [useZap, setUseZap] = useState(false);
   const [decimal, setdecimal] = useState(18);
@@ -51,50 +58,57 @@ export default function DepositDialog({
   );
   const slippagePercent = 1;
   const [swapEstimate, setSwapEstimate] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (!isJoinClosed) {
-      const timeRemaining = joinDeadline - Date.now();
-      const timeout = setTimeout(() => {
-        setIsJoinClosed(true);
-      }, timeRemaining);
-      return () => clearTimeout(timeout);
-    }
-  }, [isJoinClosed, joinDeadline]);
-
   const { isConnected, address } = useAppKitAccount();
   const { walletProvider }: { walletProvider: Eip1193Provider } =
     useAppKitProvider('eip155');
   const { chainId } = useAppKitNetworkCore();
-
   const { data: userVaultData } = useUserLiveFetch(
     walletProvider,
     chainId as string,
     index,
     isConnected
   );
-
   const [depositStatus, setDepositStatus] = useState('Deposit');
   const [dialogOpen, setDialogOpen] = useState(false);
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (!isPrejoinOpen) {
+      const timeout = setTimeout(() => {
+        setIsPrejoinOpen(true);
+      }, prejoinDeadline - Date.now());
+      return () => clearTimeout(timeout);
+    }
+  }, [isPrejoinOpen, prejoinDeadline]);
+
+  useEffect(() => {
+    if (!isJoinClosed) {
+      const timeout = setTimeout(() => {
+        setIsJoinClosed(true);
+      }, joinDeadline - Date.now());
+      return () => clearTimeout(timeout);
+    }
+  }, [isJoinClosed, joinDeadline]);
 
   async function executeDeposit() {
     if (!isConnected) {
       toast('Please connect your wallet.');
       return;
     }
-
+    if (!isPrejoinOpen || isJoinClosed) {
+      toast(
+        !isPrejoinOpen ? 'Join not started yet.' : 'Join period has ended.'
+      );
+      return;
+    }
     const provider = new BrowserProvider(walletProvider, chainId);
     const signer = await provider.getSigner();
-
     setDepositStatus('Depositing...');
-
     try {
       const depositAmount = ethers.parseUnits(
         (quantity * vault.nftPrice).toString(),
         vault.token.decimals
       );
-
       if (useZap) {
         const selectedToken = tokens[tokenIndex];
         const MAX_UINT256 = ethers.MaxUint256;
@@ -191,78 +205,48 @@ export default function DepositDialog({
         if (vault.token.isErc20) {
           const tokenContract = new Contract(
             vault.token.address,
-            [
-              'function approve(address spender, uint256 amount) returns (bool)',
-            ],
+            ['function approve(address,uint256) returns (bool)'],
             signer
           );
-
           const approval = await tokenContract.approve(
             vault.proxyAddress,
             depositAmount
           );
-          const receiptApproval = await approval.wait();
-
-          if (receiptApproval) {
-            toast('Approval successful', {
-              description: 'You have successfully Approved',
-            });
-
-            const proxyContract = new Contract(
-              vault.proxyAddress,
-              [
-                'function joinVault(uint256 amount, address userAddress) external',
-              ],
-              signer
-            );
-
-            const depositTx = await proxyContract.joinVault(quantity, address);
-            const receipt = await depositTx.wait();
-
-            if (receipt) {
-              toast('Deposit successful', {
-                description: 'You have successfully deposited',
-              });
-            }
-          }
+          await approval.wait();
+          toast('Approval successful', {
+            description: 'You have successfully Approved',
+          });
+          const proxyContract = new Contract(
+            vault.proxyAddress,
+            ['function joinVault(uint256,address)'],
+            signer
+          );
+          const depositTx = await proxyContract.joinVault(quantity, address);
+          await depositTx.wait();
+          toast('Deposit successful', {
+            description: 'You have successfully deposited',
+          });
         } else {
           const proxyContract = new Contract(
             vault.proxyAddress,
-            ['function joinVault(uint256 amount) external'],
+            ['function joinVault(uint256)'],
             signer
           );
-
           const depositTx = await proxyContract.joinVault(quantity);
-          const receipt = await depositTx.wait();
-
-          if (receipt) {
-            toast('Deposit successful', {
-              description: 'You have successfully deposited',
-            });
-          }
+          await depositTx.wait();
+          toast('Deposit successful', {
+            description: 'You have successfully deposited',
+          });
         }
       }
-
       setDialogOpen(false);
       setDepositStatus('Deposit');
       queryClient.invalidateQueries({
         queryKey: ['liveVaultsData', 'liveUserVaultsData'],
       });
-    } catch (error) {
-      console.error('Error during deposit:', error);
-      toast('Deposit failed', {
-        description: 'Please try again',
-      });
+    } catch {
+      toast('Deposit failed', { description: 'Please try again' });
       setDepositStatus('Deposit');
-    }
-  }
-
-  function validateDeposit() {
-    if (!isConnected) {
-      toast('Please connect your wallet.');
-    }
-    if (isJoinClosed) {
-      toast('Join period has ended.');
     }
   }
 
@@ -316,7 +300,7 @@ export default function DepositDialog({
           setSwapEstimate(Number(amount));
         }
       } catch (error) {
-        console.error('Error fetching swap estimate:', error);
+        console.error('Error fetching swap estimate', error);
       }
     };
   
@@ -333,14 +317,15 @@ export default function DepositDialog({
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger
-        onClick={validateDeposit}
+        onClick={() => {}}
+        disabled={!isPrejoinOpen || isJoinClosed}
         className={`${
-          isJoinClosed
-            ? 'cursor-not-allowed border-gray-400 text-gray-400 hover:bg-gray-400/10'
+          !isPrejoinOpen || isJoinClosed
+            ? 'cursor-not-allowed border-gray-400 text-gray-400'
             : 'bg-amber border-gunmetal text-black hover:bg-amber-400'
         } relative mx-auto rounded-lg border px-12 font-semibold`}
       >
-        Deposit
+        {!isPrejoinOpen ? 'Soon' : isJoinClosed ? 'Closed' : 'Deposit'}
         <div className="border-gunmetal absolute -top-0.25 -right-0.25 flex rounded-full border bg-[#671afc] px-1 py-0.5 text-[8px] text-white">
           Zap
           <span className="w-2.5">
@@ -353,19 +338,12 @@ export default function DepositDialog({
           <DialogTitle className="font-Teko text-center text-3xl font-semibold">
             Deposit Confirmation
           </DialogTitle>
-          <DialogDescription className="hidden text-center text-sm font-semibold">
-            This is a confirmation of your deposit. Please ensure that the
-            wallet address you are using is correct.
-          </DialogDescription>
           <section>
             <div className="mt-4 flex items-center justify-between">
               <p className="font-Teko font-semibold">You are Depositing</p>
-
               <p className="text-end text-sm font-semibold">
                 Balance:
-                <span className="mx-1">
-                  {userVaultData?.balance ? `${userVaultData.balance}` : '0'}
-                </span>
+                <span className="mx-1">{userVaultData?.balance ?? '0'}</span>
                 {vault.token.symbol}
               </p>
             </div>
@@ -386,10 +364,9 @@ export default function DepositDialog({
             </div>
             <div className="relative my-2 flex items-center justify-end gap-2">
               {useZap ? null : <span>Not Enough Balance?</span>}
-
               <a
                 onClick={() => setUseZap(!useZap)}
-                className="border-gunmetal flex rounded-full border bg-[#671afc] px-2 py-0.5 text-[12px] text-nowrap text-white"
+                className="border-gunmetal flex rounded-full border bg-[#671afc] px-2 py-0.5 text-[12px] whitespace-nowrap text-white"
               >
                 <span>Zap it</span>
                 <span className="w-4">
@@ -397,7 +374,7 @@ export default function DepositDialog({
                 </span>
               </a>
             </div>
-            {useZap ? (
+            {useZap && (
               <div>
                 <div className="border-gunmetal mt-2 flex gap-1 rounded-xl border bg-white p-1 px-2">
                   {/* <p className="border-gunmetal flex-1 rounded-xl border bg-[#671afc] p-2 py-1 text-center text-white">
@@ -408,26 +385,23 @@ export default function DepositDialog({
 </p>
                   <div className="flex flex-1 justify-end">
                     <Select
-                      onValueChange={(value) =>
-                        setTokenIndex(parseFloat(value))
-                      }
+                      onValueChange={(v) => setTokenIndex(+v)}
                       defaultValue={`${tokenIndex}`}
                     >
-                      <SelectTrigger className="[&_*]:font-Teko !font-Teko [&_*]leading-loose w-28 border-none font-semibold shadow-none">
+                      <SelectTrigger className="[&_*]:font-Teko !font-Teko w-28 border-none leading-loose font-semibold shadow-none">
                         <SelectValue />
                       </SelectTrigger>
-
-                      <SelectContent className="bordrer-2 border-gunmetal flex-1">
+                      <SelectContent className="border-gunmetal border-2">
                         {tokens.map((token, i) =>
                           token.symbol !== vault.token.symbol ? (
                             <SelectItem
-                              className="[&_*]:font-Teko font-semibold"
-                              key={token.symbol}
+                              key={i}
                               value={`${i}`}
+                              className="[&_*]:font-Teko font-semibold"
                             >
                               <img
                                 src={token.img}
-                                alt="vault logo"
+                                alt=""
                                 className="mr-2 inline-block h-6 w-6 rounded-full"
                               />
                               {token.symbol}
@@ -438,7 +412,6 @@ export default function DepositDialog({
                     </Select>
                   </div>
                 </div>
-
                 <div className="mt-1 mb-2 flex items-center justify-between px-1">
                   <p className="text-xs">
                     <strong className="mr-1 text-gray-700">Rate :</strong>
@@ -450,8 +423,7 @@ export default function DepositDialog({
                   </p>
                 </div>
               </div>
-            ) : null}
-
+            )}
             <p className="font-Teko font-semibold">For</p>
             <div className="border-gunmetal font-Teko mt-2 flex items-center justify-center rounded-xl border p-3 text-center text-lg font-semibold">
               {quantity} {vault.title} Vaults NFTs
@@ -460,7 +432,7 @@ export default function DepositDialog({
               <Button
                 onClick={executeDeposit}
                 className="bg-yellow font-Teko border-gunmetal border px-[20%] py-2 text-xl font-semibold text-black hover:bg-yellow-300"
-                disabled={isJoinClosed}
+                disabled={!isPrejoinOpen || isJoinClosed}
               >
                 {depositStatus}
               </Button>

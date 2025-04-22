@@ -72,14 +72,18 @@ export default function AddBribe() {
     if (!address || !walletProvider) return;
     try {
       const provider = new BrowserProvider(walletProvider, chainId);
-      const tokenContract = new Contract(
-        token.address,
-        ['function balanceOf(address) view returns (uint256)'],
-        provider
-      );
-      const bal = await tokenContract.balanceOf(address);
-
-      setUserBalance(Number((Number(bal) / 10 ** token.decimals).toFixed(3)));
+      if (token.isErc20) {
+        const tokenContract = new Contract(
+          token.address,
+          ['function balanceOf(address) view returns (uint256)'],
+          provider
+        );
+        const bal = await tokenContract.balanceOf(address);
+        setUserBalance(Number((Number(bal) / 10 ** token.decimals).toFixed(3)));
+      } else {
+        const bal = await provider.getBalance(address);
+        setUserBalance(Number((Number(bal) / 10 ** token.decimals).toFixed(3)));
+      }
     } catch (err) {
       console.error('Error fetching balance:', err);
     }
@@ -191,20 +195,22 @@ export default function AddBribe() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent className="bordrer-2 border-gunmetal flex-1">
-              {tokens.map((t, idx) => (
-                <SelectItem
-                  className="[&_*]:font-Teko font-semibold"
-                  key={t.symbol}
-                  value={`${idx}`}
-                >
-                  <img
-                    src={t.img}
-                    alt="token logo"
-                    className="mr-2 inline-block h-6 w-6 rounded-full"
-                  />
-                  {t.symbol}
-                </SelectItem>
-              ))}
+              {tokens.map((token, idx) =>
+                token.isErc20 ? (
+                  <SelectItem
+                    className="[&_*]:font-Teko font-semibold"
+                    key={token.symbol}
+                    value={`${idx}`}
+                  >
+                    <img
+                      src={token.img}
+                      alt="token logo"
+                      className="mr-2 inline-block h-6 w-6 rounded-full"
+                    />
+                    {token.symbol}
+                  </SelectItem>
+                ) : null
+              )}
             </SelectContent>
           </Select>
         </div>
