@@ -65,12 +65,10 @@ const fetchVaultData = async () => {
     const round = (value: number, decimals: number = 2) =>
       Math.round(value * 10 ** decimals) / 10 ** decimals;
 
-    const claimInPeriod = new Date(Number(results[3]) * 1000)
-      .toISOString()
-      .slice(0, 16);
-    const joinInPeriod = new Date(Number(results[4]) * 1000)
-      .toISOString()
-      .slice(0, 16);
+    const claimInPeriod =
+      new Date(Number(results[3]) * 1000).toISOString().slice(0, 16) + 'Z';
+    const joinInPeriod =
+      new Date(Number(results[4]) * 1000).toISOString().slice(0, 16) + 'Z';
 
     return {
       getNftCount,

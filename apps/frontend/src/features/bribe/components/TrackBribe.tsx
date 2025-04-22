@@ -14,8 +14,14 @@ import {
 } from '@/components/ui/hover-card';
 import { vaults } from '@/data/vaults';
 import { tokens } from '@/data/tokens';
+import { useBribeFetch } from '../hooks/useFetch';
+import { useState } from 'react';
 
 export default function TrackBribe() {
+  const [selectedVaultIndex, setSelectedVaultIndex] = useState(0);
+  const { data: bribeData } = useBribeFetch(selectedVaultIndex);
+  const vault = vaults[selectedVaultIndex];
+
   return (
     <TabsContent
       value="track"
@@ -43,39 +49,47 @@ export default function TrackBribe() {
         </HoverCard>
       </p>
 
-      <Select defaultValue={vaults[0].title}>
+      <Select
+        onValueChange={(val) => setSelectedVaultIndex(Number(val))}
+        defaultValue={`${selectedVaultIndex}`}
+      >
         <SelectTrigger className="[&_*]:font-Teko border-gunmetal !font-Teko [&_*]leading-loose w-full font-semibold shadow-none">
           <SelectValue />
         </SelectTrigger>
         <SelectContent className="bordrer-2 border-gunmetal">
-          {vaults.map((vault) => (
+          {vaults.map((v, idx) => (
             <SelectItem
               className="[&_*]:font-Teko font-semibold"
-              key={vault.proxyAddress}
-              value={vault.title}
+              key={v.proxyAddress}
+              value={`${idx}`}
             >
               <img
-                src={vault.img}
+                src={v.img}
                 alt="vault logo"
                 className="mr-2 inline-block h-6 w-6 rounded-full"
               />
-              {vault.title} - {vault.token.symbol} Vault
+              {v.title} - {v.token.symbol} Vault
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
+
       <div className="bg-yellow border-gunmetal mt-4 flex justify-around rounded-xl border p-2">
         <div className="flex flex-col items-center">
           <span className="text-sm">Vault liquidity</span>
-          <span className="font-Teko font-semibold">1M $MON</span>
+          <span className="font-Teko font-semibold">
+            {vault.nftPrice * vault.totalSupply} {vault.token.symbol}
+          </span>
         </div>
         <div className="flex flex-col items-center">
           <span className="text-sm">Bribe Lock</span>
-          <span className="font-Teko font-semibold">30 Days</span>
+          <span className="font-Teko font-semibold">
+            {vault.lockedInPeriod} Days
+          </span>
         </div>
         <div className="flex flex-col items-center">
           <span className="text-sm">Bribe APY</span>
-          <span className="font-Teko font-semibold">789.15%</span>
+          <span className="font-Teko font-semibold">90%</span>
         </div>
       </div>
 
@@ -95,7 +109,7 @@ export default function TrackBribe() {
             </div>
             <div className="flex flex-col">
               <span className="font-Teko font-semibold">{token.symbol}</span>
-              <span>0</span>
+              <span>{bribeData ? bribeData.bribes[index].amount : 0}</span>
             </div>
           </div>
         ))}

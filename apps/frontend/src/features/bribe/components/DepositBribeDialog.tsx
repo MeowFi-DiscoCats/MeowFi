@@ -23,11 +23,13 @@ export default function DepositBribeDialog({
   selectedVaultIndex,
   selectedTokenIndex,
   userBalance,
+  setRefresh,
 }: {
   amount: number;
   selectedVaultIndex: number;
   selectedTokenIndex: number;
   userBalance: number;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [status, setStatus] = useState('Deposit');
   const [open, setOpen] = useState(false);
@@ -77,6 +79,7 @@ export default function DepositBribeDialog({
       await depositTx.wait();
 
       toast.success('Deposit successful');
+      setRefresh((prev: boolean) => !prev);
       setStatus('Deposit');
       setOpen(false);
     } catch (error) {

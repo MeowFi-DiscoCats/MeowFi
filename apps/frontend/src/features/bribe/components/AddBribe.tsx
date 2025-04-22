@@ -27,6 +27,7 @@ export default function AddBribe() {
   const [selectedVaultIndex, setSelectedVaultIndex] = useState(0);
   const [selectedTokenIndex, setSelectedTokenIndex] = useState(0);
   const [amount, setAmount] = useState(100);
+  const [refresh, setRefresh] = useState(false);
 
   const [userBalance, setUserBalance] = useState<number>(0);
   const [bribeInfo, setBribeInfo] = useState<number>(0);
@@ -94,6 +95,7 @@ export default function AddBribe() {
     selectedTokenIndex,
     fetchBribeInfo,
     fetchBalance,
+    refresh,
   ]);
 
   return (
@@ -219,6 +221,7 @@ export default function AddBribe() {
         selectedVaultIndex={selectedVaultIndex}
         selectedTokenIndex={selectedTokenIndex}
         userBalance={userBalance}
+        setRefresh={setRefresh}
       />
     </TabsContent>
   );
