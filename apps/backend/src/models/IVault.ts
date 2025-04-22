@@ -19,13 +19,5 @@ export interface IVault {
   tokenSymbol: string;
   NFTLimit: number;
   isErc20: boolean;
-  abi:any[];
-  tokenAbi:any[];
-  nftImage:string;
-}
-export interface IErc20 {
-  title: string;
-  img: string;
-  tokenAddress: string;
-  tokenAbi:any[];
+  nftImage: string;
 }
