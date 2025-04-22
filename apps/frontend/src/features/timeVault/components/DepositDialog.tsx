@@ -45,6 +45,7 @@ export default function DepositDialog({
   const joinDeadline = new Date(joinInPeriod).getTime();
   const [isJoinClosed, setIsJoinClosed] = useState(Date.now() > joinDeadline);
   const [useZap, setUseZap] = useState(false);
+  const [decimal, setdecimal] = useState(18);
   const [tokenIndex, setTokenIndex] = useState(
     vault.token.symbol === tokens[0].symbol ? 1 : 0
   );
@@ -96,64 +97,89 @@ export default function DepositDialog({
 
       if (useZap) {
         const selectedToken = tokens[tokenIndex];
-
+        const MAX_UINT256 = ethers.MaxUint256;
         if (selectedToken.isErc20) {
           const tokenContract = new Contract(
             selectedToken.address,
             [
               'function approve(address spender, uint256 amount) returns (bool)',
+              'function allowance(address owner, address spender) view returns (uint256)',
             ],
             signer
           );
-
-          const approval = await tokenContract.approve(
-            vault.proxyAddress,
-            depositAmount
-          );
-          const receiptApproval = await approval.wait();
-
-          if (receiptApproval) {
-            toast('Approval successful', {
-              description: 'You have successfully Approved',
-            });
-
-            const proxyContract = new Contract(
-              vault.proxyAddress,
-              [
-                'function swapAndJoin(uint256 _nftAmount, address user, uint16 _slippageBps, address _startTokenAddr) external nonpayable',
-              ],
-              signer
-            );
-
-            const depositTx = await proxyContract.swapAndJoin(
-              quantity,
-              address,
-              slippagePercent * 100,
-              selectedToken.address
-            );
-
-            const receipt = await depositTx.wait();
-            if (receipt) {
-              toast('Deposit successful', {
-                description: 'You have successfully deposited',
+        
+          const userAddress = await signer.getAddress();
+          const currentAllowance = await tokenContract.allowance(userAddress, vault.proxyAddress);
+        
+          if (currentAllowance<(quantity)) {
+            
+            const approval = await tokenContract.approve(vault.proxyAddress, MAX_UINT256);
+            const receiptApproval = await approval.wait();
+        
+            if (receiptApproval) {
+              toast('Approval successful', {
+                description: 'You have successfully Approved',
               });
+            } else {
+              toast('Approval failed', {
+                description: 'Could not complete approval transaction',
+              });
+              return;
             }
           }
-        } else {
+        
+          // Proceed with deposit
           const proxyContract = new Contract(
             vault.proxyAddress,
             [
-              'function swapEthAndJoin(uint256 _nftAmount, address user, uint16 _slippageBps) external payable',
+              'function swapAndJoin(uint256 _nftAmount, address user, uint16 _slippageBps, address _startTokenAddr) external',
             ],
             signer
           );
-
-          const depositTx = await proxyContract.swapEthAndJoin(
+        
+          const depositTx = await proxyContract.swapAndJoin(
             quantity,
-            address,
+            userAddress,
+            slippagePercent * 100,
+            selectedToken.address
+          );
+        
+          const receipt = await depositTx.wait();
+          if (receipt) {
+            toast('Deposit successful', {
+              description: 'You have successfully deposited',
+            });
+          }
+        } else {
+          
+          const provider = new ethers.JsonRpcProvider(import.meta.env.VITE_ALCHEMY_URL);
+          const proxyContract = new Contract(
+            vault.proxyAddress,
+            ['function getEthInputForExactOutput(uint256 _nftAmount, uint16 _slippageBps) external view returns (uint256)'],
+            provider
+          );
+          
+          const ethAmount = await proxyContract.getEthInputForExactOutput(
+            quantity,
             slippagePercent * 100
           );
-
+          
+         
+  
+          
+          const txProxyContract = new Contract(
+            vault.proxyAddress,
+            ['function swapEthAndJoin(uint256 _nftAmount, address user, uint16 _slippageBps) external payable'],
+            signer
+          );
+  
+          const depositTx = await txProxyContract.swapEthAndJoin(
+            quantity,
+            address,
+            slippagePercent * 100,
+            { value: ethAmount } 
+          );
+  
           const receipt = await depositTx.wait();
           if (receipt) {
             toast('Deposit successful', {
@@ -241,14 +267,26 @@ export default function DepositDialog({
   }
 
   useEffect(() => {
+    let intervalId: NodeJS.Timeout;
+  
     const fetchSwapEstimate = async () => {
       try {
         const provider = new ethers.JsonRpcProvider(
           import.meta.env.VITE_ALCHEMY_URL
         );
         const selectedToken = tokens[tokenIndex];
-
+  
         if (selectedToken.isErc20) {
+          const tokenContract = new Contract(
+            selectedToken.address,
+            [
+              'function decimals() external view returns (uint8)'
+            ],
+            provider
+          );
+
+          const dec = await tokenContract.decimals();
+          setdecimal(Number(dec))
           const proxyContract = new Contract(
             vault.proxyAddress,
             [
@@ -263,6 +301,7 @@ export default function DepositDialog({
           );
           setSwapEstimate(Number(amount));
         } else {
+          setdecimal(18)
           const proxyContract = new Contract(
             vault.proxyAddress,
             [
@@ -280,8 +319,15 @@ export default function DepositDialog({
         console.error('Error fetching swap estimate:', error);
       }
     };
-
+  
     fetchSwapEstimate();
+  
+    intervalId = setInterval(fetchSwapEstimate, 1000);
+  
+    
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
   }, [tokenIndex, quantity, vault.proxyAddress]);
 
   return (
@@ -354,9 +400,12 @@ export default function DepositDialog({
             {useZap ? (
               <div>
                 <div className="border-gunmetal mt-2 flex gap-1 rounded-xl border bg-white p-1 px-2">
-                  <p className="border-gunmetal flex-1 rounded-xl border bg-[#671afc] p-2 py-1 text-center text-white">
-                    {swapEstimate ? swapEstimate : 'Loading...'}
-                  </p>
+                  {/* <p className="border-gunmetal flex-1 rounded-xl border bg-[#671afc] p-2 py-1 text-center text-white">
+                    
+                  </p> */}
+                  <p className={`border-gunmetal flex-1 rounded-xl border bg-[#671afc] p-2 py-1 text-center text-white ${swapEstimate ? 'animate-pulse' : ''}`}>
+                  {swapEstimate ?ethers.formatUnits(Number(swapEstimate).toString(),decimal)  : 'Loading...'}
+</p>
                   <div className="flex flex-1 justify-end">
                     <Select
                       onValueChange={(value) =>

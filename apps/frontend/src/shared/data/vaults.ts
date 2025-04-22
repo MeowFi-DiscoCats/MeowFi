@@ -72,7 +72,7 @@ const CurvanceAndFastlane2: IVault = {
   lockedInPeriod: 0,
   apy: 225,
   type: 'flexible',
-  proxyAddress: '0xD2258Eaa6f2679cE03fc998a42B6E33A6F007AF9',
+  proxyAddress: '0x8cdD399cd40360E07870AF53fDc281dF679b890f',
   airdropIncentivised: 0,
   totalSupply: 1000,
   availableSupply: 0,
