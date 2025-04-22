@@ -97,22 +97,24 @@ export default function TrackBribe() {
         Bribe in Tokens
       </p>
       <div className="border-gunmetal mb-4 flex flex-wrap justify-around gap-2 border bg-white p-4">
-        {tokens.map((token, index) => (
-          <div className="flex gap-2" key={index}>
-            <div>
-              <img
-                width={20}
-                className="mt-1 rounded-full"
-                src={token.img}
-                alt={token.symbol}
-              />
+        {tokens.map((token, index) =>
+          token.isErc20 ? (
+            <div className="flex gap-2" key={index}>
+              <div>
+                <img
+                  width={20}
+                  className="mt-1 rounded-full"
+                  src={token.img}
+                  alt={token.symbol}
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className="font-Teko font-semibold">{token.symbol}</span>
+                <span>{bribeData ? bribeData.bribes[index].amount : 0}</span>
+              </div>
             </div>
-            <div className="flex flex-col">
-              <span className="font-Teko font-semibold">{token.symbol}</span>
-              <span>{bribeData ? bribeData.bribes[index].amount : 0}</span>
-            </div>
-          </div>
-        ))}
+          ) : null
+        )}
       </div>
     </TabsContent>
   );

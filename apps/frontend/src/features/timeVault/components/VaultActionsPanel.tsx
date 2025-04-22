@@ -33,6 +33,9 @@ export function VaultActions({ index }: { index: number }) {
   const joinInPeriod = liveVaultsData
     ? liveVaultsData[index].joinInPeriod
     : vault.joinInPeriod;
+  const prejoinPeriod = liveVaultsData
+    ? liveVaultsData[index].prejoinPeriod
+    : vault.prejoinPeriod;
 
   const handleQuantity = () => {
     const userAmount = liveUserVaultsData?.nftAmount;
@@ -53,7 +56,7 @@ export function VaultActions({ index }: { index: number }) {
   return (
     <div className="mt-auto flex flex-1 flex-col gap-3">
       <p className="border-crimson border-y p-1 text-center font-semibold">
-        <Countdown targetDate={joinInPeriod} />
+        <Countdown joinDate={joinInPeriod} preJoinDate={prejoinPeriod} />
       </p>
       <div className="border-gunmetal bg-yellow flex justify-between rounded-lg border p-2 font-semibold">
         <span>Vault Supply:</span>

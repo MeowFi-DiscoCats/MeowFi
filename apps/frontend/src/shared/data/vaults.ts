@@ -18,6 +18,7 @@ export interface IVault {
   backingRatio: number;
   backingPercentage: number;
   nftLimit: number;
+  prejoinPeriod: string;
   // abi: ethers.Interface | ethers.InterfaceAbi;
   nftImage: string;
   token: Itoken;
@@ -35,6 +36,7 @@ export interface IVault {
 //   availableSupply: 0,
 //   joinInPeriod: '2025-03-15T00:00',
 //   claimInPeriod: '2025-03-17T00:00',
+//   prejoinPeriod: '2025-03-15T00:00',
 //   nftPrice: 1,
 //   backingRatio: 1,
 //   backingPercentage: 100,
@@ -56,6 +58,7 @@ const curvanceFastlaneVault: IVault = {
   availableSupply: 0,
   joinInPeriod: '2025-03-15T00:00Z',
   claimInPeriod: '2025-03-17T00:00Z',
+  prejoinPeriod: '2025-03-14T00:00Z',
   nftPrice: 0.2,
   backingRatio: 1,
   backingPercentage: 100,
@@ -78,6 +81,7 @@ const CurvanceAndFastlane2: IVault = {
   availableSupply: 0,
   joinInPeriod: '2025-03-15T00:00Z',
   claimInPeriod: '2025-03-17T00:00Z',
+  prejoinPeriod: '2025-03-14T00:00Z',
   nftPrice: 0.1,
   backingRatio: 1,
   backingPercentage: 100,

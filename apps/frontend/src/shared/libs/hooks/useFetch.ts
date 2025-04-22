@@ -15,6 +15,7 @@ const iface = new ethers.Interface([
   'function yieldedFunds() view returns (uint256)',
   'function claimingPeriod() external view returns (uint256)',
   'function joiningPeriod() external view returns (uint256)',
+  'function prejoinPeriod() external view returns (uint256)',
 ]);
 
 const provider = new ethers.JsonRpcProvider(import.meta.env.VITE_ALCHEMY_URL);
@@ -29,6 +30,7 @@ const functionNames = [
   'yieldedFunds',
   'claimingPeriod',
   'joiningPeriod',
+  'prejoinPeriod',
 ];
 
 const fetchVaultData = async () => {
@@ -70,6 +72,9 @@ const fetchVaultData = async () => {
     const joinInPeriod =
       new Date(Number(results[4]) * 1000).toISOString().slice(0, 16) + 'Z';
 
+    const prejoinPeriod =
+      new Date(Number(results[5]) * 1000).toISOString().slice(0, 16) + 'Z';
+
     return {
       getNftCount,
       totalFunds,
@@ -79,6 +84,7 @@ const fetchVaultData = async () => {
       apy: round(apy * 100),
       claimInPeriod,
       joinInPeriod,
+      prejoinPeriod,
     };
   });
 

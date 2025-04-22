@@ -40,15 +40,12 @@ const fetchVaultData = async (
 
   const [, returnData] = await multicall.aggregate(calls);
   const [balance] = iface.decodeFunctionResult('balanceOf', returnData[0]);
-  const [tokenAmount, nftAmount] = iface.decodeFunctionResult(
-    'vaults',
-    returnData[1]
-  );
+  const v = iface.decodeFunctionResult('vaults', returnData[1]);
 
   return {
     balance: (Number(balance) / 10 ** vault.token.decimals).toFixed(3),
-    tokenAmount: Number(tokenAmount),
-    nftAmount: Number(nftAmount),
+    tokenAmount: Number(v.ethAmount),
+    nftAmount: Number(v.nftAmount),
   };
 };
 
