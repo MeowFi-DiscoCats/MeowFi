@@ -152,7 +152,7 @@ export default function ClaimDialog({ index }: { index: number }) {
                 You are Claiming
               </p>
             </div>
-            <div className="border-gunmetal flex items-center justify-between rounded-xl border px-2 py-1">
+            <div className="border-gunmetal flex items-center justify-between rounded-xl border bg-white px-2 py-1">
               <div className="bg-yellow border-gunmetal font-Teko flex-1 rounded-xl border p-0.5 px-4 text-center text-lg font-semibold">
                 {liveUserVaultsData ? liveUserVaultsData.tokenAmount : 0}
               </div>
@@ -168,7 +168,7 @@ export default function ClaimDialog({ index }: { index: number }) {
               </div>
             </div>
             <p className="font-Teko mt-4 font-semibold">By Burning</p>
-            <div className="border-gunmetal font-Teko max-md:text-md flex items-center justify-center rounded-xl border px-2 py-1 text-center text-lg font-semibold">
+            <div className="border-gunmetal font-Teko max-md:text-md flex items-center justify-center rounded-xl border bg-white px-2 py-1 text-center text-lg font-semibold">
               {liveUserVaultsData ? liveUserVaultsData.nftAmount : 0}{' '}
               {vault.title} Vaults NFTs
             </div>

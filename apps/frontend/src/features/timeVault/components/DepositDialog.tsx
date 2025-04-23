@@ -363,7 +363,7 @@ export default function DepositDialog({
                 {vault.token.symbol}
               </p>
             </div>
-            <div className="border-gunmetal flex items-center justify-between rounded-lg border p-1 px-2">
+            <div className="border-gunmetal flex items-center justify-between rounded-lg border bg-white p-1 px-2">
               <div className="bg-yellow font-Teko border-gunmetal flex-1 rounded-xl border p-0.5 px-4 text-center text-xl tracking-wider">
                 {Number((quantity * vault.nftPrice).toFixed(5))}
               </div>
@@ -448,7 +448,7 @@ export default function DepositDialog({
               </div>
             )}
             <p className="font-Teko -mt-4 text-start font-semibold">For</p>
-            <div className="border-gunmetal font-Teko max-sm:text-md flex items-center justify-center rounded-xl border p-3 text-center text-lg font-semibold tracking-wide">
+            <div className="border-gunmetal font-Teko max-sm:text-md flex items-center justify-center rounded-xl border bg-white p-2 text-center text-lg font-semibold tracking-wide">
               {quantity} {vault.title} Vaults NFTs
             </div>
             <div className="mt-4 flex items-center justify-center">
