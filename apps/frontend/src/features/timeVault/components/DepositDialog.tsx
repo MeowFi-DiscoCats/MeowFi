@@ -2,6 +2,7 @@ import YellowBolt from '@/components/svg/YellowBolt';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -73,6 +74,7 @@ export default function DepositDialog({
   const queryClient = useQueryClient();
 
   useEffect(() => {
+    if (prejoinDeadline - Date.now() >= 2147483647) return;
     if (!isPrejoinOpen) {
       const timeout = setTimeout(() => {
         setIsPrejoinOpen(true);
@@ -82,6 +84,7 @@ export default function DepositDialog({
   }, [isPrejoinOpen, prejoinDeadline]);
 
   useEffect(() => {
+    if (joinDeadline - Date.now() >= 2147483647) return;
     if (!isJoinClosed) {
       const timeout = setTimeout(() => {
         setIsJoinClosed(true);
@@ -121,15 +124,20 @@ export default function DepositDialog({
             ],
             signer
           );
-        
+
           const userAddress = await signer.getAddress();
-          const currentAllowance = await tokenContract.allowance(userAddress, vault.proxyAddress);
-        
-          if (currentAllowance<(quantity)) {
-            
-            const approval = await tokenContract.approve(vault.proxyAddress, MAX_UINT256);
+          const currentAllowance = await tokenContract.allowance(
+            userAddress,
+            vault.proxyAddress
+          );
+
+          if (currentAllowance < quantity) {
+            const approval = await tokenContract.approve(
+              vault.proxyAddress,
+              MAX_UINT256
+            );
             const receiptApproval = await approval.wait();
-        
+
             if (receiptApproval) {
               toast('Approval successful', {
                 description: 'You have successfully Approved',
@@ -141,7 +149,7 @@ export default function DepositDialog({
               return;
             }
           }
-        
+
           // Proceed with deposit
           const proxyContract = new Contract(
             vault.proxyAddress,
@@ -150,14 +158,14 @@ export default function DepositDialog({
             ],
             signer
           );
-        
+
           const depositTx = await proxyContract.swapAndJoin(
             quantity,
             userAddress,
             slippagePercent * 100,
             selectedToken.address
           );
-        
+
           const receipt = await depositTx.wait();
           if (receipt) {
             toast('Deposit successful', {
@@ -165,35 +173,37 @@ export default function DepositDialog({
             });
           }
         } else {
-          
-          const provider = new ethers.JsonRpcProvider(import.meta.env.VITE_ALCHEMY_URL);
+          const provider = new ethers.JsonRpcProvider(
+            import.meta.env.VITE_ALCHEMY_URL
+          );
           const proxyContract = new Contract(
             vault.proxyAddress,
-            ['function getEthInputForExactOutput(uint256 _nftAmount, uint16 _slippageBps) external view returns (uint256)'],
+            [
+              'function getEthInputForExactOutput(uint256 _nftAmount, uint16 _slippageBps) external view returns (uint256)',
+            ],
             provider
           );
-          
+
           const ethAmount = await proxyContract.getEthInputForExactOutput(
             quantity,
             slippagePercent * 100
           );
-          
-         
-  
-          
+
           const txProxyContract = new Contract(
             vault.proxyAddress,
-            ['function swapEthAndJoin(uint256 _nftAmount, address user, uint16 _slippageBps) external payable'],
+            [
+              'function swapEthAndJoin(uint256 _nftAmount, address user, uint16 _slippageBps) external payable',
+            ],
             signer
           );
-  
+
           const depositTx = await txProxyContract.swapEthAndJoin(
             quantity,
             address,
             slippagePercent * 100,
-            { value: ethAmount } 
+            { value: ethAmount }
           );
-  
+
           const receipt = await depositTx.wait();
           if (receipt) {
             toast('Deposit successful', {
@@ -251,26 +261,22 @@ export default function DepositDialog({
   }
 
   useEffect(() => {
-    let intervalId: NodeJS.Timeout;
-  
     const fetchSwapEstimate = async () => {
       try {
         const provider = new ethers.JsonRpcProvider(
           import.meta.env.VITE_ALCHEMY_URL
         );
         const selectedToken = tokens[tokenIndex];
-  
+
         if (selectedToken.isErc20) {
           const tokenContract = new Contract(
             selectedToken.address,
-            [
-              'function decimals() external view returns (uint8)'
-            ],
+            ['function decimals() external view returns (uint8)'],
             provider
           );
 
           const dec = await tokenContract.decimals();
-          setdecimal(Number(dec))
+          setdecimal(Number(dec));
           const proxyContract = new Contract(
             vault.proxyAddress,
             [
@@ -283,9 +289,12 @@ export default function DepositDialog({
             slippagePercent * 100,
             selectedToken.address
           );
-          setSwapEstimate(Number(amount));
+
+          setSwapEstimate(
+            Number(Number(ethers.formatUnits(amount, decimal)).toFixed(7))
+          );
         } else {
-          setdecimal(18)
+          setdecimal(18);
           const proxyContract = new Contract(
             vault.proxyAddress,
             [
@@ -297,22 +306,23 @@ export default function DepositDialog({
             quantity,
             slippagePercent * 100
           );
-          setSwapEstimate(Number(amount));
+
+          setSwapEstimate(
+            Number(Number(ethers.formatUnits(amount, decimal)).toFixed(7))
+          );
         }
       } catch (error) {
         console.error('Error fetching swap estimate', error);
       }
     };
-  
-    fetchSwapEstimate();
-  
-    intervalId = setInterval(fetchSwapEstimate, 1000);
-  
-    
-    return () => {
-      if (intervalId) clearInterval(intervalId);
-    };
-  }, [tokenIndex, quantity, vault.proxyAddress]);
+    if (useZap) {
+      fetchSwapEstimate();
+      const intervalId = setInterval(fetchSwapEstimate, 5000);
+      return () => {
+        if (intervalId) clearInterval(intervalId);
+      };
+    }
+  }, [tokenIndex, quantity, vault.proxyAddress, decimal, useZap]);
 
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -338,6 +348,10 @@ export default function DepositDialog({
           <DialogTitle className="font-Teko text-center text-3xl font-semibold">
             Deposit Confirmation
           </DialogTitle>
+          <DialogDescription className="hidden text-center text-sm font-semibold">
+            This is a confirmation of your deposit. Please ensure that the
+            wallet is connected
+          </DialogDescription>
           <section>
             <div className="mt-4 flex items-center justify-between">
               <p className="font-Teko font-semibold">You are Depositing</p>
@@ -377,12 +391,11 @@ export default function DepositDialog({
             {useZap && (
               <div>
                 <div className="border-gunmetal mt-2 flex gap-1 rounded-xl border bg-white p-1 px-2">
-                  {/* <p className="border-gunmetal flex-1 rounded-xl border bg-[#671afc] p-2 py-1 text-center text-white">
-                    
-                  </p> */}
-                  <p className={`border-gunmetal flex-1 rounded-xl border bg-[#671afc] p-2 py-1 text-center text-white ${swapEstimate ? 'animate-pulse' : ''}`}>
-                  {swapEstimate ?ethers.formatUnits(Number(swapEstimate).toString(),decimal)  : 'Loading...'}
-</p>
+                  <p
+                    className={`border-gunmetal flex-1 rounded-xl border bg-[#671afc] p-2 py-1 text-center text-white ${swapEstimate ? 'animate-pulse' : ''}`}
+                  >
+                    {swapEstimate ?? 'Loading...'}
+                  </p>
                   <div className="flex flex-1 justify-end">
                     <Select
                       onValueChange={(v) => setTokenIndex(+v)}
@@ -414,8 +427,12 @@ export default function DepositDialog({
                 </div>
                 <div className="mt-1 mb-2 flex items-center justify-between px-1">
                   <p className="text-xs">
-                    <strong className="mr-1 text-gray-700">Rate :</strong>
-                    1Mon=5TMON
+                    <strong className="mr-1 text-gray-700">Rate :</strong>1{' '}
+                    {vault.token.symbol} ={' '}
+                    {swapEstimate
+                      ? ((quantity * vault.nftPrice) / swapEstimate).toFixed(5)
+                      : '___'}{' '}
+                    {tokens[tokenIndex].symbol}
                   </p>
                   <p className="text-xs">
                     <strong className="mr-1 text-gray-700">Slippage :</strong>

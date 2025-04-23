@@ -50,6 +50,7 @@ export default function ClaimDialog({ index }: { index: number }) {
     if (!isClaimPeriodStart) setOpen(false);
     if (!isClaimPeriodStart) {
       const delay = targetDate - Date.now();
+      if (delay >= 2147483647) return;
       const timeout = setTimeout(() => {
         setIsClaimPeriodStart(true);
       }, delay);

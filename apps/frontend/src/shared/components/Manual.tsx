@@ -33,9 +33,9 @@ export default function Manual() {
                 positions.
               </p>
               <div className="mt-4 flex gap-4 font-semibold max-md:gap-2 max-md:text-xs">
-                <button className="flex-1 rounded-md border border-black p-1 shadow-[0_4px_4px_#BFBFBF] max-md:p-2">
-                  <DialogClose className="w-full">I know my thing!</DialogClose>
-                </button>
+                <DialogClose className="w-full flex-1 rounded-md border border-black p-1 shadow-[0_4px_4px_#BFBFBF] max-md:p-2">
+                  I know my thing!
+                </DialogClose>
                 <button
                   onClick={() => setCurrentPage(1)}
                   className="bg-yellow max-md;p-2 flex-1 rounded-md border border-black shadow-[0_4px_4px_#BFBFBF]"
@@ -146,11 +146,12 @@ export default function Manual() {
               and all the juicy perks.
             </p>
 
-            <button onClick={() => setCurrentPage(0)}>
-              <DialogClose className="bg-yellow flex-1 rounded-md border border-black p-1 px-6 font-semibold shadow-[0_4px_4px_#BFBFBF] max-md:p-2">
-                Scratch That—You’re Ready! 🐾
-              </DialogClose>
-            </button>
+            <DialogClose
+              onClick={() => setCurrentPage(0)}
+              className="bg-yellow flex-1 rounded-md border border-black p-1 px-6 font-semibold shadow-[0_4px_4px_#BFBFBF] max-md:p-2"
+            >
+              Scratch That—You’re Ready! 🐾
+            </DialogClose>
           </div>
         );
       default:

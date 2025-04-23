@@ -68,26 +68,26 @@ const curvanceFastlaneVault: IVault = {
   token: shMonToken,
 };
 
-const CurvanceAndFastlane2: IVault = {
-  //testing purpose
-  title: 'Curvance x Fastlane2',
-  img: '/images/cfCard2.webp',
-  lockedInPeriod: 0,
-  apy: 225,
-  type: 'flexible',
-  proxyAddress: '0x8cdD399cd40360E07870AF53fDc281dF679b890f',
-  airdropIncentivised: 0,
-  totalSupply: 1000,
-  availableSupply: 0,
-  joinInPeriod: '2025-03-15T00:00Z',
-  claimInPeriod: '2025-03-17T00:00Z',
-  prejoinPeriod: '2025-03-14T00:00Z',
-  nftPrice: 0.1,
-  backingRatio: 1,
-  backingPercentage: 100,
-  nftLimit: 10,
-  nftImage: '/images/cfNFT.webp',
-  token: shMonToken,
-};
-
-export const vaults: IVault[] = [curvanceFastlaneVault, CurvanceAndFastlane2];
+// const CurvanceAndFastlane2: IVault = {
+//   //testing purpose
+//   title: 'Curvance x Fastlane2',
+//   img: '/images/cfCard2.webp',
+//   lockedInPeriod: 0,
+//   apy: 225,
+//   type: 'flexible',
+//   proxyAddress: '0x8cdD399cd40360E07870AF53fDc281dF679b890f',
+//   airdropIncentivised: 0,
+//   totalSupply: 1000,
+//   availableSupply: 0,
+//   joinInPeriod: '2025-03-15T00:00Z',
+//   claimInPeriod: '2025-03-17T00:00Z',
+//   prejoinPeriod: '2025-03-14T00:00Z',
+//   nftPrice: 0.1,
+//   backingRatio: 1,
+//   backingPercentage: 100,
+//   nftLimit: 10,
+//   nftImage: '/images/cfNFT.webp',
+//   token: shMonToken,
+// };
+//
+export const vaults: IVault[] = [curvanceFastlaneVault];
