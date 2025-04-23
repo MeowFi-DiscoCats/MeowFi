@@ -331,7 +331,7 @@ export default function DepositDialog({
         disabled={!isPrejoinOpen || isJoinClosed}
         className={`${
           !isPrejoinOpen || isJoinClosed
-            ? 'cursor-not-allowed border-gray-400 text-gray-400'
+            ? 'cursor-not-allowed border-gray-400 bg-white text-gray-400'
             : 'bg-amber border-gunmetal text-black hover:bg-amber-400'
         } relative mx-auto rounded-lg border px-12 font-semibold`}
       >
@@ -343,9 +343,9 @@ export default function DepositDialog({
           </span>
         </div>
       </DialogTrigger>
-      <DialogContent className="bg-cream border-gunmetal rounded-3xl">
+      <DialogContent className="bg-cream border-gunmetal !max-w-[400px] rounded-3xl border-3">
         <DialogHeader>
-          <DialogTitle className="font-Teko text-center text-3xl font-semibold">
+          <DialogTitle className="font-Teko text-center text-3xl font-semibold tracking-wide">
             Deposit Confirmation
           </DialogTitle>
           <DialogDescription className="hidden text-center text-sm font-semibold">
@@ -353,16 +353,18 @@ export default function DepositDialog({
             wallet is connected
           </DialogDescription>
           <section>
-            <div className="mt-4 flex items-center justify-between">
-              <p className="font-Teko font-semibold">You are Depositing</p>
-              <p className="text-end text-sm font-semibold">
+            <div className="mt-4 flex items-center justify-between tracking-wide">
+              <p className="font-Teko font-semibold tracking-wide">
+                You are Depositing
+              </p>
+              <p className="text-end text-xs font-semibold">
                 Balance:
                 <span className="mx-1">{userVaultData?.balance ?? '0'}</span>
                 {vault.token.symbol}
               </p>
             </div>
-            <div className="border-gunmetal mt-2 flex items-center justify-between rounded-xl border p-1 px-2">
-              <div className="bg-yellow border-gunmetal flex-1 rounded-xl border p-1 px-4 text-center">
+            <div className="border-gunmetal flex items-center justify-between rounded-lg border p-1 px-2">
+              <div className="bg-yellow font-Teko border-gunmetal flex-1 rounded-xl border p-0.5 px-4 text-center text-xl tracking-wider">
                 {Number((quantity * vault.nftPrice).toFixed(5))}
               </div>
               <div className="font-Teko flex flex-1 items-center justify-end gap-2 px-4">
@@ -376,8 +378,12 @@ export default function DepositDialog({
                 </span>
               </div>
             </div>
-            <div className="relative my-2 flex items-center justify-end gap-2">
-              {useZap ? null : <span>Not Enough Balance?</span>}
+            <div className="relative mt-2 flex items-center justify-end gap-2">
+              {useZap ? null : (
+                <span className="text-xs font-semibold">
+                  Not Enough Balance?
+                </span>
+              )}
               <a
                 onClick={() => setUseZap(!useZap)}
                 className="border-gunmetal flex rounded-full border bg-[#671afc] px-2 py-0.5 text-[12px] whitespace-nowrap text-white"
@@ -425,7 +431,7 @@ export default function DepositDialog({
                     </Select>
                   </div>
                 </div>
-                <div className="mt-1 mb-2 flex items-center justify-between px-1">
+                <div className="mt-1 mb-6 flex items-center justify-between px-1">
                   <p className="text-xs">
                     <strong className="mr-1 text-gray-700">Rate :</strong>1{' '}
                     {vault.token.symbol} ={' '}
@@ -441,14 +447,14 @@ export default function DepositDialog({
                 </div>
               </div>
             )}
-            <p className="font-Teko font-semibold">For</p>
-            <div className="border-gunmetal font-Teko mt-2 flex items-center justify-center rounded-xl border p-3 text-center text-lg font-semibold">
+            <p className="font-Teko -mt-4 text-start font-semibold">For</p>
+            <div className="border-gunmetal font-Teko max-sm:text-md flex items-center justify-center rounded-xl border p-3 text-center text-lg font-semibold tracking-wide">
               {quantity} {vault.title} Vaults NFTs
             </div>
             <div className="mt-4 flex items-center justify-center">
               <Button
                 onClick={executeDeposit}
-                className="bg-yellow font-Teko border-gunmetal border px-[20%] py-2 text-xl font-semibold text-black hover:bg-yellow-300"
+                className="bg-yellow font-Teko border-gunmetal border px-[30%] py-2 text-xl font-semibold text-black hover:bg-yellow-300"
                 disabled={!isPrejoinOpen || isJoinClosed}
               >
                 {depositStatus}

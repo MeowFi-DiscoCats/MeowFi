@@ -137,9 +137,9 @@ export default function ClaimDialog({ index }: { index: number }) {
       >
         <ClaimCountDown targetDate={claimInPeriod} />
       </DialogTrigger>
-      <DialogContent className="bg-cream border-gunmetal rounded-3xl">
+      <DialogContent className="bg-cream border-gunmetal !max-w-[400px] rounded-3xl border-3">
         <DialogHeader>
-          <DialogTitle className="font-Teko text-center text-3xl font-semibold">
+          <DialogTitle className="font-Teko text-center text-2xl font-semibold tracking-wide">
             Claim Your Liquidity
           </DialogTitle>
           <DialogDescription className="hidden text-center text-sm font-semibold">
@@ -148,14 +148,18 @@ export default function ClaimDialog({ index }: { index: number }) {
           </DialogDescription>
           <section>
             <div className="mt-4 flex items-center justify-between">
-              <p className="font-Teko font-semibold">You are Claiming</p>
+              <p className="font-Teko font-semibold tracking-wide">
+                You are Claiming
+              </p>
             </div>
-            <div className="border-gunmetal mt-1 flex items-center justify-between rounded-xl border p-2">
-              <div className="bg-yellow border-gunmetal flex-1 rounded-xl border p-1 px-4 text-center">
+            <div className="border-gunmetal flex items-center justify-between rounded-xl border px-2 py-1">
+              <div className="bg-yellow border-gunmetal font-Teko flex-1 rounded-xl border p-0.5 px-4 text-center text-lg font-semibold">
                 {liveUserVaultsData ? liveUserVaultsData.tokenAmount : 0}
               </div>
               <div className="flex flex-1 items-center justify-end gap-2 px-4">
-                <span>{vault.token.symbol}</span>
+                <span className="font-Teko font-semibold tracking-wide">
+                  {vault.token.symbol}
+                </span>
                 <img
                   width={20}
                   className="aspect-square rounded-xl"
@@ -163,15 +167,15 @@ export default function ClaimDialog({ index }: { index: number }) {
                 />
               </div>
             </div>
-            <p className="font-Teko mt-4 font-semibold">For</p>
-            <div className="border-gunmetal font-Teko mt-1 flex items-center justify-center rounded-xl border p-3 text-center text-lg font-semibold">
+            <p className="font-Teko mt-4 font-semibold">By Burning</p>
+            <div className="border-gunmetal font-Teko max-md:text-md flex items-center justify-center rounded-xl border px-2 py-1 text-center text-lg font-semibold">
               {liveUserVaultsData ? liveUserVaultsData.nftAmount : 0}{' '}
               {vault.title} Vaults NFTs
             </div>
             <div className="mt-4 flex items-center justify-center">
               <Button
                 onClick={handleClaim}
-                className="bg-yellow font-Teko border-gunmetal border px-[20%] py-2 text-xl font-semibold text-black hover:bg-yellow-300"
+                className="bg-yellow font-Teko border-gunmetal border px-[30%] py-2 text-xl font-semibold text-black hover:bg-yellow-300"
                 disabled={!isClaimPeriodStart}
               >
                 {status}

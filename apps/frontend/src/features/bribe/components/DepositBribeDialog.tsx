@@ -96,9 +96,9 @@ export default function DepositBribeDialog({
       <DialogTrigger className="bg-yellow hover:bg-amber border-gunmetal font-Teko mx-auto my-1 rounded-lg border px-12 py-1 text-lg font-semibold text-black">
         Deposit Bribes
       </DialogTrigger>
-      <DialogContent className="bg-cream border-gunmetal rounded-2xl">
+      <DialogContent className="bg-cream border-gunmetal !max-w-[400px] rounded-3xl border-2">
         <DialogHeader>
-          <DialogTitle className="font-Teko my-4 text-center text-2xl font-semibold">
+          <DialogTitle className="font-Teko my-4 text-center text-2xl font-semibold tracking-wide">
             Deposit Confirmation
           </DialogTitle>
           <DialogDescription className="bg-cream hidden">
@@ -117,8 +117,8 @@ export default function DepositBribeDialog({
 
             <div className="pr-2 text-end text-sm">
               <strong>Balance :</strong>
-              <span className="mx-1"> {userBalance}</span>
-              <span>{token.symbol}</span>
+              <span className="mx-1 text-xs"> {userBalance}</span>
+              <span className="text-xs">{token.symbol}</span>
             </div>
             <div className="border-gunmetal flex-start flex w-full flex-col border bg-white p-1 px-4">
               <p className="font-Teko text-start text-sm leading-relaxed font-semibold text-black/70">
@@ -131,7 +131,7 @@ export default function DepositBribeDialog({
             <Button
               onClick={handleDeposit}
               variant="outline"
-              className="bg-yellow hover:bg-amber border-gunmetal font-Teko mx-auto mt-6 rounded-lg px-12 text-lg font-semibold text-black"
+              className="bg-yellow hover:bg-amber border-gunmetal font-Teko mx-auto mt-6 rounded-lg px-[30%] text-lg font-semibold text-black"
             >
               {status}
             </Button>

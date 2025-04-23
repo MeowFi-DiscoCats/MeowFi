@@ -95,14 +95,14 @@ export function VaultActions({ index }: { index: number }) {
         <DepositDialog index={index} quantity={quantity} />
         <button
           // onClick={handleWithdraw}
-          className="flex-1 rounded-lg border border-gray-400 p-1 text-center font-semibold text-gray-400 hover:bg-gray-100"
+          className="flex-1 rounded-lg border border-gray-400 bg-white p-1 text-center font-semibold text-gray-400 hover:bg-gray-100"
           disabled
         >
           widthrow
         </button>
       </div>
       <div className="border-gunmetal flex flex-col overflow-hidden rounded-lg border">
-        <div className="flex">
+        <div className="flex bg-white">
           <div className="border-gunmetal flex-1 border-r border-b p-1 text-center">
             Holdings
           </div>
@@ -110,7 +110,7 @@ export function VaultActions({ index }: { index: number }) {
             Amount
           </div>
         </div>
-        <div className="flex">
+        <div className="flex bg-white">
           <div className="border-gunmetal flex-1 border-r border-b p-1 text-center">
             {liveUserVaultsData ? liveUserVaultsData.nftAmount : 0} NFTs
           </div>
