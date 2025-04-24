@@ -104,7 +104,9 @@ export default function CurvanceXFastlaneCard({ index }: { index: number }) {
       <div className="border-gunmetal bg-cream mx-6 flex justify-between rounded-full border-x-1 px-2 py-1 text-sm">
         <span>Net APY:</span>
         <span className="text-sienna mr-2 font-bold">
-          {isLoading ? vault.apy : (liveVaultsData?.[index]?.apy ?? vault.apy)}{' '}
+          {isLoading ? vault.apy :vault.apy}
+           
+            {/* (liveVaultsData?.[index]?.apy ?? vault.apy)}{' '} */}
           %
         </span>
       </div>
