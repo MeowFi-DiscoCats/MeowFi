@@ -1,16 +1,24 @@
 import Lock from '@/components/svg/Lock';
 import { BsSortDownAlt } from 'react-icons/bs';
+import { LuSearch } from 'react-icons/lu';
 
 export default function ExploreSection() {
   return (
     <section>
       <h2 className="font-Bubblegum text-4xl">Explore</h2>
       <div className="my-4 flex items-center justify-between gap-2">
-        <input
-          type="search"
-          placeholder="Search by token or protocol"
-          className="border-gunmetal w-60 rounded-lg border bg-white p-2 font-semibold"
-        />
+        <div className="relative w-72 max-sm:w-full">
+          <LuSearch
+            size={18}
+            className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 transform text-gray-400"
+          />
+
+          <input
+            type="search"
+            placeholder="Search by token or protocol"
+            className="border-gunmetal w-full rounded-lg border bg-white p-2 pl-10 font-semibold"
+          />
+        </div>{' '}
         <p className="border-gunmetal bg-yellow rounded-lg border px-2 py-0.5 max-sm:hidden">
           Earn auto-compounded yield in one click
         </p>

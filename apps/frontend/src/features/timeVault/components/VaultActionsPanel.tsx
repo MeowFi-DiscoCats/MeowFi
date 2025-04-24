@@ -38,13 +38,15 @@ export function VaultActions({ index }: { index: number }) {
     : vault.prejoinPeriod;
 
   const handleQuantity = () => {
-    const userAmount = liveUserVaultsData?.nftAmount;
-    if (userAmount !== undefined && userAmount >= vault.nftLimit) {
+    const userAmount = liveUserVaultsData?.nftAmount ?? 0;
+    const remaining = Math.max(vault.nftLimit - userAmount, 0);
+
+    if (remaining <= 0) {
       toast('You have reached the maximum NFT limit');
       return;
     }
-    const limit = userAmount !== undefined ? vault.nftLimit : 10;
-    setQuantity(Math.min(limit, quantity + 1));
+
+    setQuantity((prev) => Math.min(prev + 1, remaining));
   };
 
   useEffect(() => {
@@ -98,7 +100,7 @@ export function VaultActions({ index }: { index: number }) {
           className="flex-1 rounded-lg bg-white p-1 text-center font-semibold text-gray-400 hover:bg-gray-100"
           disabled
         >
-          widthrow
+          Widthdraw
         </button>
       </div>
       <div className="border-gunmetal flex flex-col overflow-hidden rounded-lg border">
