@@ -47,7 +47,10 @@ export default function VaultHeader() {
         alt="header"
         className="mx-auto mt-4 -mb-4 rounded-xl max-sm:hidden"
       />
-      <div className="border-gunmetal hidden justify-around gap-4 rounded-xl border-1 bg-black p-2 py-4 text-white shadow max-sm:flex">
+      <p className="border-gunmetal font-Bubblegum my-2 border bg-white p-0.5 text-center text-xs sm:hidden">
+        Please use a desktop for full functionality and the best experience.
+      </p>
+      <div className="border-gunmetal mt-4 -mb-4 hidden justify-around gap-4 rounded-xl border-1 bg-black p-2 py-4 text-white shadow max-sm:flex">
         <div className="[&>*]:font-Bubblegum flex flex-col gap-2 text-center">
           <span>APR up to</span>
           <span>27318:12%</span>

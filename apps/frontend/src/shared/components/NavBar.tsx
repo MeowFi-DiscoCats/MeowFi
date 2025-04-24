@@ -135,17 +135,14 @@ export default function NavBar() {
                   </DialogTrigger>
                   <Manual />
                 </Dialog>
-
-                <DropdownMenuItem>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <button className="w-full text-center font-semibold">
-                        Bribes
-                      </button>
-                    </DialogTrigger>
-                    <BribeDialog />
-                  </Dialog>
-                </DropdownMenuItem>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="my-2 w-full text-center font-semibold">
+                      Bribes
+                    </button>
+                  </DialogTrigger>
+                  <BribeDialog />
+                </Dialog>
                 {manualLinks.map((item) => (
                   <DropdownMenuItem key={item.key}>
                     <a

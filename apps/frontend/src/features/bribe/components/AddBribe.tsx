@@ -154,7 +154,7 @@ export default function AddBribe() {
         </SelectContent>
       </Select>
 
-      <div className="bg-yellow border-gunmetal mt-4 flex justify-around rounded-xl border p-2">
+      <div className="bg-yellow border-gunmetal mt-4 flex flex-wrap justify-around rounded-xl border p-2">
         <div className="flex flex-col items-center">
           <span className="text-sm">Vault liquidity</span>
           <span className="font-Teko font-semibold">
@@ -184,7 +184,7 @@ export default function AddBribe() {
           type="number"
           defaultValue={amount}
           onChange={(e) => setAmount(Number(e.target.value))}
-          className="bg-yellow border-gunmetal flex-1 rounded-xl border p-2 py-1"
+          className="bg-yellow border-gunmetal w-full flex-1 rounded-xl border p-2 py-1"
         />
         <div className="flex flex-1 justify-end">
           <Select
