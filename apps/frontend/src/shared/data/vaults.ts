@@ -49,7 +49,7 @@ export interface IVault {
 const curvanceFastlaneVault: IVault = {
   title: 'Curvance x Fastlane',
   img: '/images/cfCard1.webp',
-  lockedInPeriod: 30,
+  lockedInPeriod: 60,
   type: 'flexible',
   apy: 10,
   proxyAddress: address.curvanceFastlane,
@@ -62,9 +62,9 @@ const curvanceFastlaneVault: IVault = {
   nftPrice: 50,
   backingRatio: 1,
   backingPercentage: 100,
-  nftLimit: 1,
+  nftLimit: 3,
   // abi: abi.curvanceXFastlane,
-  nftImage: '/images/cfNFT.webp',
+  nftImage: '/images/cNFT2.PNG',
   token: shMonToken,
 };
 
