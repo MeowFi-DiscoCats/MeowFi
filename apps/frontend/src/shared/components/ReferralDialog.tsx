@@ -19,6 +19,10 @@ export default function ReferralDialog() {
       setError('Please enter a referral Code');
       return;
     }
+    if (ref.length < 5) {
+      setError('Referral code must be at least 5 characters long');
+      return;
+    }
     setError(null);
     localStorage.setItem('referralCode', ref);
     setCreated(true);

@@ -4,7 +4,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
-import Lock from './svg/Lock';
+import Lock from '@/components/svg/Lock';
 
 export default function DummyVaultCard() {
   return (

@@ -5,6 +5,8 @@ import NFTTimeLockComparison from '@/components/NFTTimeLockComparison';
 import VaultGrid from '@/features/timeVault/components/VaultGrid';
 import VaultHeader from '@/features/timeVault/components/VaultSectionHeader';
 import CatEar from '@/components/svg/CatEar';
+import Header from '@/features/autoCompoundVault/components/Header';
+import ExploreSection from '@/features/autoCompoundVault/components/ExploreSection';
 
 export default function TimeVaultPage() {
   return (
@@ -25,6 +27,8 @@ export default function TimeVaultPage() {
           </div>
           <VaultHeader />
           <VaultGrid />
+          <Header />
+          <ExploreSection />
         </div>
       </section>
       <NFTTimeLockComparison>

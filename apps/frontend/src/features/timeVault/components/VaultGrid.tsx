@@ -2,7 +2,7 @@ import VaultCard from './VaultCard';
 import { vaults } from '@/data/vaults';
 import CurvanceXFastlaneCard from './CurvanceXFastlaneCard';
 import { useLiveFetch } from '@/lib/hooks/useFetch';
-import DummyVaultCard from '@/components/DummyVaultCard';
+import DummyVaultCard from './DummyVaultCard';
 
 export default function TimeVaultSection() {
   useLiveFetch();
