@@ -1,7 +1,5 @@
 import CommunityCTA from '@/components/CommunityCTA';
 import FAQSection from '@/components/FAQSection';
-import MascotShowcase from '@/components/MascotShowcase';
-import NFTTimeLockComparison from '@/components/NFTTimeLockComparison';
 import VaultGrid from '@/features/timeVault/components/VaultGrid';
 import VaultHeader from '@/features/timeVault/components/VaultSectionHeader';
 import CatEar from '@/components/svg/CatEar';

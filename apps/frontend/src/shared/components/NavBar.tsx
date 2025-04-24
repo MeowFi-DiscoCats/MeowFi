@@ -137,7 +137,7 @@ export default function NavBar() {
                 </Dialog>
                 <Dialog>
                   <DialogTrigger asChild>
-                    <button className="my-2 w-full text-center font-semibold">
+                    <button className="my-2 mb-1 w-full text-center font-semibold">
                       Bribes
                     </button>
                   </DialogTrigger>
