@@ -31,10 +31,10 @@ export default function TimeVaultPage() {
           <ExploreSection />
         </div>
       </section>
-      <NFTTimeLockComparison>
-        <MascotShowcase />
-      </NFTTimeLockComparison>
-      <section className="px-[3vw] py-10">
+      {/* <NFTTimeLockComparison> */}
+      {/*   <MascotShowcase /> */}
+      {/* </NFTTimeLockComparison> */}
+      <section className="mb-8 px-[3vw] py-10">
         <div className="mx-auto flex max-w-6xl gap-6 max-md:flex-col max-md:gap-16">
           <FAQSection />
           <CommunityCTA />
