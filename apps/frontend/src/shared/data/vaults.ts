@@ -64,7 +64,7 @@ const curvanceFastlaneVault: IVault = {
   backingPercentage: 100,
   nftLimit: 3,
   // abi: abi.curvanceXFastlane,
-  nftImage: '/images/cNFT2.PNG',
+  nftImage: '/images/cfNFT2.webp',
   token: shMonToken,
 };
 
