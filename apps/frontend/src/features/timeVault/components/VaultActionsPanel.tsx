@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Eip1193Provider } from 'ethers';
+import { Eip1193Provider, ethers } from 'ethers';
 import { vaults } from '@/data/vaults';
 import Countdown from './Countdown';
 import {
@@ -115,7 +115,7 @@ export function VaultActions({ index }: { index: number }) {
             {liveUserVaultsData ? liveUserVaultsData.nftAmount : 0} NFTs
           </div>
           <div className="border-gunmetal flex-1 border-b p-1 text-center">
-            {liveUserVaultsData ? liveUserVaultsData.tokenAmount : 0}
+            {liveUserVaultsData ? ethers.formatUnits(Number(liveUserVaultsData.tokenAmount).toString())   : 0}
             <span className="ml-0.5"> {vault.token.symbol}</span>
           </div>
         </div>

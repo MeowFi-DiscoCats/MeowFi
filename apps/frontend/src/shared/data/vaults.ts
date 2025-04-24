@@ -59,7 +59,7 @@ const curvanceFastlaneVault: IVault = {
   joinInPeriod: '2025-03-15T00:00Z',
   claimInPeriod: '2025-03-17T00:00Z',
   prejoinPeriod: '2025-03-14T00:00Z',
-  nftPrice: 0.2,
+  nftPrice: 50,
   backingRatio: 1,
   backingPercentage: 100,
   nftLimit: 1,
@@ -75,7 +75,7 @@ const curvanceFastlaneVault: IVault = {
 //   lockedInPeriod: 0,
 //   apy: 225,
 //   type: 'flexible',
-//   proxyAddress: '0x8cdD399cd40360E07870AF53fDc281dF679b890f',
+//   proxyAddress: '0x06c74cFE6d067c1a737C5e14bC45bE0C02C8De99',
 //   airdropIncentivised: 0,
 //   totalSupply: 1000,
 //   availableSupply: 0,
@@ -89,5 +89,5 @@ const curvanceFastlaneVault: IVault = {
 //   nftImage: '/images/cfNFT.webp',
 //   token: shMonToken,
 // };
-//
+
 export const vaults: IVault[] = [curvanceFastlaneVault];

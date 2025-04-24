@@ -8,7 +8,7 @@ const multicallAbi = [
 
 const iface = new ethers.Interface([
   'function balanceOf(address) view returns (uint256)',
-  'function vaults(address) public view returns (uint256 ethAmount, uint256 nftAmount)',
+  'function getBalanceNft(address) public view returns (uint256 ethAmount, uint256 nftAmount)',
 ]);
 
 const fetchVaultData = async (
@@ -28,7 +28,7 @@ const fetchVaultData = async (
     },
     {
       target: vault.proxyAddress,
-      callData: iface.encodeFunctionData('vaults', [userAddress]),
+      callData: iface.encodeFunctionData('getBalanceNft', [userAddress]),
     },
   ];
 
@@ -40,7 +40,8 @@ const fetchVaultData = async (
 
   const [, returnData] = await multicall.aggregate(calls);
   const [balance] = iface.decodeFunctionResult('balanceOf', returnData[0]);
-  const v = iface.decodeFunctionResult('vaults', returnData[1]);
+  const v = iface.decodeFunctionResult('getBalanceNft', returnData[1]);
+  console.log(returnData[1])
 
   return {
     balance: (Number(balance) / 10 ** vault.token.decimals).toFixed(3),
