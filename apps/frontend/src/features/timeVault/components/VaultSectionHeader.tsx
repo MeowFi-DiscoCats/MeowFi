@@ -1,13 +1,14 @@
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import Manual from '@/components/Manual';
 import Bribe from '@/features/bribe/components/BribeDialog';
+import ReferralDialog from '@/components/ReferralDialog';
 
 export default function VaultHeader() {
   return (
     <>
       <div className="flex items-center justify-between gap-4 max-sm:justify-center">
-        <h1 className="text-orange font-Showcard text-[28px] uppercase sm:text-4xl [518px]:text-nowrap">
-          Time-Lock Vaults
+        <h1 className="font-Showcard text-[28px] text-black uppercase sm:text-5xl [518px]:text-nowrap">
+          Meow Vaults
         </h1>
         <div className="[&>span]:border-gunmetal text-chocolate [&>span]:font-Bubblegum flex w-full min-w-[210px] flex-1 flex-wrap items-center justify-end gap-2 max-[518px]:hidden [&>*]:h-[36px] [&>*]:shrink-0 [&>*]:items-center [&>*]:rounded-xl [&>*]:px-3 [&>*]:py-1 [&>span]:flex [&>span]:gap-1 [&>span]:border [&>span]:bg-[#FFF2EA]">
           <span>
@@ -26,7 +27,7 @@ export default function VaultHeader() {
           <Dialog>
             <DialogTrigger asChild>
               <button className="bg-yellow border-gunmetal hover:bg-yellow/90 text-gunmetal shadow-b-3 border font-semibold shadow-[0_4px_10px_rgba(0,0,0,0.25)]">
-                bribes
+                Bribes
               </button>
             </DialogTrigger>
             <Bribe />
@@ -41,8 +42,24 @@ export default function VaultHeader() {
           </Dialog>
         </div>
       </div>
-      <p className="text-gunmetal my-4 mb-8 font-thin">
-        Earn Multi-layered yield while staying Liquid with NFTs.{' '}
+      <img
+        src="/images/headerThumbnail.webp"
+        alt="header"
+        className="mx-auto mt-4 -mb-4 rounded-xl max-sm:hidden"
+      />
+      <div className="border-gunmetal hidden justify-around gap-4 rounded-xl border-1 bg-black p-2 py-4 text-white shadow max-sm:flex">
+        <div className="[&>*]:font-Bubblegum flex flex-col gap-2 text-center">
+          <span>APR up to</span>
+          <span>27318:12%</span>
+        </div>
+        <div className="[&>*]:font-Bubblegum flex flex-col gap-2 text-center">
+          <span>TVL</span>
+          <span>$3.29M</span>
+        </div>
+      </div>
+      <ReferralDialog />
+      <p className="text-gunmetal font-Bubblegum my-4 mb-8 text-3xl">
+        Bribe Lock Vaults
       </p>
     </>
   );

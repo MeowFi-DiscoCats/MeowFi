@@ -21,6 +21,7 @@ import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { useAppKit, useAppKitAccount } from '@reown/appkit/react';
 import Avatar from './svg/Avatar';
 import WaterTap from './svg/WaterTap';
+import BribeDialog from '@/features/bribe/components/BribeDialog';
 
 const navLinks = [
   { label: 'Time Vaults', to: '/' },
@@ -29,8 +30,7 @@ const navLinks = [
 ];
 const manualLinks: { key: string; value: string }[] = [
   { key: 'Docs', value: 'https://docs.meowfi.xyz' },
-  { key: 'To Do', value: '#' },
-  { key: 'Twitter', value: '#' },
+  { key: 'Twitter', value: 'https://x.com/MeowFi_' },
   { key: 'Discord', value: 'https://discord.com/invite/RZWntTWFrb' },
 ];
 const mobileNavItemClass =
@@ -40,7 +40,7 @@ export default function NavBar() {
   const { open } = useAppKit();
   const { isConnected } = useAppKitAccount();
   return (
-    <nav className="relative z-[3] px-[3vw]">
+    <nav className="relative z-30 px-[3vw]">
       <div className="mx-auto flex max-w-7xl items-center justify-between py-6">
         {/* Logo and Desktop Navigation */}
         <div className="flex gap-4">
@@ -135,6 +135,17 @@ export default function NavBar() {
                   </DialogTrigger>
                   <Manual />
                 </Dialog>
+
+                <DropdownMenuItem>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button className="w-full text-center font-semibold">
+                        Bribes
+                      </button>
+                    </DialogTrigger>
+                    <BribeDialog />
+                  </Dialog>
+                </DropdownMenuItem>
                 {manualLinks.map((item) => (
                   <DropdownMenuItem key={item.key}>
                     <a

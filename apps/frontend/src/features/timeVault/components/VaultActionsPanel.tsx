@@ -91,11 +91,11 @@ export function VaultActions({ index }: { index: number }) {
         </span>
         {vault.token.symbol}
       </p>
-      <div className="flex gap-2">
+      <div className="border-gunmetal flex gap-2 rounded-xl border bg-white p-1">
         <DepositDialog index={index} quantity={quantity} />
         <button
           // onClick={handleWithdraw}
-          className="flex-1 rounded-lg border border-gray-400 bg-white p-1 text-center font-semibold text-gray-400 hover:bg-gray-100"
+          className="flex-1 rounded-lg bg-white p-1 text-center font-semibold text-gray-400 hover:bg-gray-100"
           disabled
         >
           widthrow
@@ -115,7 +115,11 @@ export function VaultActions({ index }: { index: number }) {
             {liveUserVaultsData ? liveUserVaultsData.nftAmount : 0} NFTs
           </div>
           <div className="border-gunmetal flex-1 border-b p-1 text-center">
-            {liveUserVaultsData ? ethers.formatUnits(Number(liveUserVaultsData.tokenAmount).toString())   : 0}
+            {liveUserVaultsData
+              ? ethers.formatUnits(
+                  Number(liveUserVaultsData.tokenAmount).toString()
+                )
+              : 0}
             <span className="ml-0.5"> {vault.token.symbol}</span>
           </div>
         </div>

@@ -89,5 +89,5 @@ const curvanceFastlaneVault: IVault = {
 //   nftImage: '/images/cfNFT.webp',
 //   token: shMonToken,
 // };
-
+//
 export const vaults: IVault[] = [curvanceFastlaneVault];

@@ -27,7 +27,7 @@ const GradientOverlay = () => (
 );
 
 const FeatureItem = ({ feature }: { feature: Feature }) => (
-  <div className="bg-cream relative z-[1] flex items-center justify-between gap-2 rounded-xl p-3 text-nowrap">
+  <div className="bg-cream relative z-[1] flex items-center justify-between gap-2 rounded-xl p-3">
     {feature.icon}
     <div className="mr-auto">
       <p>{feature.title}</p>
@@ -44,7 +44,7 @@ const VaultSection = ({ heading, features }: VaultSectionProps) => (
     <h1 className="text-gunmetal border-gunmetal border bg-[#F4F1D0] px-8 py-3 font-semibold">
       {heading}
     </h1>
-    <div className="border-gunmetal relative flex w-full flex-col gap-2 overflow-hidden border-x border-b bg-[#D85E4C] p-4 px-8">
+    <div className="border-gunmetal relative flex w-full flex-col gap-2 overflow-hidden border-x border-b bg-[#D85E4C] p-4 px-8 max-sm:px-4">
       <GradientOverlay />
       {features.map((feature, index) => (
         <FeatureItem key={index} feature={feature} />
