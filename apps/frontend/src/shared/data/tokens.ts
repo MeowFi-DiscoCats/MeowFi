@@ -21,7 +21,7 @@ export const usdtToken: Itoken = {
   img: '/images/usdt.webp',
   address: address.usdt,
   isErc20: true,
-  decimals: 18,
+  decimals: 6,
 };
 
 export const monToken: Itoken = {
@@ -37,7 +37,7 @@ export const usdcToken: Itoken = {
   img: '/images/usdc.webp',
   address: address.usdc,
   isErc20: true,
-  decimals: 18,
+  decimals: 6,
 };
 
 export const tokens: Itoken[] = [shMonToken, monToken, usdtToken, usdcToken];
