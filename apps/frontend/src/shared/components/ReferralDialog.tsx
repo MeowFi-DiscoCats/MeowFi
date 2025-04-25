@@ -85,6 +85,7 @@ export default function ReferralDialog() {
       setError('Referral code must be at least 5 characters');
       return;
     }
+    setRef(ref.toLowerCase());
     setError(null);
     mutation.mutate();
   };

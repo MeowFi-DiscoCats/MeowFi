@@ -45,7 +45,7 @@ export default function DepositConfirm({ index }: { index: number }) {
             </div>
           </button>
         </div>
-        <DialogTrigger className="bg-yellow font-Teko border-gunmetal max-w-64 rounded-xl border px-[30%] py-2 text-xl font-semibold text-black hover:bg-yellow-300">
+        <DialogTrigger className="bg-yellow font-Teko border-gunmetal max-w-64 rounded-xl border px-[30%] py-1 text-xl font-semibold text-black hover:bg-yellow-300">
           Dismiss
         </DialogTrigger>
       </section>

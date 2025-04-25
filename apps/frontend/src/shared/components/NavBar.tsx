@@ -42,16 +42,15 @@ export default function NavBar() {
   const { open } = useAppKit();
   const { isConnected, address } = useAppKitAccount();
 
-  const refCode = localStorage.getItem('referralCode') || '';
-
   useEffect(() => {
+    const refCode = localStorage.getItem('referralCode') || '';
     if (isConnected) {
       posthog.capture('wallet_connected', {
         wallet_address: address,
         referrer_code: refCode,
       });
 
-      if (refCode !== '') {
+      if (refCode) {
         (async () => {
           try {
             await fetch(`${import.meta.env.VITE_API_URL}/referral/success`, {
@@ -67,7 +66,7 @@ export default function NavBar() {
         })();
       }
     }
-  }, [isConnected, address, refCode]);
+  }, [isConnected, address]);
 
   return (
     <nav className="relative z-30 px-[3vw]">

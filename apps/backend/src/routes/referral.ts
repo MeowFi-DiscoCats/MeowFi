@@ -10,7 +10,10 @@ const successSchema = z.object({
     .string()
     .nonempty()
     .transform((s) => s.toLowerCase()),
-  refCode: z.string().nonempty(),
+  refCode: z
+    .string()
+    .nonempty()
+    .transform((s) => s.toLowerCase()),
 });
 
 router.post(
