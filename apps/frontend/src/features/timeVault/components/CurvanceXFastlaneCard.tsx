@@ -18,7 +18,7 @@ import { Eip1193Provider } from 'ethers';
 export default function CurvanceXFastlaneCard({ index }: { index: number }) {
   const vault = vaults[index];
   const { isConnected } = useAppKitAccount();
-  const { data: liveVaultsData, isLoading } = useLiveFetch();
+  const { data: liveVaultsData } = useLiveFetch();
   const { walletProvider }: { walletProvider: Eip1193Provider } =
     useAppKitProvider('eip155');
   const { chainId } = useAppKitNetworkCore();
