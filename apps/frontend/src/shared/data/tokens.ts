@@ -39,5 +39,19 @@ export const usdcToken: Itoken = {
   isErc20: true,
   decimals: 6,
 };
+export const chog: Itoken = {
+  symbol: 'CHOG',
+  img: '/images/chog.png',
+  address: address.chog,
+  isErc20: true,
+  decimals: 18,
+};
+export const dak: Itoken = {
+  symbol: 'DAK',
+  img: '/images/dak.png',
+  address: address.dak,
+  isErc20: true,
+  decimals: 18,
+};
 
-export const tokens: Itoken[] = [shMonToken, monToken, usdtToken, usdcToken];
+export const tokens: Itoken[] = [shMonToken, monToken, usdtToken, usdcToken,dak,chog];
