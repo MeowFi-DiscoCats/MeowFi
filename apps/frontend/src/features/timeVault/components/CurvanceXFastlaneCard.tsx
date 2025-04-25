@@ -95,7 +95,7 @@ export default function CurvanceXFastlaneCard({ index }: { index: number }) {
           >
             <img
               className="absolute top-1/2 left-1/2 h-[90px] w-[90px] -translate-x-1/2 -translate-y-1/2 transform rounded-full border-2 border-white bg-white"
-              src="/images/cfCard2.webp"
+              src="/images/cfCard3.webp"
               alt={vault.title}
             />
           </div>
