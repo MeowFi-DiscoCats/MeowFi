@@ -1,10 +1,10 @@
 import {
+  Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
   DialogTrigger,
-  Dialog,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
@@ -46,6 +46,7 @@ export default function DepositBribeDialog({
       toast('Please connect your wallet.');
       return;
     }
+
     const provider = new BrowserProvider(walletProvider, chainId);
     const signer = await provider.getSigner();
 
@@ -71,20 +72,19 @@ export default function DepositBribeDialog({
 
       const proxyContract = new Contract(
         vault.proxyAddress,
-
         ['function bribe(uint256 _amnt, address _tknAddress)'],
         signer
       );
       const depositTx = await proxyContract.bribe(amountInWei, token.address);
       await depositTx.wait();
 
-      toast.success('Deposit successful');
-      setRefresh((prev: boolean) => !prev);
+      toast.success('Bribe successful');
+      setRefresh((prev) => !prev);
       setStatus('Deposit');
       setOpen(false);
     } catch (error) {
-      console.error('Error during deposit:', error);
-      toast('Deposit failed', {
+      console.error('Error during bribe:', error);
+      toast('Bribe failed', {
         description: 'Please try again',
       });
       setStatus('Deposit');
@@ -96,37 +96,45 @@ export default function DepositBribeDialog({
       <DialogTrigger className="bg-yellow hover:bg-amber border-gunmetal font-Teko mx-auto my-1 rounded-lg border px-12 py-1 text-lg font-semibold text-black">
         Deposit Bribes
       </DialogTrigger>
-      <DialogContent className="bg-cream border-gunmetal !max-w-[400px] rounded-3xl border-2">
+      <DialogContent className="bg-cream border-gunmetal !max-w-[400px] rounded-3xl border-3">
         <DialogHeader>
-          <DialogTitle className="font-Teko my-4 text-center text-2xl font-semibold tracking-wide">
+          <DialogTitle className="font-Teko text-center text-2xl font-semibold tracking-wide">
             Deposit Confirmation
           </DialogTitle>
-          <DialogDescription className="bg-cream hidden">
-            Dialog for comformation of deposit bribes. Please ensure that the
-            wallet
+          <DialogDescription className="hidden text-center text-sm font-semibold">
+            You are depositing bribes. Please ensure your wallet is connected
+            and has enough balance.
           </DialogDescription>
-          <section className="flex flex-col">
-            <div className="border-gunmetal flex-start flex w-full flex-col border bg-white p-1 px-4">
-              <p className="font-Teko text-start text-sm leading-relaxed font-semibold text-black/70">
+          <section className="flex flex-col justify-center">
+            <div className="mt-4 flex items-center justify-between">
+              <p className="font-Teko font-semibold tracking-wide">
                 You are Bribing
               </p>
-              <p className="font-Teko text-start text-lg leading-relaxed font-semibold text-black">
-                {amount} {tokens[selectedTokenIndex].symbol}
-              </p>
             </div>
-
-            <div className="pr-2 text-end text-sm">
-              <strong>Balance :</strong>
+            <div className="border-gunmetal flex items-center justify-between rounded-xl border bg-white px-2 py-1">
+              <div className="bg-yellow border-gunmetal font-Teko flex-1 rounded-xl border p-0.5 px-4 text-center text-lg font-semibold">
+                {amount}
+              </div>
+              <div className="flex flex-1 items-center justify-end gap-2 px-4">
+                <span className="font-Teko font-semibold tracking-wide">
+                  {token.symbol}
+                </span>
+                <img
+                  width={20}
+                  className="aspect-square rounded-xl"
+                  src={token.img}
+                  alt={token.symbol}
+                />
+              </div>
+            </div>
+            <div className="text-end text-sm">
+              <strong>Balance:</strong>
               <span className="mx-1 text-xs"> {userBalance}</span>
               <span className="text-xs">{token.symbol}</span>
             </div>
-            <div className="border-gunmetal flex-start flex w-full flex-col border bg-white p-1 px-4">
-              <p className="font-Teko text-start text-sm leading-relaxed font-semibold text-black/70">
-                For
-              </p>
-              <p className="font-Teko text-start text-lg leading-relaxed font-semibold text-black">
-                {vault.title} - {vault.token.symbol} Vault
-              </p>
+            <p className="font-Teko font-semibold">For</p>
+            <div className="border-gunmetal font-Teko max-md:text-md flex items-center justify-center rounded-xl border bg-white px-2 py-1 text-center text-lg font-semibold">
+              {vault.title} Liquid Vault
             </div>
             <Button
               onClick={handleDeposit}
