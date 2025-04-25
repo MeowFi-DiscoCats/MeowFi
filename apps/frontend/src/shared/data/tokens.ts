@@ -41,14 +41,14 @@ export const usdcToken: Itoken = {
 };
 export const chog: Itoken = {
   symbol: 'CHOG',
-  img: '/images/chog.png',
+  img: '/images/chog.webp',
   address: address.chog,
   isErc20: true,
   decimals: 18,
 };
 export const dak: Itoken = {
   symbol: 'DAK',
-  img: '/images/dak.png',
+  img: '/images/dak.webp',
   address: address.dak,
   isErc20: true,
   decimals: 18,

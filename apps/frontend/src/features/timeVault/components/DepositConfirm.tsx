@@ -41,8 +41,8 @@ export default function DepositConfirm({ index }: { index: number }) {
       const addr = await proxyContract.nftAddress();
       setNftAddress(addr);
     };
-    fetch(), [];
-  });
+    fetch();
+  }, [vault.proxyAddress]);
 
   return (
     <>
