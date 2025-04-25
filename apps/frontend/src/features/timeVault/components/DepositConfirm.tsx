@@ -5,10 +5,46 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { vaults } from '@/data/vaults';
+import { Contract, ethers } from 'ethers';
+import { useEffect, useState } from 'react';
 import { LuExternalLink } from 'react-icons/lu';
 
 export default function DepositConfirm({ index }: { index: number }) {
   const vault = vaults[index];
+  const [nftAddress,setNftAddress]=useState('')
+  useEffect(() => {
+      const fetch = async () => {
+        
+          const provider = new ethers.JsonRpcProvider(
+            import.meta.env.VITE_ALCHEMY_URL
+          );
+          
+            const proxyContract = new Contract(
+              vault.proxyAddress,
+              [
+                {
+                  "inputs": [],
+                  "name": "nftAddress",
+                  "outputs": [
+                    {
+                      "internalType": "address",
+                      "name": "",
+                      "type": "address"
+                    }
+                  ],
+                  "stateMutability": "view",
+                  "type": "function"
+                }
+              ],
+              provider
+            );
+
+            const addr=await proxyContract.nftAddress()
+            setNftAddress(addr)
+          }
+          fetch()
+          , [ ]});
+
   return (
     <>
       <DialogHeader>
@@ -29,9 +65,10 @@ export default function DepositConfirm({ index }: { index: number }) {
           {vault.title} Vault NFT <LuExternalLink className="text-sm" />
         </h3>
         <div className="flex w-64 gap-2 text-sm">
-          <button className="border-gunmetal flex-1 rounded-lg border bg-white p-1 text-center font-semibold">
+          <a href={`https://magiceden.io/collections/monad-testnet/${nftAddress}`}> <button  className="border-gunmetal flex-1 rounded-lg border bg-white p-1 text-center font-semibold">
             Marketplace
-          </button>
+          </button></a>
+         
           <button className="border-gunmetal relative flex-1 rounded-lg border bg-white p-1 text-center font-semibold">
             Borrow
             <div className="bg-yellow text-gunmetal font-Bubblegum border-gunmetal absolute -top-0.25 -right-0.25 flex flex-nowrap items-center rounded-full border p-[0.1px] pr-1 text-[8px] font-thin text-nowrap">

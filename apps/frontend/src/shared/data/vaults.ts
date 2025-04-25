@@ -75,7 +75,7 @@ const curvanceFastlaneVault: IVault = {
 //   lockedInPeriod: 0,
 //   apy: 225,
 //   type: 'flexible',
-//   proxyAddress: '0x06c74cFE6d067c1a737C5e14bC45bE0C02C8De99',
+//   proxyAddress: '0x28010E7cf1d522B75dF375A0caFe7eC681ADc3D5',
 //   airdropIncentivised: 0,
 //   totalSupply: 1000,
 //   availableSupply: 0,
@@ -86,8 +86,8 @@ const curvanceFastlaneVault: IVault = {
 //   backingRatio: 1,
 //   backingPercentage: 100,
 //   nftLimit: 10,
-//   nftImage: '/images/cfNFT.webp',
+//   nftImage: '/images/cfNFT2.webp',
 //   token: shMonToken,
 // };
-//
+
 export const vaults: IVault[] = [curvanceFastlaneVault];
