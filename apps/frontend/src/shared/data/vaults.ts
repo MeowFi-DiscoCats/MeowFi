@@ -21,6 +21,7 @@ export interface IVault {
   prejoinPeriod: string;
   // abi: ethers.Interface | ethers.InterfaceAbi;
   nftImage: string;
+  nftAddress: string;
   token: Itoken;
 }
 
@@ -56,15 +57,16 @@ const curvanceFastlaneVault: IVault = {
   airdropIncentivised: 0,
   totalSupply: 10000,
   availableSupply: 0,
-  joinInPeriod: '2025-03-15T00:00Z',
-  claimInPeriod: '2025-03-17T00:00Z',
-  prejoinPeriod: '2025-03-14T00:00Z',
+  joinInPeriod: '2025-05-02T17:00Z',
+  claimInPeriod: '2025-07-02T17:00Z',
+  prejoinPeriod: '2025-04-25T17:00Z',
   nftPrice: 50,
   backingRatio: 1,
   backingPercentage: 100,
   nftLimit: 3,
   // abi: abi.curvanceXFastlane,
   nftImage: '/images/cfNFT2.webp',
+  nftAddress: '0x34AF03074B7F72CFd1B1b0226d088A1E28c7405D',
   token: shMonToken,
 };
 
@@ -87,6 +89,7 @@ const curvanceFastlaneVault: IVault = {
 //   backingPercentage: 100,
 //   nftLimit: 10,
 //   nftImage: '/images/cfNFT2.webp',
+//   nftAddress: '0x24F6e209205401096f2DD59Dca1e3F75D76E70C3',
 //   token: shMonToken,
 // };
 

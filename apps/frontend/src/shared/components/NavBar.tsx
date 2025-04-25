@@ -22,6 +22,8 @@ import { useAppKit, useAppKitAccount } from '@reown/appkit/react';
 import Avatar from './svg/Avatar';
 import WaterTap from './svg/WaterTap';
 import BribeDialog from '@/features/bribe/components/BribeDialog';
+import { useEffect } from 'react';
+import posthog from 'posthog-js';
 
 const navLinks = [
   { label: 'Time Vaults', to: '/' },
@@ -38,7 +40,35 @@ const mobileNavItemClass =
 
 export default function NavBar() {
   const { open } = useAppKit();
-  const { isConnected } = useAppKitAccount();
+  const { isConnected, address } = useAppKitAccount();
+
+  const refCode = localStorage.getItem('referralCode') || '';
+
+  useEffect(() => {
+    if (isConnected) {
+      posthog.capture('wallet_connected', {
+        wallet_address: address,
+        referrer_code: refCode,
+      });
+
+      if (refCode !== '') {
+        (async () => {
+          try {
+            await fetch(`${import.meta.env.VITE_API_URL}/referral/success`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ refCode, walletAddress: address }),
+            });
+          } catch (error) {
+            console.error('Referral API call failed:', error);
+          }
+        })();
+      }
+    }
+  }, [isConnected, address, refCode]);
+
   return (
     <nav className="relative z-30 px-[3vw]">
       <div className="mx-auto flex max-w-7xl items-center justify-between py-6">
