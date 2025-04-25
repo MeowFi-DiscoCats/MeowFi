@@ -100,7 +100,7 @@ export function VaultActions({ index }: { index: number }) {
           className="flex-1 rounded-lg bg-white p-1 text-center font-semibold text-gray-400 hover:bg-gray-100"
           disabled
         >
-          Widthdraw
+          Withdraw
         </button>
       </div>
       <div className="border-gunmetal flex flex-col overflow-hidden rounded-lg border">

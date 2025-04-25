@@ -54,4 +54,11 @@ export const dak: Itoken = {
   decimals: 18,
 };
 
-export const tokens: Itoken[] = [shMonToken, monToken, usdtToken, usdcToken,dak,chog];
+export const tokens: Itoken[] = [
+  shMonToken,
+  monToken,
+  usdtToken,
+  usdcToken,
+  dak,
+  chog,
+];

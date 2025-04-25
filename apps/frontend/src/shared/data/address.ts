@@ -17,7 +17,7 @@ const address = {
   usdc,
   v2,
   dak,
-  chog
+  chog,
 };
 
 export default address;

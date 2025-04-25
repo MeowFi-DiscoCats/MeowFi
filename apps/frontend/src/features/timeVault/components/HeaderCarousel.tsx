@@ -19,7 +19,7 @@ export default function HeaderCarousel() {
         {[1, 2, 3].map((i) => (
           <CarouselItem key={i} className="relative h-full w-full">
             <div className="relative h-full w-full">
-              <img src={`/images/banner${i}.webp`} alt={`banner ${i}`} />
+              <img src={`/images/banner${i}.svg`} alt={`banner ${i}`} />
             </div>
           </CarouselItem>
         ))}
