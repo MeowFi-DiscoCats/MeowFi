@@ -30,7 +30,6 @@ export function VaultActions({ index }: { index: number }) {
   );
 
   const { data: liveVaultsData } = useLiveFetch();
-  console.log('liveUserVaultsData', liveVaultsData);
   const joinInPeriod = liveVaultsData
     ? liveVaultsData[index].joinInPeriod
     : vault.joinInPeriod;
