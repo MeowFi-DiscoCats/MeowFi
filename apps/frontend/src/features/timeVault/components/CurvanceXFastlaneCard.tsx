@@ -30,20 +30,6 @@ export default function CurvanceXFastlaneCard({ index }: { index: number }) {
     isConnected
   );
 
-  function daysUntil(): number {
-    if (!liveVaultsData) return 0;
-    const dateTimeStr = liveVaultsData[index]?.claimInPeriod;
-    const targetDate = new Date(dateTimeStr);
-    const now = new Date();
-
-    const diffMs = targetDate.getTime() - now.getTime();
-
-    if (diffMs <= 0) return 0;
-
-    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    return diffDays;
-  }
-
   return (
     <div className="relative w-full max-w-[300px] max-md:max-w-[250px] max-sm:max-w-[400px]">
       <NftTag index={index} />
@@ -117,8 +103,8 @@ export default function CurvanceXFastlaneCard({ index }: { index: number }) {
         </div>
         <div className="border-gunmetal bg-cream mx-6 flex justify-between rounded-full border-1 px-2 py-1 text-sm">
           <span>Lock-in Period:</span>
-          <span className="text-sienna font-bold">
-            {liveVaultsData ? daysUntil() : vault.lockedInPeriod} Days
+          <span className="text-sienna mr-2 font-bold">
+            {vault.lockedInPeriod} D
           </span>
         </div>
         <VaultDetailDialog index={index} />

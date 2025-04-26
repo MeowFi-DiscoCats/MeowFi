@@ -12,20 +12,6 @@ export default function VaultCard({ index }: { index: number }) {
   const vault = vaults[index];
   const { data: liveVaultsData, isLoading } = useLiveFetch();
 
-  function daysUntil(): number {
-    if (!liveVaultsData) return 0;
-    const dateTimeStr = liveVaultsData[index]?.claimInPeriod;
-    const targetDate = new Date(dateTimeStr);
-    const now = new Date();
-
-    const diffMs = targetDate.getTime() - now.getTime();
-
-    if (diffMs <= 0) return 0;
-
-    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    return diffDays;
-  }
-
   return (
     <div className="border-gunmetal relative w-full max-w-[300px] overflow-hidden rounded-xl border-1 bg-white shadow max-md:max-w-[250px] max-sm:max-w-[400px]">
       <h2 className="bg-yellow mb-2 flex w-full items-center justify-center gap-2 rounded-[0%_0%_50%_50%_/_0%_0%_30%_30%] py-2 text-center text-lg font-semibold text-black">
@@ -91,8 +77,8 @@ export default function VaultCard({ index }: { index: number }) {
       </div>
       <div className="border-gunmetal bg-cream mx-6 flex justify-between rounded-full border-1 px-2 py-1 text-sm">
         <span>Lock-in Period:</span>
-        <span className="text-sienna font-bold">
-          {liveVaultsData ? daysUntil() : vault.lockedInPeriod} Days
+        <span className="text-sienna mr-2 font-bold">
+          {vault.lockedInPeriod} D
         </span>
       </div>
       <VaultDetailDialog index={index} />
