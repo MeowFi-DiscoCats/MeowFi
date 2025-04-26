@@ -97,14 +97,14 @@ export default function CurvanceXFastlaneCard({ index }: { index: number }) {
           <span className="text-sienna mr-2 font-bold">
             {liveVaultsData
               ? Math.max(vault.apy, liveVaultsData[index].apy)
-              : vault.apy}{' '}
+              : vault.apy}
             %
           </span>
         </div>
         <div className="border-gunmetal bg-cream mx-6 flex justify-between rounded-full border-1 px-2 py-1 text-sm">
           <span>Lock-in Period:</span>
           <span className="text-sienna mr-2 font-bold">
-            {vault.lockedInPeriod} D
+            {vault.lockedInPeriod}D
           </span>
         </div>
         <VaultDetailDialog index={index} />

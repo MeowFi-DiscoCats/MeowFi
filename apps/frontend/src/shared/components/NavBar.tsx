@@ -23,7 +23,6 @@ import Avatar from './svg/Avatar';
 import WaterTap from './svg/WaterTap';
 import BribeDialog from '@/features/bribe/components/BribeDialog';
 import { useEffect } from 'react';
-import posthog from 'posthog-js';
 
 const navLinks = [
   { label: 'Time Vaults', to: '/' },
@@ -47,11 +46,6 @@ export default function NavBar() {
     const ref = params.get('ref');
     const refCode = localStorage.getItem('referralCode') || ref;
     if (isConnected) {
-      posthog.capture('wallet_connected', {
-        wallet_address: address,
-        referrer_code: refCode,
-      });
-
       if (refCode) {
         (async () => {
           try {

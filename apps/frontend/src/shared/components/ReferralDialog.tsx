@@ -11,7 +11,6 @@ import InviteFolder from './svg/InviteFolder';
 import { useEffect, useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAppKitAccount } from '@reown/appkit/react';
-import posthog from 'posthog-js';
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -29,10 +28,6 @@ async function postReferral(ref: string, address: string) {
     body: JSON.stringify({ refCode: ref, walletAddress: address }),
   });
   if (!res.ok) throw new Error('Failed to record referral');
-  posthog.capture('referral_created', {
-    address,
-    code: ref,
-  });
   return res.json();
 }
 
