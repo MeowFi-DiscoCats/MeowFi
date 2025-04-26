@@ -58,7 +58,7 @@ export default function ReferralDialog() {
     isError,
   } = useQuery({
     queryKey: ['referralCount', ref],
-    queryFn: () => fetchReferralCount(ref),
+    queryFn: () => fetchReferralCount(address!),
     enabled: created && isConnected,
     staleTime: 60_000, // 1m
   });
