@@ -15,7 +15,7 @@ export default function DepositConfirm({ index }: { index: number }) {
     <>
       <DialogHeader>
         <DialogTitle className="font-Teko text-center text-3xl font-semibold tracking-wide">
-          Deposit Sucessfull
+          Deposit Successful
         </DialogTitle>
         <DialogDescription className="font-Teko my-0 text-center tracking-wide">
           NFT issued as a proof of liquidity
