@@ -24,18 +24,16 @@ const router = createBrowserRouter([
   {
     path: '/admin',
     element: <AdminLoginPage />,
-    children: [
-      {
-        path: 'dashboard',
-        element: (
-          <Suspense fallback={<div>Loading...</div>}>
-            <AuthGuard>
-              <AdminDashboardPage />
-            </AuthGuard>
-          </Suspense>
-        ),
-      },
-    ],
+  },
+  {
+    path: '/admin/dashboard',
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <AuthGuard>
+          <AdminDashboardPage />
+        </AuthGuard>
+      </Suspense>
+    ),
   },
 ]);
 

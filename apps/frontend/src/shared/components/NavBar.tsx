@@ -43,7 +43,9 @@ export default function NavBar() {
   const { isConnected, address } = useAppKitAccount();
 
   useEffect(() => {
-    const refCode = localStorage.getItem('referralCode') || '';
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get('ref');
+    const refCode = localStorage.getItem('referralCode') || ref;
     if (isConnected) {
       posthog.capture('wallet_connected', {
         wallet_address: address,

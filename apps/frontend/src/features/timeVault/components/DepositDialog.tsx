@@ -29,6 +29,7 @@ import {
 import { useLiveFetch } from '@/lib/hooks/useFetch';
 import { useUserLiveFetch } from '@/lib/hooks/useUserFetch';
 import DepositConfirm from './DepositConfirm';
+import posthog from 'posthog-js';
 
 export default function DepositDialog({
   quantity,
@@ -251,6 +252,12 @@ export default function DepositDialog({
         }
       }
       setDepositStatus('Deposit Successful');
+      const refCode = localStorage.getItem('referralCode') || '';
+      posthog.capture('Deposit', {
+        wallet_address: address,
+        referrer_code: refCode,
+        amount: quantity,
+      });
       queryClient.invalidateQueries({
         queryKey: ['liveVaultsData', 'liveUserVaultsData'],
       });
