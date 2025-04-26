@@ -1,45 +1,98 @@
 import {
   Dialog,
+  DialogTrigger,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+  DialogDescription,
+  DialogClose,
 } from '@/components/ui/dialog';
 import InviteFolder from './svg/InviteFolder';
 import { useEffect, useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useAppKitAccount } from '@reown/appkit/react';
+import posthog from 'posthog-js';
+
+const API = import.meta.env.VITE_API_URL;
+
+async function fetchReferralCount(address: string): Promise<number> {
+  const res = await fetch(`${API}/referral/count?address=${address}`);
+  if (!res.ok) throw new Error('Failed to fetch count');
+  const { count } = await res.json();
+  return count;
+}
+
+async function postReferral(ref: string, address: string) {
+  const res = await fetch(`${API}/referral/success`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ refCode: ref, walletAddress: address }),
+  });
+  if (!res.ok) throw new Error('Failed to record referral');
+  posthog.capture('referral_created', {
+    address,
+    code: ref,
+  });
+  return res.json();
+}
 
 export default function ReferralDialog() {
+  const { isConnected, address } = useAppKitAccount();
+  const qc = useQueryClient();
+
   const [ref, setRef] = useState<string>('');
-  const [error, setError] = useState<string | null>(null);
   const [created, setCreated] = useState(false);
-
-  const handleCreate = () => {
-    if (ref == '') {
-      setError('Please enter a referral Code');
-      return;
-    }
-    if (ref.length < 5) {
-      setError('Referral code must be at least 5 characters long');
-      return;
-    }
-    setError(null);
-    localStorage.setItem('referralCode', ref);
-    setCreated(true);
-  };
-
-  const handleCopy = () => {
-    const refCode = localStorage.getItem('referralCode');
-    if (refCode)
-      navigator.clipboard.writeText(`https://app.meowfi.xyz?ref=${refCode}`);
-  };
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const refCode = localStorage.getItem('referralCode');
-    if (refCode) {
+    const stored = localStorage.getItem('referralCode');
+    if (stored) {
+      setRef(stored);
       setCreated(true);
     }
   }, []);
+
+  const {
+    data: count,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ['referralCount', ref],
+    queryFn: () => fetchReferralCount(ref),
+    enabled: created && isConnected,
+    staleTime: 60_000, // 1m
+  });
+
+  const mutation = useMutation({
+    mutationFn: () => postReferral(ref, address!),
+    onSuccess: () => {
+      localStorage.setItem('referralCode', ref);
+      setCreated(true);
+      qc.invalidateQueries({ queryKey: ['referralCount', ref] });
+      setError(null);
+    },
+    onError: () => {
+      setError('Failed to create referral');
+    },
+  });
+
+  const handleCreate = () => {
+    if (!isConnected) {
+      setError('Please connect your wallet');
+      return;
+    }
+    if (ref.length < 5) {
+      setError('Referral code must be at least 5 characters');
+      return;
+    }
+    setRef(ref.toLowerCase());
+    setError(null);
+    mutation.mutate();
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(`${window.location.origin}?ref=${ref}`);
+  };
 
   return (
     <Dialog>
@@ -51,6 +104,7 @@ export default function ReferralDialog() {
           Refer
         </span>
       </DialogTrigger>
+
       <DialogContent className="bg-cream border-gunmetal !max-w-[400px] rounded-3xl border-2">
         {!created ? (
           <>
@@ -64,17 +118,18 @@ export default function ReferralDialog() {
               </DialogDescription>
             </DialogHeader>
             <section className="flex flex-col">
-              <p className="font-Teko font-semibold">Referral</p>
+              <p className="font-Teko font-semibold">Referral Code</p>
               <input
                 type="text"
-                onChange={(e) => setRef(e.target.value)}
+                value={ref}
+                onChange={(e) => setRef(e.target.value.trim())}
                 className="border-gunmetal w-full rounded-lg border bg-white p-2 font-semibold"
               />
               {error && <p className="font-Teko text-red-500">{error}</p>}
               <div className="mt-2 flex gap-2 px-4">
-                <DialogTrigger className="border-gunmetal font-Teko flex w-full items-center justify-center rounded-lg border bg-white p-2 py-1 font-semibold">
+                <DialogClose className="border-gunmetal font-Teko flex w-full items-center justify-center rounded-lg border bg-white p-2 py-1 font-semibold">
                   Dismiss
-                </DialogTrigger>
+                </DialogClose>
                 <button
                   onClick={handleCreate}
                   className="border-gunmetal font-Teko bg-yellow flex w-full items-center justify-center rounded-lg border p-2 py-1 font-semibold hover:bg-amber-200"
@@ -97,13 +152,15 @@ export default function ReferralDialog() {
             </DialogHeader>
             <section className="flex flex-col">
               <div className="border-gunmetal font-Teko mx-auto mb-4 flex w-full max-w-[200px] flex-col items-center justify-center gap-2 border bg-white p-2 font-semibold">
-                <span className="font-Teko">0</span>
-                <span className="font-Teko">Your Referral</span>
+                <span className="font-Teko text-2xl">
+                  {isLoading ? '...' : isError ? 'Error' : (count ?? 0)}
+                </span>
+                <span className="font-Teko">Your Referrals</span>
               </div>
               <div className="mt-2 flex gap-2 px-4">
-                <DialogTrigger className="border-gunmetal font-Teko flex w-full items-center justify-center rounded-lg border bg-white p-2 py-1 font-semibold">
+                <DialogClose className="border-gunmetal font-Teko flex w-full items-center justify-center rounded-lg border bg-white p-2 py-1 font-semibold">
                   Dismiss
-                </DialogTrigger>
+                </DialogClose>
                 <button
                   onClick={handleCopy}
                   className="border-gunmetal font-Teko bg-yellow flex w-full items-center justify-center rounded-lg border p-2 py-1 font-semibold hover:bg-amber-200"
