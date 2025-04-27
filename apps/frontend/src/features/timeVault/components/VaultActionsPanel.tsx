@@ -13,6 +13,7 @@ import ClaimDialog from './ClaimDialog';
 import { useLiveFetch } from '@/lib/hooks/useFetch';
 import { useUserLiveFetch } from '@/lib/hooks/useUserFetch';
 import FullySubsTag from './ui/FullySubsTag';
+import YellowBolt from '@/components/svg/YellowBolt';
 
 export function VaultActions({ index }: { index: number }) {
   const vault = vaults[index];
@@ -96,7 +97,19 @@ export function VaultActions({ index }: { index: number }) {
         {vault.token.symbol}
       </p>
       <div className="border-gunmetal flex gap-2 rounded-xl border bg-white p-1">
-        <DepositDialog index={index} quantity={quantity} />
+        {/* <DepositDialog index={index} quantity={quantity} /> */}
+        <button
+          className="bg-amber border-gunmetal text-black hover:bg-amber-400 relative mx-auto flex-1 rounded-lg border font-semibold"
+          disabled
+        >
+          Full
+          <div className="border-gunmetal absolute -top-0.25 -right-0.25 flex rounded-full border bg-[#671afc] px-1 py-0.5 text-[8px] text-white">
+            Zap
+            <span className="w-2.5">
+              <YellowBolt />
+            </span>
+          </div>
+        </button>
         <button
           // onClick={handleWithdraw}
           className="flex-1 rounded-lg bg-white p-1 text-center font-semibold text-gray-400 hover:bg-gray-100"
