@@ -14,7 +14,7 @@ import {
   useAppKitProvider,
 } from '@reown/appkit/react';
 import { Eip1193Provider } from 'ethers';
-import NftTag from './NftTag';
+import NftTag from './ui/NftTag';
 
 export default function CurvanceXFastlaneCard({ index }: { index: number }) {
   const vault = vaults[index];

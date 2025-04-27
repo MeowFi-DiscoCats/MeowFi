@@ -12,6 +12,7 @@ import DepositDialog from './DepositDialog';
 import ClaimDialog from './ClaimDialog';
 import { useLiveFetch } from '@/lib/hooks/useFetch';
 import { useUserLiveFetch } from '@/lib/hooks/useUserFetch';
+import FullySubsTag from './ui/FullySubsTag';
 
 export function VaultActions({ index }: { index: number }) {
   const vault = vaults[index];
@@ -60,7 +61,8 @@ export function VaultActions({ index }: { index: number }) {
       <p className="border-crimson border-y p-1 text-center font-semibold">
         <Countdown joinDate={joinInPeriod} preJoinDate={prejoinPeriod} />
       </p>
-      <div className="border-gunmetal bg-yellow flex justify-between rounded-lg border p-2 font-semibold">
+      <div className="border-gunmetal bg-yellow relative flex justify-between rounded-lg border p-2 font-semibold">
+        {vault.availableSupply === vault.totalSupply ? <FullySubsTag /> : null}
         <span>Vault Supply:</span>
         <span className="font-Teko tracking-wider">
           {liveVaultsData

@@ -56,7 +56,7 @@ const curvanceFastlaneVault: IVault = {
   proxyAddress: address.curvanceFastlane,
   airdropIncentivised: 0,
   totalSupply: 10000,
-  availableSupply: 0,
+  availableSupply: 10000,
   joinInPeriod: '2025-05-02T17:00Z',
   claimInPeriod: '2025-07-02T17:00Z',
   prejoinPeriod: '2025-04-25T17:00Z',
