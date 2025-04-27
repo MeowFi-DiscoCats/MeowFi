@@ -52,7 +52,7 @@ const curvanceFastlaneVault: IVault = {
   img: '/images/cfCard1.webp',
   lockedInPeriod: 60,
   type: 'flexible',
-  apy: 10,
+  apy: 357,
   proxyAddress: address.curvanceFastlane,
   airdropIncentivised: 0,
   totalSupply: 10000,
