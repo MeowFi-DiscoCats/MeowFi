@@ -51,11 +51,11 @@ export default function VaultHeader() {
         <div className="border-gunmetal bg-gunmetal flex min-w-[240px] items-center justify-around gap-4 rounded-r-xl border-1 p-2 py-4 text-white shadow max-md:rounded-l-xl">
           <div className="[&>*]:font-Bubblegum flex flex-col gap-2 text-center">
             <span>APR up to</span>
-            <span>27318:12%</span>
+            <span>27318.12%</span>
           </div>
           <div className="[&>*]:font-Bubblegum flex flex-col gap-2 text-center">
             <span>TVL</span>
-            <span>$3.29M</span>
+            <span>$4.1M</span>
           </div>
         </div>
       </div>

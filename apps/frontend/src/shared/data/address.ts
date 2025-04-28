@@ -7,6 +7,7 @@ const usdc = '0xf817257fed379853cDe0fa4F97AB987181B1E5Ea';
 const dak = '0x0F0BDEbF0F83cD1EE3974779Bcb7315f9808c714';
 const chog = '0xE0590015A873bF326bd645c3E1266d4db41C4E6B';
 const v2 = '0x23cac987f16e25ad57de078d875ea09300126b72';
+const WMon = '0x760AfE86e5de5fa0Ee542fc7B7B713e1c5425701';
 
 const address = {
   curvanceFastlane,
@@ -18,6 +19,7 @@ const address = {
   v2,
   dak,
   chog,
+  WMon,
 };
 
 export default address;
