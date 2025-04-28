@@ -330,14 +330,26 @@ export default function DepositDialog({
         onClick={() => {
           setDepositStatus('Deposit');
         }}
-        disabled={!isPrejoinOpen || isJoinClosed}
+        disabled={
+          !isPrejoinOpen ||
+          isJoinClosed ||
+          vault.availableSupply === vault.totalSupply
+        }
         className={`${
-          !isPrejoinOpen || isJoinClosed
+          !isPrejoinOpen ||
+          isJoinClosed ||
+          vault.availableSupply === vault.totalSupply
             ? 'cursor-not-allowed border-gray-400 bg-white text-gray-400'
             : 'bg-amber border-gunmetal text-black hover:bg-amber-400'
         } relative mx-auto flex-1 rounded-lg border font-semibold`}
       >
-        {!isPrejoinOpen ? 'Soon' : isJoinClosed ? 'Closed' : 'Deposit'}
+        {!isPrejoinOpen
+          ? 'Soon'
+          : isJoinClosed
+            ? 'Closed'
+            : vault.availableSupply === vault.totalSupply
+              ? 'Full'
+              : 'Deposit'}
         <div className="border-gunmetal absolute -top-0.25 -right-0.25 flex rounded-full border bg-[#671afc] px-1 py-0.5 text-[8px] text-white">
           Zap
           <span className="w-2.5">
