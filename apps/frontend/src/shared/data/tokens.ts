@@ -16,6 +16,14 @@ export const shMonToken: Itoken = {
   decimals: 18,
 };
 
+export const WMonToken: Itoken = {
+  symbol: 'WMON',
+  img: '/images/monad.webp',
+  address: address.WMon,
+  isErc20: true,
+  decimals: 18,
+};
+
 export const usdtToken: Itoken = {
   symbol: 'USDT',
   img: '/images/usdt.webp',
@@ -61,4 +69,5 @@ export const tokens: Itoken[] = [
   usdcToken,
   dak,
   chog,
+  WMonToken,
 ];
