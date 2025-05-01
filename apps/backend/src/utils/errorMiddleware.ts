@@ -41,9 +41,7 @@ export const errorMiddleware = (
         stack: process.env.NODE_ENV === "production" ? null : err.stack,
       })
       .end();
-  }
-
-  if (isCustomError(err)) {
+  } else if (isCustomError(err)) {
     res
       .status(err.statusCode)
       .json({
@@ -52,11 +50,11 @@ export const errorMiddleware = (
         stack: process.env.NODE_ENV === "production" ? null : err.stack,
       })
       .end();
+  } else {
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      stack: process.env.NODE_ENV === "production" ? null : err.stack,
+    });
   }
-
-  res.status(500).json({
-    success: false,
-    message: "Internal Server Error",
-    stack: process.env.NODE_ENV === "production" ? null : err.stack,
-  });
 };

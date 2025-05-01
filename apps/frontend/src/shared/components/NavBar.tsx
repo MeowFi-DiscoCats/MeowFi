@@ -117,19 +117,6 @@ export default function NavBar() {
                       Monad
                     </div>
                   </SelectItem>
-                  <SelectItem
-                    className="[&>*]:font-Bubblegum [&>*]:text-chocolate"
-                    value="Berachain"
-                  >
-                    <div className="font-Bubblegum ml-2 flex gap-2">
-                      <img
-                        width="20px"
-                        src="/images/chain.webp"
-                        alt="blockchain"
-                      />
-                      Berachain
-                    </div>
-                  </SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>

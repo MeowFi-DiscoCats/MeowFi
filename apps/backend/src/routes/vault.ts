@@ -26,7 +26,7 @@ router.get(
 router.post(
   "/",
   uploadImg.single("img"),
-  passport.authenticate("jwt", { session: false }),
+  passport.authenticate("adminjwt", { session: false }),
   asyncWrapper(async (req, res) => {
     if (!req.file) {
       throw new CustomError("file not found", 400);

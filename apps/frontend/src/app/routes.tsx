@@ -6,6 +6,7 @@ import { Suspense } from 'react';
 import AdminLoginPage from './pages/AdminLogin';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import AuthGuard from '@/features/admin/components/AuthGuard';
+import VerifyRole from './pages/VerifyRole';
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
       {
         path: '/faucet',
         element: <LiquidFaucetPage />,
+      },
+      {
+        path: '/verify',
+        element: <VerifyRole />,
       },
     ],
   },

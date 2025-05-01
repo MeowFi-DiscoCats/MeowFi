@@ -23,6 +23,7 @@ export interface IVault {
   nftImage: string;
   nftAddress: string;
   token: Itoken;
+  nftName: string;
 }
 
 // const _nativeTimeVault: IVault = {
@@ -68,6 +69,7 @@ const curvanceFastlaneVault: IVault = {
   nftImage: '/images/cfNFT2.webp',
   nftAddress: '0x34AF03074B7F72CFd1B1b0226d088A1E28c7405D',
   token: shMonToken,
+  nftName: 'Chogstars',
 };
 
 // const CurvanceAndFastlane2: IVault = {
@@ -91,6 +93,7 @@ const curvanceFastlaneVault: IVault = {
 //   nftImage: '/images/cfNFT2.webp',
 //   nftAddress: '0x24F6e209205401096f2DD59Dca1e3F75D76E70C3',
 //   token: shMonToken,
+//   nftName: 'Chogstars',
 // };
 
 export const vaults: IVault[] = [curvanceFastlaneVault];
