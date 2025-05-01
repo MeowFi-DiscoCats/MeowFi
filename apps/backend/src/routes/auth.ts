@@ -13,7 +13,6 @@ import { Client, GatewayIntentBits } from "discord.js";
 const router = Router();
 
 router.get("/discord", passport.authenticate("discord", { session: false }));
-
 router.get(
   "/discord/callback",
   passport.authenticate("discord", {
@@ -22,19 +21,12 @@ router.get(
   }),
   asyncWrapper(async (req, res) => {
     const user = req.user as IUser;
-
-    if (!user) {
-      throw new CustomError("User not authorized", 403);
-    }
-
+    if (!user) throw new CustomError("User not authorized", 403);
     const token = jwt.sign(
       { id: user.username, email: user.email },
       process.env.JWT_SECRET as string,
-      {
-        expiresIn: "10m",
-      },
+      { expiresIn: "10m" },
     );
-
     res.redirect(`${process.env.REDIRECT_URL}?token=${token}`);
   }),
 );
@@ -50,6 +42,15 @@ const verifySchema = z.object({
 const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
 const ERC721_ABI = ["function balanceOf(address owner) view returns (uint256)"];
 
+const ROLE_MAP: Record<string, Record<string, string>> = {
+  "1292804244763709470": {
+    "0x34AF03074B7F72CFd1B1b0226d088A1E28c7405D": "1367487915097063514",
+  },
+  "1329933800125235260": {
+    "0x34AF03074B7F72CFd1B1b0226d088A1E28c7405D": "999999999999999999",
+  },
+};
+
 router.post(
   "/verify",
   passport.authenticate("jwt", { session: false }),
@@ -64,9 +65,8 @@ router.post(
     }
 
     const dbUser = await User.findOne({ email: user.email });
-    if (!dbUser) {
-      throw new CustomError("User not found", 404);
-    }
+    if (!dbUser) throw new CustomError("User not found", 404);
+
     if (
       dbUser.walletAddress &&
       dbUser.walletAddress.toLowerCase() !== address.toLowerCase()
@@ -80,7 +80,17 @@ router.post(
       throw new CustomError("User does not own the required NFT", 400);
     }
 
-    if (dbUser.roles.includes(ROLE_MAP[nftAddress])) {
+    const guildRoles = ROLE_MAP[guildId];
+    if (!guildRoles)
+      throw new CustomError("No roles configured for this guild", 500);
+    const roleId = guildRoles[nftAddress];
+    if (!roleId)
+      throw new CustomError(
+        "No Discord role mapped for this NFT in this guild",
+        500,
+      );
+
+    if (dbUser.roles.includes(roleId)) {
       throw new CustomError("User already has this role", 400);
     }
 
@@ -88,9 +98,9 @@ router.post(
       dbUser.walletAddress = address;
     }
 
-    await giveRole(dbUser, nftAddress, guildId);
+    await giveRole(dbUser, roleId, guildId);
 
-    dbUser.roles.push(ROLE_MAP[nftAddress]);
+    dbUser.roles.push(roleId);
     await dbUser.save();
 
     res.json({ message: "Role assigned successfully" });
@@ -100,18 +110,9 @@ router.post(
 const discordClient = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
 });
-
 discordClient.login(process.env.DISCORD_TOKEN);
 
-const ROLE_MAP: Record<string, string> = {
-  "0x34AF03074B7F72CFd1B1b0226d088A1E28c7405D": "1367438351703212043",
-};
-
-const giveRole = async (user: IUser, nftAddress: string, guildId: string) => {
-  const roleId = ROLE_MAP[nftAddress];
-  if (!roleId) {
-    throw new CustomError("No Discord role mapped for this NFT", 500);
-  }
+const giveRole = async (user: IUser, roleId: string, guildId: string) => {
   const guild = await discordClient.guilds.fetch(guildId);
   const member = await guild.members.fetch(user.discordId!);
   await member.roles.add(roleId);
