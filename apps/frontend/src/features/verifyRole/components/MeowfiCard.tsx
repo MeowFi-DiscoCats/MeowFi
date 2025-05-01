@@ -16,7 +16,7 @@ export default function MeowfiCard({ index }: { index: number }) {
   const [discordVerified, setDiscordVerified] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
   const verifyTwitter = async () => {
-    window.open('https://twitter.com/MeowFi', '_blank');
+    window.open('https://twitter.com/MeowFi_', '_blank');
     setTimeout(() => setTwitterVerified(true), 5000);
   };
   const verifyDiscord = async () => {
