@@ -14,7 +14,7 @@ const UserSchema = new Schema<IUser>(
     discordId: { type: String, required: true, unique: true },
     username: { type: String, required: true },
     avatar: { type: String },
-    walletAddress: { type: String, unique: true },
+    walletAddress: { type: String },
     email: { type: String, required: true, unique: true },
     roles: [String],
   },

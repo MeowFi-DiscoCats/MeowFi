@@ -155,7 +155,7 @@ export default function MeowfiCard({ index }: { index: number }) {
             onClick={handleClaim}
             className="shadow-yellow bg-cream font-Bubblegum mt-2 border-2 border-black p-2 px-[20%] text-black shadow-[0_4px_4px] hover:bg-gray-200"
           >
-            Claim NFT
+            Claim Role
           </button>
         </div>
       </div>
