@@ -50,7 +50,10 @@ export default function FastlaneCard({ index }: { index: number }) {
     const token = params.get('token');
     params.delete('token');
     window.history.replaceState({}, '', window.location.pathname);
-    if (token) localStorage.setItem('verifytoken', token);
+    if (token) {
+      localStorage.setItem('verifytoken', token);
+      toast('Login Successful');
+    }
     checkToken();
   }, []);
 
