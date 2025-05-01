@@ -4,7 +4,7 @@ export interface IUser extends Document {
   discordId: string;
   username: string;
   avatar?: string;
-  walletAddress: string;
+  walletAddress?: string;
   roles: string[];
   email: string;
 }

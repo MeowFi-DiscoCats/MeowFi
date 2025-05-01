@@ -67,6 +67,11 @@ router.post(
     const dbUser = await User.findOne({ email: user.email });
     if (!dbUser) throw new CustomError("User not found", 404);
 
+    if (!dbUser.walletAddress) {
+      dbUser.walletAddress = address;
+      await dbUser.save();
+    }
+
     if (
       dbUser.walletAddress &&
       dbUser.walletAddress.toLowerCase() !== address.toLowerCase()
