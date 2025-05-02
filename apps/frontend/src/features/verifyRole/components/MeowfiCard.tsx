@@ -37,11 +37,15 @@ export default function MeowfiCard({ index }: { index: number }) {
         localStorage.removeItem('verifytoken');
         toast('Token expired, please re-login');
         setAuthenticated(false);
+        setTwitterVerified(false);
+        setDiscordVerified(false);
         return;
       }
-      setTwitterVerified(true);
-      setDiscordVerified(true);
       setAuthenticated(true);
+      if (localStorage.getItem('redirect') == 'Meowfi') {
+        setDiscordVerified(true);
+        setTwitterVerified(true);
+      }
     }
   }
 
@@ -60,6 +64,7 @@ export default function MeowfiCard({ index }: { index: number }) {
   const handleClaim = async () => {
     checkToken();
     if (!authenticated) {
+      localStorage.setItem('redirect', 'Meowfi');
       window.open(apiUrl + '/auth/discord', '_self');
       return;
     }
@@ -73,7 +78,7 @@ export default function MeowfiCard({ index }: { index: number }) {
       params: [vault.nftName, address],
     });
 
-    fetch(apiUrl + '/auth/verify', {
+    fetch(apiUrl + '/verify', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${localStorage.getItem('verifytoken')}`,
@@ -88,11 +93,15 @@ export default function MeowfiCard({ index }: { index: number }) {
       }),
     })
       .then((res) => {
-        console.log(res);
         return res.json();
       })
       .then((data: { message: string }) => {
         toast(data.message);
+        if (data.message === 'Role assigned successfully') {
+          setDiscordVerified(false);
+          setTwitterVerified(false);
+          localStorage.removeItem('verifytoken');
+        }
       });
   };
 

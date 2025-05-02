@@ -15,6 +15,7 @@ app.use(express.json());
 
 import "./setup/passport";
 import "./setup/mongoose";
+import "./setup/discord";
 
 app.use("/", routes);
 app.use(errorMiddleware);
