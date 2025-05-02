@@ -117,10 +117,52 @@ const discordClient = new Client({
 });
 discordClient.login(process.env.DISCORD_TOKEN);
 
+discordClient.once("ready", () => {
+  console.log(`Discord client logged in as ${discordClient.user?.tag}`);
+  setInterval(checkAndRemoveRoles, 60 * 60 * 1000);
+});
+
 const giveRole = async (user: IUser, roleId: string, guildId: string) => {
   const guild = await discordClient.guilds.fetch(guildId);
   const member = await guild.members.fetch(user.discordId!);
   await member.roles.add(roleId);
+};
+
+const removeRole = async (user: IUser, roleId: string, guildId: string) => {
+  const guild = await discordClient.guilds.fetch(guildId);
+  const member = await guild.members.fetch(user.discordId!);
+  await member.roles.remove(roleId);
+};
+
+const checkAndRemoveRoles = async () => {
+  const users = await User.find({ walletAddress: { $exists: true } });
+
+  for (const user of users) {
+    for (const guildId of Object.keys(ROLE_MAP)) {
+      const nftRoles = ROLE_MAP[guildId];
+
+      for (const nftAddress of Object.keys(nftRoles)) {
+        const roleId = nftRoles[nftAddress];
+
+        const nft = new Contract(nftAddress, ERC721_ABI, provider);
+        try {
+          const balance = await nft.balanceOf(user.walletAddress);
+          if (Number(balance) === 0 && user.roles.includes(roleId)) {
+            await removeRole(user, roleId, guildId);
+            user.roles = user.roles.filter((r) => r !== roleId);
+            await user.save();
+            console.log(
+              `Removed role ${roleId} from ${user.username} in guild ${guildId}`,
+            );
+          }
+        } catch (err) {
+          console.error(
+            `Error checking/removing role for ${user.walletAddress}: ${err}`,
+          );
+        }
+      }
+    }
+  }
 };
 
 export default router;
