@@ -146,7 +146,7 @@ export default function FastlaneCard({ index }: { index: number }) {
                   <span className="font-Bubblegum text-yellow mr-1">
                     Task 2:
                   </span>
-                  Join MeowFi Discord
+                  Join Fastlane Discord
                 </span>
               </div>
               <a
