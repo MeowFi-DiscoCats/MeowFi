@@ -7,6 +7,7 @@ import AdminLoginPage from './pages/AdminLogin';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import AuthGuard from '@/features/admin/components/AuthGuard';
 import VerifyRole from './pages/VerifyRole';
+import UserDashboardPage from './pages/UserDashboardPage';
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: '/verify',
         element: <VerifyRole />,
+      },
+      {
+        path: '/dashboard',
+        element: <UserDashboardPage />,
       },
     ],
   },

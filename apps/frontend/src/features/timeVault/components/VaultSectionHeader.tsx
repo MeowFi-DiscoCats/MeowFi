@@ -2,7 +2,7 @@ import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import Manual from '@/components/Manual';
 import Bribe from '@/features/bribe/components/BribeDialog';
 import ReferralDialog from '@/components/ReferralDialog';
-import HeaderCarousel from './HeaderCarousel';
+import HeaderCarousel from '@/components/HeaderCarousel';
 
 export default function VaultHeader() {
   return (
