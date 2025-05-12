@@ -1,5 +1,6 @@
 import CatEar from '@/components/svg/CatEar';
 import Header from '@/features/userDashboard/components/Header';
+import LiquidNft from '@/features/userDashboard/components/LiquidNft';
 import Position from '@/features/userDashboard/components/Position';
 import TotalAssets from '@/features/userDashboard/components/TotalAssets';
 
@@ -23,6 +24,7 @@ export default function UserDashboardPage() {
           <Header />
           <TotalAssets />
           <Position />
+          <LiquidNft />
         </div>
       </section>
     </>

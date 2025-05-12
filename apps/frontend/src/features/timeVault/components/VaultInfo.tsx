@@ -19,8 +19,8 @@ export function VaultInfo({ index }: { index: number }) {
   };
   return (
     <DialogHeader>
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-4">
+      <div className="flex items-center justify-between gap-4 max-[430px]:flex-col">
+        <div className="flex items-center gap-4 max-[430px]:w-full">
           <DialogClose className="bg-amber rounded-full p-2">
             <LucideChevronLeft />
           </DialogClose>
@@ -46,8 +46,8 @@ export function VaultInfo({ index }: { index: number }) {
             </DialogDescription>
           </div>
         </div>
-        <div>
-          <span className="bg-amber flex flex-wrap rounded-lg p-1 px-3">
+        <div className="text-center max-[430px]:w-full">
+          <span className="bg-amber flex flex-wrap justify-center rounded-lg p-1 px-3">
             Limit per wallet:{vault.nftLimit}
           </span>
         </div>

@@ -1,6 +1,6 @@
 export default function TotalAssets() {
   return (
-    <div>
+    <div className="max-sm:mt-4">
       <div className="flex">
         <p className="border-gunmetal flex flex-col rounded-xl border bg-white p-4 px-8 text-center">
           <span className="text-xl">$0</span>
