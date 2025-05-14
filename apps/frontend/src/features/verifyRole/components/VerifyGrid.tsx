@@ -39,7 +39,7 @@ export default function VerifyGrid() {
       </Select>
       <div className="mt-8 flex flex-wrap items-center justify-center gap-8">
         <MeowfiCard index={selectedVaultIndex} />
-        <FastLaneCard index={selectedVaultIndex} />
+        {/* <FastLaneCard index={selectedVaultIndex} /> */}
       </div>
     </main>
   );
