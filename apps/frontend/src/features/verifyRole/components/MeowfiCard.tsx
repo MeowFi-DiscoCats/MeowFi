@@ -20,7 +20,7 @@ export default function MeowfiCard({ index }: { index: number }) {
     setTimeout(() => setTwitterVerified(true), 5000);
   };
   const verifyDiscord = async () => {
-    window.open('https://discord.gg/TkQmXZWY', '_blank');
+    window.open('https://discord.gg/RZWntTWFrb', '_blank');
     setTimeout(() => setDiscordVerified(true), 5000);
   };
   const { isConnected, address } = useAppKitAccount();
