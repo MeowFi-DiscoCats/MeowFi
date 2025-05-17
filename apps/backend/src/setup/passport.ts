@@ -96,9 +96,12 @@ passport.use(
         const newUser = new User({
           discordId: profile.id,
           email: profile.email,
-          avatar: profile.avatar,
           username: profile.username,
         });
+
+        if (profile.avatar) {
+          newUser.avatar = profile.avatar;
+        }
 
         const savedUser = await newUser.save();
         return cb(null, savedUser);

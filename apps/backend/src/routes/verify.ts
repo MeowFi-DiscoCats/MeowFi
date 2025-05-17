@@ -18,8 +18,8 @@ const verifySchema = z.object({
   guildId: z.string(),
 });
 
-const LIMITED_ROLE_ID = "1367487915097063514";
-const ROLE_ASSIGNMENT_LIMIT = 200;
+// const LIMITED_ROLE_ID = "1367487915097063514";
+// const ROLE_ASSIGNMENT_LIMIT = 200;
 
 router.post(
   "/",
@@ -71,18 +71,18 @@ router.post(
       throw new CustomError("User already has this role", 400);
     }
 
-    if (roleIdToAssign === LIMITED_ROLE_ID) {
-      const usersWithLimitedRoleCount = await User.countDocuments({
-        roles: LIMITED_ROLE_ID,
-      });
-
-      if (usersWithLimitedRoleCount >= ROLE_ASSIGNMENT_LIMIT) {
-        throw new CustomError(
-          `The role (${LIMITED_ROLE_ID}) has reached its assignment limit of ${ROLE_ASSIGNMENT_LIMIT} users.`,
-          403,
-        );
-      }
-    }
+    // if (roleIdToAssign === LIMITED_ROLE_ID) {
+    //   const usersWithLimitedRoleCount = await User.countDocuments({
+    //     roles: LIMITED_ROLE_ID,
+    //   });
+    //
+    //   if (usersWithLimitedRoleCount >= ROLE_ASSIGNMENT_LIMIT) {
+    //     throw new CustomError(
+    //       `The role (${LIMITED_ROLE_ID}) has reached its assignment limit of ${ROLE_ASSIGNMENT_LIMIT} users.`,
+    //       403,
+    //     );
+    //   }
+    // }
 
     if (!dbUser.discordId) {
       throw new CustomError("User does not have a Discord ID linked.", 500);

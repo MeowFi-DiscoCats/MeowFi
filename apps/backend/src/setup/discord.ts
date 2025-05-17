@@ -25,7 +25,7 @@ discordClient.login(process.env.DISCORD_TOKEN);
 
 discordClient.once("ready", () => {
   console.log(`Discord client logged in as ${discordClient.user?.tag}`);
-  setInterval(checkAndRemoveRoles, 60 * 60 * 1000);
+  setInterval(checkAndRemoveRoles, 3 * 60 * 60 * 1000);
 });
 
 export const giveRole = async (
